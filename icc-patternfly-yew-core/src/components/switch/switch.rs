@@ -112,7 +112,7 @@ impl Component for Switch
                                     {&self.props.label}
                                 </span>
                                 <span
-                                    className="pf-c-switch__label pf-m-off"
+                                    class="pf-c-switch__label pf-m-off"
                                     // id={isAriaLabelledBy ? `${this.id}-off` : null}
                                     aria-hidden="true"
                                 >
