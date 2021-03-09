@@ -2,11 +2,11 @@ use yew::{
     prelude::*,
 };
 
-use crate::{ASTERISK};
+use crate::{ASTERISK, ValidatedOptions};
+
 
 pub struct FormGroup
 {
-    // link: ComponentLink<Self>,
     props: FormGroupProperties,
 }
 
@@ -32,8 +32,8 @@ pub struct FormGroupProperties
      * If set to error, text color of helper text will be modified to indicate error state.
      * If set to warning, text color of helper text will be modified to indicate warning state.
      */
-    // #[prop_or_default]
-    // validated?: 'success' | 'warning' | 'error' | 'default';
+    #[prop_or(ValidatedOptions::Default)]
+    pub validated: ValidatedOptions,
     /** Sets the FormGroup isInline. */
     #[prop_or_default]
     pub is_inline: bool,
@@ -47,7 +47,8 @@ pub struct FormGroupProperties
     #[prop_or_default]
     pub is_helper_text_before_field: bool,
     /** Helper text after the field when the field is invalid. It can be a simple text or an object. */
-    // helperTextInvalid?: React.ReactNode;
+    #[prop_or_default]
+    pub helper_text_invalid: String,
     /** Icon displayed to the left of the helper text. */
     // helperTextIcon?: React.ReactNode;
     /** Icon displayed to the left of the helper text when the field is invalid. */
@@ -65,7 +66,6 @@ impl Component for FormGroup
     fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
     {
         Self {
-            // link,
             props,
         }
     }
@@ -92,25 +92,6 @@ impl Component for FormGroup
 
     fn view(&self) -> Html
     {
-        let valid_text_helper = if !self.props.helper_text.is_empty() {
-            html!{
-                <div
-                    class=(
-                        "pf-c-form__helper-text",
-                        // validated === ValidatedOptions.success && styles.modifiers.success,
-                        // validated === ValidatedOptions.warning && styles.modifiers.warning
-                    )
-                    // id={`${fieldId}-helper`}
-                    aria-live="polite"
-                >
-                    // {helperTextIcon && <span className={css(styles.formHelperTextIcon)}>{helperTextIcon}</span>}
-                    {&self.props.helper_text}
-                </div>
-            }
-        } else {
-            html!{}
-        };
-
         html!{
             <div 
                 //{...props} 
@@ -132,7 +113,7 @@ impl Component for FormGroup
                                     if self.props.is_required
                                     {
                                         html!{
-                                            <span class="{css(styles.formLabelRequired)}" aria-hidden="true">
+                                            <span class="pf-c-form__label-required" aria-hidden="true">
                                                 {' '}
                                                 {ASTERISK}
                                             </span>
@@ -162,18 +143,20 @@ impl Component for FormGroup
                     {
                         if self.props.is_helper_text_before_field
                         {
-                            valid_text_helper.clone()
+                            self.get_helper_text()
                         }
                         else
                         {
                             html!{}
                         }
                     }
-                    { self.props.children.clone() }
+                    {
+                        self.props.children.clone() 
+                    }
                     {
                         if !self.props.is_helper_text_before_field
                         {
-                            valid_text_helper.clone()
+                            self.get_helper_text()
                         }
                         else
                         {
@@ -182,6 +165,58 @@ impl Component for FormGroup
                     }
                 </div>
             </div>
+        }
+    }
+}
+
+impl FormGroup
+{
+    fn get_helper_text(&self) -> Html
+    {
+        if self.props.validated != ValidatedOptions::Error
+        {
+            // let valid_text_helper = if !self.props.helper_text.is_empty() {
+            if !self.props.helper_text.is_empty() {
+                html!{
+                    <div
+                        class=(
+                            "pf-c-form__helper-text",
+                            if self.props.validated == ValidatedOptions::Success { "pf-m-success" } else { "" },
+                            if self.props.validated == ValidatedOptions::Warning { "pf-m-warning" } else { "" },
+                        )
+                        id=format!("{}-helper", self.props.field_id)
+                        aria-live="polite"
+                    >
+                        // {helperTextIcon && <span className={css(styles.formHelperTextIcon)}>{helperTextIcon}</span>}
+                        {&self.props.helper_text}
+                    </div>
+                }
+            } else {
+                html!{}
+            }
+        }
+        else
+        {
+            if !self.props.helper_text_invalid.is_empty()
+            {
+                html!{
+                    <div 
+                        class=(
+                            "pf-c-form__helper-text",
+                            "pf-m-error"
+                        )
+                             id=format!("{}-helper", self.props.field_id)
+                         aria-live="polite"
+                    >
+                        // {helperTextInvalidIcon && <span className={css(styles.formHelperTextIcon)}>{helperTextInvalidIcon}</span>}
+                        {&self.props.helper_text_invalid}
+                    </div>
+                }
+            }
+            else
+            {
+                html!{}
+            }
         }
     }
 }
