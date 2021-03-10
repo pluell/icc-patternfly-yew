@@ -27,12 +27,17 @@ pub struct ToolbarGroup
 #[derive(Clone, PartialEq, Properties)]
 pub struct ToolbarGroupProperties
 {
+    /** Classes applied to root element of the data toolbar group */
     #[prop_or_default]
     pub class_name: String,
+    /** A type modifier which modifies spacing specifically depending on the type of group */
     #[prop_or(ToolbarGroupVariant::None)]
     pub variant: ToolbarGroupVariant,
+    /** Content to be rendered inside the data toolbar group */
     #[prop_or_default]
     pub children: Children,
+    #[prop_or_default]
+    pub hidden: bool,
 }
 
 impl Component for ToolbarGroup
@@ -76,6 +81,8 @@ impl Component for ToolbarGroup
                     TOOLBAR_GROUP_STYLE[self.props.variant.clone() as usize],
                     &self.props.class_name,
                 )
+                hidden=self.props.hidden
+                aria-hidden=self.props.hidden
             >
                 { self.props.children.clone() }
             </div>

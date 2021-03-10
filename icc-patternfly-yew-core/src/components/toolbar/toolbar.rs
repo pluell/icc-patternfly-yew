@@ -28,7 +28,6 @@ impl Component for Toolbar
     fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
     {
         Self {
-            // link,
             props,
         }
     }
