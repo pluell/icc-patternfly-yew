@@ -4,7 +4,6 @@ use yew::{
 
 pub struct Form
 {
-    // link: ComponentLink<Self>,
     props: FormProperties,
 }
 
@@ -32,7 +31,6 @@ impl Component for Form
     fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
     {
         Self {
-            // link,
             props,
         }
     }
