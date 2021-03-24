@@ -15,12 +15,6 @@ const BTN_VARIANT_STYLES: &'static [&'static str] = &[
     "pf-m-control",
 ];
 
-const BTN_TYPES: &'static [&'static str] = &[
-    "button",
-    "submit",
-    "reset",
-];
-
 pub struct Button
 {
     props: ButtonProperties,

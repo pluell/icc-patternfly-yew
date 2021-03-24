@@ -22,3 +22,9 @@ pub enum ButtonType
     Submit,
     Reset,
 }
+
+pub const BTN_TYPES: &'static [&'static str] = &[
+    "button",
+    "submit",
+    "reset",
+];
