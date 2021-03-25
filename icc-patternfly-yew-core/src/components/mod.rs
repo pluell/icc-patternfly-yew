@@ -1,5 +1,6 @@
 mod button;
 mod chip_group;
+mod dropdown;
 mod expandable_section;
 mod form;
 mod select;
@@ -9,6 +10,7 @@ mod text_input;
 mod toolbar;
 
 pub use button::*;
+pub use dropdown::*;
 pub use chip_group::*;
 pub use expandable_section::*;
 pub use form::*;
