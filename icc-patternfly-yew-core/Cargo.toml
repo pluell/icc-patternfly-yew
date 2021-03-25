@@ -7,8 +7,10 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+gloo = "0.2.1"
 log = "0.4"
-web-sys = { version = "0.3.48", features = ["Window"] }
+wasm-bindgen = "0.2.71"
+web-sys = { version = "0.3.48", features = ["Event", "Window"] }
 yew = { version = "0.17.3", features = ["web_sys"] }
 yew-router = { version = "0.14.0", features = ["web_sys"] }
 yewtil = "0.3.2"

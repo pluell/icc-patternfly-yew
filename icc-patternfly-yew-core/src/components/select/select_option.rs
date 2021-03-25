@@ -153,6 +153,10 @@ impl<V: ToString + PartialEq + Clone + 'static> Component for SelectOption<V>
                     </label>
                 }
             },
+            _ => {
+                // TODO: Implement remaining select variants
+                html!{}
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ pub enum SelectVariant
 {
     Single,
     Checkbox,
-    // TypeAhead,
-    // TypeAheadMulti,
-    // Panel,
+    TypeAhead,
+    TypeAheadMulti,
+    Panel,
 }
