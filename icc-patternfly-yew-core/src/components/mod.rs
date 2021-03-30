@@ -1,3 +1,4 @@
+mod backdrop;
 mod button;
 mod chip_group;
 mod dropdown;
@@ -9,6 +10,7 @@ mod tabs;
 mod text_input;
 mod toolbar;
 
+pub use backdrop::*;
 pub use button::*;
 pub use dropdown::*;
 pub use chip_group::*;
