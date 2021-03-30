@@ -44,6 +44,8 @@ pub struct ButtonProperties
     pub class_name: String,
     pub onclick: Callback<MouseEvent>,
     pub children: Children,
+    #[prop_or_default]
+    pub aria_label: String,
 }
 
 impl Component for Button
@@ -111,6 +113,7 @@ impl Component for Button
                 disabled=self.props.is_disabled
                 type=BTN_TYPES[self.props.btn_type.clone() as usize]
                 role="button"
+                aria-label=self.props.aria_label.clone()
             >
             {
                 if let Some(is_loading) = self.props.is_loading
