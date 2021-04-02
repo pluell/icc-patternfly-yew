@@ -238,14 +238,12 @@ impl Component for Modal
             let callback = self.link.callback(|event| ModalMsg::OnKeyDown(event));
 
             let listener = move |event: &Event| {
-                // Convert event to KeyboardEvent
-                let event = event
-                    .dyn_ref::<KeyboardEvent>()
-                    .expect("wrong event type")
-                    .clone();
-
-                // Handle the event
-                callback.emit(event);
+                // Try to convert event to KeyboardEvent
+                if let Some(event) = event.dyn_ref::<KeyboardEvent>()
+                {
+                    // Handle the event
+                    callback.emit(event.clone());
+                }
             };
 
             let event_options = EventListenerOptions::enable_prevent_default();

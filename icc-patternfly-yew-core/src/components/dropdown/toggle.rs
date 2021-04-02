@@ -93,14 +93,12 @@ impl Component for Toggle
         let callback = link.callback(|event| ToggleMsg::OnDocClick(event));
 
         let listener = move |event: &Event| {
-            // Convert event to MouseEvent
-            let event = event
-                .dyn_ref::<MouseEvent>()
-                .expect("wrong event type")
-                .clone();
-
-            // Handle the mouse event
-            callback.emit(event);
+            // Try to convert event to MouseEvent
+            if let Some(event) = event.dyn_ref::<MouseEvent>()
+            {
+                // Handle the event
+                callback.emit(event.clone());
+            }
         };
 
         let event_options = EventListenerOptions::enable_prevent_default();
