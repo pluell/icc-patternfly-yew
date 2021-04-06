@@ -9,6 +9,7 @@ mod select;
 mod spinner;
 mod switch;
 mod tabs;
+mod text;
 mod text_input;
 mod toolbar;
 
@@ -23,5 +24,6 @@ pub use select::*;
 pub use spinner::*;
 pub use switch::*;
 pub use tabs::*;
+pub use text::*;
 pub use text_input::*;
 pub use toolbar::*;
