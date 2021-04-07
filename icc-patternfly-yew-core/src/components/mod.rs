@@ -1,5 +1,6 @@
 mod backdrop;
 mod button;
+mod card;
 mod chip_group;
 mod dropdown;
 mod expandable_section;
@@ -15,6 +16,7 @@ mod toolbar;
 
 pub use backdrop::*;
 pub use button::*;
+pub use card::*;
 pub use dropdown::*;
 pub use chip_group::*;
 pub use expandable_section::*;
