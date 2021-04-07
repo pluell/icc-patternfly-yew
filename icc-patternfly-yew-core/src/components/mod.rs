@@ -12,6 +12,7 @@ mod switch;
 mod tabs;
 mod text;
 mod text_input;
+mod title;
 mod toolbar;
 
 pub use backdrop::*;
@@ -28,4 +29,5 @@ pub use switch::*;
 pub use tabs::*;
 pub use text::*;
 pub use text_input::*;
+pub use title::*;
 pub use toolbar::*;
