@@ -49,6 +49,7 @@ impl Component for ToolbarFilter
 
     fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
     {
+        // Set the number of filters
         props.update_number_filters.emit((props.category_name.clone(), props.chips.len() as i32));
 
         Self {
@@ -148,48 +149,50 @@ impl Component for ToolbarFilter
     {
         if let Some(chip_group_content_node) = self.props.chip_group_content_ref.get()
         {
+            // The filter toolbar group should be the first node of the chip content group
             if let Some(group_node) = chip_group_content_node.first_child()
             {
                 if let Some(filter_item_node) = self.filter_item_node.get()
                 {
-                    if self.props.chips.len() == 0
+                    let mut found_node = false;
+
+                    let group_node_children = group_node.child_nodes();
+
+                    // Get the number of children of the toolbar group node
+                    let num_groups = group_node_children.length();
+
+                    // Search the chip group items for our node
+                    for i in 0..num_groups
                     {
-                        // Remove the filter item if 
-                        group_node.remove_child(&filter_item_node)
-                            .expect("Unable to remove filter toolbar item from chip group");
-                    }
-                    else
-                    {
-                        let mut found_node = false;
-
-                        let group_node_children = group_node.child_nodes();
-
-                        // Get the number of children of the toolbar group node
-                        let num_groups = group_node_children.length();
-
-                        // Search the chip group items for our node
-                        for i in 0..num_groups
+                        if let Some(chip_group_node) = group_node_children.get(i)
                         {
-                            if let Some(chip_group_node) = group_node_children.get(i)
+                            if filter_item_node == chip_group_node
                             {
-                                if filter_item_node == chip_group_node
+                                if self.props.chips.len() == 0
+                                {
+                                    // Remove the filter item if there are no more filter chips to display
+                                    group_node.remove_child(&filter_item_node)
+                                        .expect("Unable to remove filter toolbar item from chip group");
+                                }
+                                else
                                 {
                                     // Update the current chip group node with our new filter item
                                     group_node.replace_child(&chip_group_node, &filter_item_node)
                                         .expect("Unable to update filter toolbar item in chip group");
-
-                                    found_node = true;
-                                    break; 
                                 }
+
+                                found_node = true;
+                                break; 
                             }
                         }
+                    }
 
-                        if !found_node
-                        {
-                            // Add the filter item to the chip content chip group
-                            group_node.append_child(&filter_item_node)
-                                .expect("Unable to add filter toolbar item to chip group");
-                        }
+                    // Add the filter item to the chip content chip group if the
+                    // filter item is new and there are filter chips
+                    if !found_node && self.props.chips.len() > 0
+                    {
+                        group_node.append_child(&filter_item_node)
+                            .expect("Unable to add filter toolbar item to chip group");
                     }
                 }
             }
