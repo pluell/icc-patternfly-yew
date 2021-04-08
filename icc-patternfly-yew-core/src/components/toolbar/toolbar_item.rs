@@ -37,9 +37,21 @@ pub struct ToolbarItem
 #[derive(Clone, PartialEq, Properties)]
 pub struct ToolbarItemProperties
 {
-    pub children: Children,
+    /** Classes applied to root element of the data toolbar item */
+    #[prop_or_default]
+    pub class_name: String,
+    /** A type modifier which modifies spacing specifically depending on the type of item */
     #[prop_or(ToolbarItemVariant::None)]
     pub variant: ToolbarItemVariant,
+    /** id for this data toolbar item */
+    #[prop_or_default]
+    pub id: String,
+    /** Flag indicating if the expand-all variant is expanded or not */
+    #[prop_or_default]
+    pub is_all_expanded: bool,
+    /** Content to be rendered inside the data toolbar item */
+    #[prop_or_default]
+    pub children: Children,
 }
 
 impl Component for ToolbarItem
@@ -85,9 +97,11 @@ impl Component for ToolbarItem
         {
             html!{
                 <div 
+                    id=&self.props.id
                     class=(
                         "pf-c-toolbar__item",
                         TOOLBAR_ITEM_VARIANT_STYLES[self.props.variant.clone() as usize],
+                        &self.props.class_name,
                     )
                 >
                     { self.props.children.clone() }

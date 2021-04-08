@@ -144,7 +144,16 @@ impl Component for ToolbarChipGroupContent
                                     is_inline=true
                                     onclick=self.link.callback(|_| ToolbarChipGroupContentMsg::ClearChipGroups)
                                 >
-                                    { &self.props.clear_filters_button_text }
+                                {
+                                    if self.props.clear_filters_button_text.len() > 0
+                                    {
+                                        &self.props.clear_filters_button_text
+                                    }
+                                    else
+                                    {
+                                        "Clear all filters"
+                                    }
+                                }
                                 </Button>
                             </ToolbarItem>
                         }

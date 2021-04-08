@@ -1,6 +1,9 @@
 use yew::{
     prelude::*,
+    html::{ChildrenRenderer},
 };
+
+use super::*;
 
 
 #[derive(Clone, PartialEq)]
@@ -35,9 +38,14 @@ pub struct ToolbarGroupProperties
     pub variant: ToolbarGroupVariant,
     /** Content to be rendered inside the data toolbar group */
     #[prop_or_default]
-    pub children: Children,
+    pub children: ChildrenRenderer<ToolbarGroupChild>,
     #[prop_or_default]
     pub hidden: bool,
+    /** Chip group content reference for passing to data toolbar children */
+    #[prop_or_default]
+    pub chip_group_content_ref: Option<NodeRef>,
+    #[prop_or_default]
+    pub update_number_filters: Callback<(String, i32)>,
 }
 
 impl Component for ToolbarGroup
@@ -84,7 +92,24 @@ impl Component for ToolbarGroup
                 hidden=self.props.hidden
                 aria-hidden=self.props.hidden
             >
-                { self.props.children.clone() }
+            {
+                for self.props.children.iter().map(|mut child| {
+                    match child.props
+                    {
+                        ToolbarGroupTypes::Filter(ref mut props) => {
+                            if let Some(chip_group_content_ref) = &self.props.chip_group_content_ref
+                            {
+                                props.chip_group_content_ref = chip_group_content_ref.clone();
+                            }
+
+                            props.update_number_filters = self.props.update_number_filters.clone();
+                        },
+                        _ => {}
+                    }
+                    
+                    child
+                })
+            }
             </div>
         }
     }
