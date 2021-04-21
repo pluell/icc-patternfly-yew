@@ -23,27 +23,41 @@ pub struct Button
 #[derive(Clone, PartialEq, Properties)]
 pub struct ButtonProperties
 {
+    #[prop_or_default]
+    pub id: String,
+    /** Adds button variant styles */
     pub variant: ButtonVariant,
+    /** Sets button type */
     #[prop_or(ButtonType::Button)]
     pub btn_type: ButtonType,
+    /** Adds active styling to button. */
     #[prop_or_default]
     pub is_active: bool,
+    /** Adds disabled styling and disables the button using the disabled html attribute */
     #[prop_or_default]
     pub is_disabled: bool,
+    /** Adds progress styling to button */
     #[prop_or_default]
     pub is_loading: Option<bool>,
+    /** Adds block styling to button */
     #[prop_or_default]
     pub is_block: bool,
+    /** Adds small styling to the button */
     #[prop_or_default]
     pub is_small: bool,
+    /** Adds large styling to the button */
     #[prop_or_default]
     pub is_large: bool,
+    /** Adds inline styling to a link button */
     #[prop_or_default]
     pub is_inline: bool,
+    /** Additional classes added to the button */
     #[prop_or_default]
     pub class_name: String,
     pub onclick: Callback<MouseEvent>,
+    /** Content rendered inside the button */
     pub children: Children,
+    /** Adds accessible text to the button. */
     #[prop_or_default]
     pub aria_label: String,
 }
@@ -96,6 +110,7 @@ impl Component for Button
 
         html!{
             <button
+                id=&self.props.id
                 class=(
                     "pf-c-button",
                     BTN_VARIANT_STYLES[self.props.variant.clone() as usize],
