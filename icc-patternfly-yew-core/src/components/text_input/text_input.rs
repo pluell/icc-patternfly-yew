@@ -68,7 +68,7 @@ pub struct TextInputProperties
     #[prop_or_default]
     pub onchange: Callback<String>, // (value: string, event: React.FormEvent<HTMLInputElement>) => void;
     /** Type that the input accepts. */
-    // #[prop_or_default]
+    #[prop_or(TextInputType::Text)]
     pub input_type: TextInputType,
     // /** Value of the input. */
     #[prop_or_default]
