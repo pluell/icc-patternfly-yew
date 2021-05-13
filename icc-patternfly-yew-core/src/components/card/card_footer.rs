@@ -60,7 +60,7 @@ impl Component for CardFooter
         let mut component = VTag::new(self.props.component.clone());
 
         // Build list of classes
-        let mut classes = String::from("pf-c-card__body");
+        let mut classes = String::from("pf-c-card__footer");
         
         // Add extra classes specified on the parent
         if self.props.class_name.len() > 0
