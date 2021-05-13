@@ -13,6 +13,7 @@ pub enum CardVariants
     Footer(<CardFooter as Component>::Properties),
     Title(<CardTitle as Component>::Properties),
     ExpandableContent(<CardExpandableContent as Component>::Properties),
+    VNode(Html),
 }
 
 impl From<CardHeaderProperties> for CardVariants
@@ -55,6 +56,14 @@ impl From<CardExpandableContentProperties> for CardVariants
     }
 }
 
+impl From<Html> for CardVariants
+{
+    fn from(node: Html) -> Self
+    {
+        CardVariants::VNode(node)
+    }
+}
+
 #[derive(PartialEq, Clone)]
 pub struct CardChildVariant
 {
@@ -70,6 +79,16 @@ where
     {
         Self {
             props: vchild.props.into(),
+        }
+    }
+}
+
+impl From<Html> for CardChildVariant
+{
+    fn from(node: Html) -> Self
+    {
+        Self {
+            props: node.into()
         }
     }
 }
@@ -95,6 +114,9 @@ impl From<CardChildVariant> for Html
             CardVariants::ExpandableContent(props) => {
                 VComp::new::<CardExpandableContent>(props, NodeRef::default(), None).into()
             },
+            CardVariants::VNode(node) => {
+                node
+            }
         }
     }
 }
