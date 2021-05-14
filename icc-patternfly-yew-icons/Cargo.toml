@@ -1,0 +1,10 @@
+[package]
+name = "icc-patternfly-yew-icons"
+version = "0.1.0"
+authors = ["Patrick Luell <pluell@iccdesigns.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+yewtil = "0.3.2"

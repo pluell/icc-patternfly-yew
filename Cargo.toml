@@ -2,4 +2,5 @@
 [workspace]
 members = [
     "icc-patternfly-yew-core",
+    "icc-patternfly-yew-icons",
 ]
