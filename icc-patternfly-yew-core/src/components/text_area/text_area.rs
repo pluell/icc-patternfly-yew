@@ -65,6 +65,10 @@ pub struct TextAreaProperties
     // /** A reference object to attach to the textarea. */
     // #[prop_or_default]
     // innerRef: React.RefObject<any>;
+
+    /** textarea props */
+    #[prop_or_default]
+    pub id: String,
 }
 
 pub enum TextAreaMsg
@@ -139,6 +143,7 @@ impl Component for TextArea
                 readOnly=self.props.is_read_only
                 // ref={innerRef}
                 // {...props}
+                id=&self.props.id
             />
         }
     }
