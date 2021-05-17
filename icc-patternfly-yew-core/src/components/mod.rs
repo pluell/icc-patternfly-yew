@@ -1,3 +1,4 @@
+mod alert;
 mod backdrop;
 mod button;
 mod card;
@@ -18,6 +19,7 @@ mod text_input;
 mod title;
 mod toolbar;
 
+pub use alert::*;
 pub use backdrop::*;
 pub use button::*;
 pub use card::*;
