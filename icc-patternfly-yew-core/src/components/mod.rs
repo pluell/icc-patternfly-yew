@@ -18,6 +18,7 @@ mod text;
 mod text_area;
 mod text_input;
 mod title;
+mod toggle_group;
 mod toolbar;
 
 pub use alert::*;
@@ -40,4 +41,5 @@ pub use text::*;
 pub use text_area::*;
 pub use text_input::*;
 pub use title::*;
+pub use toggle_group::*;
 pub use toolbar::*;
