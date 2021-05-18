@@ -56,7 +56,7 @@ impl Component for CardActions
         html!{
             <div 
             
-                class=(
+                class=classes!(
                     "pf-c-card__actions",
                     self.props.class_name.clone()
                 )

@@ -37,12 +37,6 @@ pub struct FileUploadFieldProperties
     /** A callback for when the TextArea value changes. */
     #[prop_or_default]
     pub onchange: Callback<(String, String)>,
-    //     value: string,
-    //     filename: string,
-    //     event:
-    //     | React.ChangeEvent<HTMLTextAreaElement> // User typed in the TextArea
-    //     | React.MouseEvent<HTMLButtonElement, MouseEvent> // User clicked Clear button
-    // ) => void;
     /** Additional classes added to the FileUploadField container element. */
     #[prop_or_default]
     pub class_name: String,
@@ -164,7 +158,7 @@ impl Component for FileUploadField
     {
         html!{
             <div
-                class=(
+                class=classes!(
                     "pf-c-file-upload",
                     // isDragActive && styles.modifiers.dragHover,
                     // isLoading && styles.modifiers.loading,
@@ -183,7 +177,7 @@ impl Component for FileUploadField
                             // aria-label={filenameAriaLabel}
                             // placeholder={filenamePlaceholder}
                             // aria-describedby={`${id}-browse-button`}
-                            value=&self.props.filename
+                            value=self.props.filename.clone()
                         />
                         <Button
                             id=format!("{}-browse-button", self.props.id)
@@ -212,11 +206,11 @@ impl Component for FileUploadField
                                 is_disabled=self.props.is_disabled
                                 is_required=self.props.is_required
                                 resize_orientation=TextAreResizeOrientation::Vertical
-                                validated=&self.props.validated
-                                id=&self.props.id
+                                validated=self.props.validated.clone()
+                                id=self.props.id.clone()
                                 // name=&self.props.id
-                                aria_label=&self.props.aria_label
-                                value=&self.props.value
+                                aria_label=self.props.aria_label.clone()
+                                value=self.props.value.clone()
                                 // onchange={onTextAreaChange}
                             />
                         }
@@ -233,7 +227,7 @@ impl Component for FileUploadField
                             <div class="pf-c-file-upload__file-details-spinner">
                                 <Spinner
                                     size=SpinnerSize::Lg 
-                                    aria_valuetext=&self.props.spinner_aria_value_text 
+                                    aria_valuetext=self.props.spinner_aria_value_text.clone()
                                 />
                             </div>
                         }

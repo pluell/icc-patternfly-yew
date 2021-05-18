@@ -93,15 +93,15 @@ impl Component for TabContent
                 // ref={innerRef}
                 // hidden={if has_children { false } else { child.props.eventKey != self.props.active_key } }
                 hidden=is_hidden
-                class=("pf-c-tab-content", )
+                class=classes!("pf-c-tab-content")
                 // children
                 //     ? css('', className, variantStyle[variant])
                 //     : css('pf-c-tab-content', child.props.className, variantStyle[variant])
                 id={if has_children { self.props.id.to_string() } else { format!("pf-tab-section-{}-{}", self.props.event_key, self.props.id) } }
-                aria-label=self.props.aria_label
+                aria-label=self.props.aria_label.clone()
                 // aria-labelledby={labelledBy}
                 role="tabpanel"
-                tabIndex={0}
+                tabIndex=0
                 // {...getOUIAProps('TabContent', ouiaId, ouiaSafe)}
                 // {...props}
             >

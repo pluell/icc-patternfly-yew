@@ -84,13 +84,13 @@ impl Component for ToolbarGroup
     {
         html!{
             <div
-                class=(
+                class=classes!(
                     "pf-c-toolbar__group",
                     TOOLBAR_GROUP_STYLE[self.props.variant.clone() as usize],
                     &self.props.class_name,
                 )
                 hidden=self.props.hidden
-                aria-hidden=self.props.hidden
+                aria-hidden=self.props.hidden.to_string()
             >
             {
                 for self.props.children.iter().map(|mut child| {

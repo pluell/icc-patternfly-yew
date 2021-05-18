@@ -51,7 +51,7 @@ impl Component for DropdownWithContext
         html!{
             <div
                 // {...props}
-                class=(
+                class=classes!(
                     "pf-c-dropdown",
                     if self.props.direction == DropdownDirection::Up { "pf-m-top" } else { "" },
                     if self.props.position == DropdownPosition::Right { "pf-m-align-right" } else { "" },

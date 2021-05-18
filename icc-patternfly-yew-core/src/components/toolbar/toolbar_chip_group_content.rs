@@ -27,8 +27,6 @@ pub struct ToolbarChipGroupContentProperties
     /** Flag indicating if a data toolbar toggle group's expandable content is expanded */
     #[prop_or_default]
     pub is_expanded: bool,
-    // /** Chip group content reference for passing to data toolbar children */
-    // chipGroupContentRef?: RefObject<any>;
     /** optional callback for clearing all filters in the toolbar */
     #[prop_or_default]
     pub clear_all_filters: Callback<()>,
@@ -109,7 +107,7 @@ impl Component for ToolbarChipGroupContent
         let is_hidden = self.props.number_of_filters == 0 || self.props.is_expanded;
 
         html!{
-            <div class=(
+            <div class=classes!(
                     "pf-c-toolbar__content",
                     if is_hidden { "pf-m-hidden" } else { "" },
                     self.props.class_name.clone(),

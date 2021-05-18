@@ -55,7 +55,7 @@ impl Component for Backdrop
     {
         html!{
             <div 
-                class=(
+                class=classes!(
                     "pf-c-backdrop",
                     self.props.class_name.clone()
                 )

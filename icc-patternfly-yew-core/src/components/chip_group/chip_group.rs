@@ -70,7 +70,7 @@ impl Component for ChipGroup
     {
         html!{
             <div
-                class=(
+                class=classes!(
                     "pf-c-chip-group",
                     if self.props.category_name.is_empty() {""} else {"pf-m-category"},
                 )

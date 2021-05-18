@@ -56,7 +56,7 @@ impl Component for ModalBoxBody
         html!{
             <div 
                 //{...props} 
-                class=(
+                class=classes!(
                     "pf-c-modal-box__body",
                     self.props.class_name.clone(),
                 )

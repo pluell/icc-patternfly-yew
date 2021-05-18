@@ -179,12 +179,12 @@ impl Component for ModalContent
                     // TODO: Convert this to a FocusTrap
                     <div class="pf-l-bullseye">
                         <ModalBox
-                            id=&self.props.box_id
+                            id=self.props.box_id.clone()
                             style=box_style
                             class_name=format!("{} {}", self.props.class_name, modal_title_icon_class)
                             variant=self.props.variant.clone()
                             position_top=self.props.position_top
-                            position_offset=&self.props.position_offset
+                            position_offset=self.props.position_offset.clone()
                             // aria-label={ariaLabel}
                             // aria-labelledby={ariaLabelledbyFormatted()}
                             // aria-describedby={ariaDescribedby || (hasNoBodyWrapper ? null : descriptorId)}

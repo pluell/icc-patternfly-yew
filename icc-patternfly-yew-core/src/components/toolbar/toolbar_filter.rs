@@ -113,7 +113,7 @@ impl Component for ToolbarFilter
                             variant=ToolbarItemVariant::ChipGroup
                         >
                             <ChipGroup
-                                category_name=&self.props.category_name
+                                category_name=self.props.category_name.clone()
                                 is_closable=true
                                 onclick=self.link.callback(|_| ToolbarFilterMsg::DeleteChipGroup)
                             >

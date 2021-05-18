@@ -22,7 +22,7 @@ pub struct DropdownProperties
     pub class_name: String,
     /** Array of DropdownItem nodes that will be rendered in the dropdown Menu list */
     #[prop_or_default]
-    pub dropdown_items: Vec<VChild<DropdownItem>>,  // Html,
+    pub dropdown_items: Vec<VChild<DropdownItem>>,
     /** Flag to indicate if menu is opened */
     #[prop_or_default]
     pub is_open: bool,
@@ -40,7 +40,7 @@ pub struct DropdownProperties
     pub is_grouped: bool,
     /** Toggle for the dropdown, examples: <DropdownToggle> or <DropdownToggleCheckbox> */
     // #[prop_or_default]
-    pub toggle: DropdownToggleComponents,   //Html,
+    pub toggle: DropdownToggleComponents,
     /** Function callback called when user selects item */
     #[prop_or_default]
     pub onselect: Callback<()>,

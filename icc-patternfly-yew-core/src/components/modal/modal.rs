@@ -46,7 +46,7 @@ pub struct ModalProperties
      * When the predefined alert types are used the default styling
      * will be automatically applied */
      #[prop_or_default]
-    pub title_icon_variant: Option<ModalTitleIconVariants>, // 'success' | 'danger' | 'warning' | 'info' | 'default' | React.ComponentType<any>;
+    pub title_icon_variant: Option<ModalTitleIconVariants>,
     /** Optional title label text for screen readers */
     #[prop_or_default]
     pub title_label: String,
@@ -175,7 +175,7 @@ impl Component for Modal
                     header=self.props.header.clone()
                     show_close=self.props.show_close
                     onclose=self.props.onclose.clone()
-                    box_id=&self.props.id
+                    box_id=self.props.id.clone()
                     // labelId={this.labelId}
                     // descriptorId={this.descriptorId}
                     title=self.props.title.clone()
@@ -188,12 +188,12 @@ impl Component for Modal
                     // ouiaSafe={ouiaSafe}
                     footer=self.props.footer.clone()
                     actions=self.props.actions.clone()
-                    width=&self.props.width
+                    width=self.props.width.clone()
                     description=self.props.description.clone()
                     variant=self.props.variant.clone()
                     has_no_body_wrapper=self.props.has_no_body_wrapper
                     position_top=self.props.position_top
-                    position_offset=&self.props.position_offset
+                    position_offset=self.props.position_offset.clone()
                 />
             </div>
         }

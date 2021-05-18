@@ -139,27 +139,27 @@ impl Component for Progress
         // Build map of aria properties for the progress bar
         let mut progress_bar_aria_props = HashMap::new();
 
-        progress_bar_aria_props.insert("aria-valuemin".to_string(), self.props.min.to_string());
-        progress_bar_aria_props.insert("aria-valuenow".to_string(), self.props.value.to_string());
-        progress_bar_aria_props.insert("aria-valuemax".to_string(), self.props.max.to_string());
+        progress_bar_aria_props.insert("aria-valuemin", self.props.min.to_string());
+        progress_bar_aria_props.insert("aria-valuenow", self.props.value.to_string());
+        progress_bar_aria_props.insert("aria-valuemax", self.props.max.to_string());
 
         if self.props.title.is_some()
         {
-            progress_bar_aria_props.insert(String::from("aria-labelledby"), format!("{}-description", id));
+            progress_bar_aria_props.insert("aria-labelledby", format!("{}-description", id));
         }
         else if self.props.aria_labelledby.len() > 0
         {
-            progress_bar_aria_props.insert(String::from("aria-labelledby"), self.props.aria_labelledby.clone());
+            progress_bar_aria_props.insert("aria-labelledby", self.props.aria_labelledby.clone());
         }
 
         if self.props.aria_label.len() > 0
         {
-            progress_bar_aria_props.insert(String::from("aria-label"), self.props.aria_label.clone());
+            progress_bar_aria_props.insert("aria-label", self.props.aria_label.clone());
         }
       
         if self.props.value_text.len() > 0
         {
-            progress_bar_aria_props.insert(String::from("aria-valuetext"), self.props.value_text.clone());
+            progress_bar_aria_props.insert("aria-valuetext", self.props.value_text.clone());
         }
       
         if self.props.title.is_none() && self.props.aria_labelledby.len() == 0 && self.props.aria_label.len() == 0
@@ -178,7 +178,7 @@ impl Component for Progress
         html!{
             <div
                 // {...props}
-                class=(
+                class=classes!(
                     "pf-c-progress",
                     variant_cls,
                     measure_location_cls,
@@ -186,13 +186,13 @@ impl Component for Progress
                     if self.props.title.is_none() { "pf-m-singleline" } else { "" },
                     &self.props.class_name
                 )
-                id=&id
+                id=id.clone()
             >
                 <ProgressContainer
-                    parent_id=&id
+                    parent_id=id.clone()
                     value=scaled_value
                     title=self.props.title.clone()
-                    label=&self.props.label
+                    label=self.props.label.clone()
                     variant=self.props.variant.clone()
                     measure_location=self.props.measure_location.clone()
                     progress_bar_aria_props=progress_bar_aria_props

@@ -58,7 +58,7 @@ impl Component for FormSection
         html!{
             <section
                 // {...props} 
-                class=("pf-c-form__section", self.props.class_name.to_string())
+                class=classes!("pf-c-form__section", self.props.class_name.to_string())
             >
                 {
                     if !self.props.label.is_empty()

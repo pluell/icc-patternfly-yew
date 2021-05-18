@@ -53,7 +53,7 @@ impl Component for TabTextTitle
     fn view(&self) -> Html
     {
         html!{
-            <span class=("pf-c-tabs__item-text", self.props.class_name.to_string())>
+            <span class=classes!("pf-c-tabs__item-text", self.props.class_name.to_string())>
                 { self.props.children.clone() }
             </span>
         }

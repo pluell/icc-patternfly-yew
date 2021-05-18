@@ -102,7 +102,7 @@ impl Component for ExpandableSection
         html!{
             <div
                 // {...props}
-                class=(
+                class=classes!(
                     "pf-c-expandable-section",
                     if prop_or_state_is_expanded { "pf-m-expanded" } else { "" },
                     if self.props.is_active { "pf-m-active" } else { "" },
@@ -112,7 +112,7 @@ impl Component for ExpandableSection
                 <button
                     class="pf-c-expandable-section__toggle"
                     type="button"
-                    aria-expanded=prop_or_state_is_expanded
+                    aria-expanded=prop_or_state_is_expanded.to_string()
                     onclick=self.link.callback(|_| ExpandableSectionMsg::OnClick)
                 >
                     <span class="pf-c-expandable-section__toggle-icon">

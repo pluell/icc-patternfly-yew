@@ -93,7 +93,7 @@ impl Component for ToolbarContent
     {
         html!{
             <div
-                class=(
+                class=classes!(
                     "pf-c-toolbar__content",
                     &self.props.class_name,
                 )

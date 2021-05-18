@@ -58,7 +58,7 @@ impl Component for ModalBoxHeader
     {
         html!{
             <header 
-                class=(
+                class=classes!(
                     "pf-c-modal-box__header", 
                     if self.props.help.is_some() { "pf-m-help" } else { "" },
                     self.props.class_name.clone(),

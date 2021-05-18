@@ -128,7 +128,7 @@ impl Component for TextArea
         html!{
             <textarea
                 ref=self.text_area_ref.clone()
-                class=(
+                class=classes!(
                     "pf-c-form-control",
                     &self.props.class_name,
                     RESIZE_ORIENTATION_STYLES[self.props.resize_orientation.clone() as usize],
@@ -137,13 +137,13 @@ impl Component for TextArea
                 )
                 onchange=self.link.callback(|data| TextAreaMsg::OnChange(data))
                 // {...(typeof this.props.defaultValue !== 'string' && { value })}
-                aria-invalid=self.props.validated == ValidatedOptions::Error
+                aria-invalid=(self.props.validated == ValidatedOptions::Error).to_string()
                 required=self.props.is_required
                 disabled=self.props.is_disabled
-                readOnly=self.props.is_read_only
+                readOnly=self.props.is_read_only.to_string()
                 // ref={innerRef}
                 // {...props}
-                id=&self.props.id
+                id=self.props.id.clone()
             />
         }
     }

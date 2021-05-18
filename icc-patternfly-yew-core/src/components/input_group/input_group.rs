@@ -55,7 +55,7 @@ impl Component for InputGroup
     {
         html!{
             <div 
-                class=(
+                class=classes!(
                     "pf-c-input-group", 
                     &self.props.class_name,
                 )

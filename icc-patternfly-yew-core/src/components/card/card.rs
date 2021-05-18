@@ -100,7 +100,7 @@ impl Component for Card
         // Create the component base tag
         let mut component = VTag::new(self.props.component.clone());
 
-        if self.props.id.len() > 0 { component.add_attribute("id", &self.props.id); }
+        if self.props.id.len() > 0 { component.add_attribute("id", self.props.id.clone()); }
 
         // Build list of classes
         let mut classes = String::from("pf-c-card");
@@ -121,10 +121,10 @@ impl Component for Card
             classes += &self.props.class_name;
         }
 
-        component.add_attribute("class", &classes);
+        component.add_attribute("class", classes);
 
         // Set the tab index if the card is selectable
-        if self.props.is_selectable { component.add_attribute("tabIndex", &0); }
+        if self.props.is_selectable { component.add_attribute("tabIndex", "0"); }
 
         //     {...props}
         //     {...ouiaProps}

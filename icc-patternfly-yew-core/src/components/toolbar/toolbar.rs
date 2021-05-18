@@ -98,7 +98,7 @@ impl Component for Toolbar
 
         html!{
             <div
-                id=&self.props.id
+                id=self.props.id.clone()
                 class="pf-c-toolbar"
             >
                 {
@@ -113,7 +113,7 @@ impl Component for Toolbar
                 }
                 <ToolbarChipGroupContent 
                     ref=self.chip_group_content_ref.clone()
-                    show_clear_filters_button=(number_of_filters > 0)
+                    show_clear_filters_button={number_of_filters > 0}
                     clear_filters_button_text=self.props.clear_filters_button_text.clone()
                     clear_all_filters=self.props.clear_all_filters.clone()
                     number_of_filters=number_of_filters

@@ -14,6 +14,4 @@ log = "0.4"
 rand = "0.8.3"
 wasm-bindgen = "0.2.71"
 web-sys = { version = "0.3.48", features = ["Event", "NodeList", "Window"] }
-yew = { version = "0.17.4", features = ["web_sys"] }
-yew-router = { version = "0.14.0", features = ["web_sys"] }
-yewtil = "0.3.2"
+yew = { version = "0.18.0", features = ["web_sys"] }

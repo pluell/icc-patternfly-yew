@@ -93,7 +93,7 @@ impl Component for DropdownMenu
         {
             html!{
                 <div
-                    class=(
+                    class=classes!(
                         "pf-c-dropdown__menu",
                         if self.props.position == DropdownPosition::Right { "pf-m-align-right" } else { "" },
                         self.props.class_name.clone()
@@ -118,7 +118,7 @@ impl Component for DropdownMenu
 
                 html!{
                     <@{self.props.component.clone()}
-                        class=(
+                        class=classes!(
                             "pf-c-dropdown__menu",
                             if self.props.position == DropdownPosition::Right { "pf-m-align-right" } else { "" },
                             self.props.class_name.clone(),

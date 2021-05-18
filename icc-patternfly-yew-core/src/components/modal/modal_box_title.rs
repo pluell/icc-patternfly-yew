@@ -20,7 +20,7 @@ pub struct ModalBoxTitleProperties
      * When the predefined alert types are used the default styling
      * will be automatically applied */
     #[prop_or_default]
-    pub title_icon_variant: Option<ModalTitleIconVariants>, // 'success' | 'danger' | 'warning' | 'info' | 'default' | React.ComponentType<any>;
+    pub title_icon_variant: Option<ModalTitleIconVariants>,
     /** Optional title label text for screen readers */
     #[prop_or_default]
     pub title_label: String,
@@ -80,7 +80,7 @@ impl Component for ModalBoxTitle
             <h1
                 id=self.props.id.clone()
                 // ref={h1}
-                class=(
+                class=classes!(
                     "pf-c-modal-box__title", 
                     if self.props.title_icon_variant.is_some() { "pf-m-icon" } else { "" },
                     self.props.class_name.clone()

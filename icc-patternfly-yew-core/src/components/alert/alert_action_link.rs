@@ -68,7 +68,7 @@ impl Component for AlertActionLink
                 variant=ButtonVariant::Link
                 onclick=self.props.onclick.clone()
                 is_inline=true
-                class_name=&self.props.class_name
+                class_name=self.props.class_name.clone()
                 // {...props}
             >
             {

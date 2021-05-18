@@ -55,7 +55,7 @@ impl Component for FormAlert
         html!{
             <div 
                 // {...props} 
-                class=("pf-c-form__alert", self.props.class_name.to_string())
+                class=classes!("pf-c-form__alert", self.props.class_name.to_string())
             >
             { self.props.children.clone() }
             </div>

@@ -92,7 +92,7 @@ impl<V: ToString + PartialEq + Clone + 'static> Component for SelectOption<V>
                     <li>
                         <button 
                             type="button"
-                            class=("pf-c-select__menu-item", cls_description(has_desc))
+                            class=classes!("pf-c-select__menu-item", cls_description(has_desc))
                             aria-selected="false"
                             onclick=self.link.callback(|_| SelectOptionMsg::OnClick)
                         >

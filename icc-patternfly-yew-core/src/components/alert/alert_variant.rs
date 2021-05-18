@@ -58,7 +58,7 @@ impl AlertVariant
         }
     }
 
-    pub(crate) fn class(&self) -> &str
+    pub(crate) fn class(&self) -> &'static str
     {
         match self
         {

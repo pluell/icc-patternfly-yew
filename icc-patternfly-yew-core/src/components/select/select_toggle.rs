@@ -188,10 +188,10 @@ impl Component for SelectToggle
                     ref=self.button_ref.clone()
                     id=self.props.id.clone()
                     aria-labelledby=self.props.aria_labelledby.clone()
-                    aria-expanded=self.props.is_open
+                    aria-expanded=self.props.is_open.to_string()
                     // aria-haspopup: (variant !== SelectVariant.checkbox && 'listbox') || null
                     type=BTN_TYPES[self.props.toggle_type.clone() as usize]
-                    class=(
+                    class=classes!(
                         "pf-c-select__toggle",
                         if self.props.is_disabled { "pf-m-disabled" } else { "" },
                         if self.props.is_plain { "pf-m-plain" } else { "" },

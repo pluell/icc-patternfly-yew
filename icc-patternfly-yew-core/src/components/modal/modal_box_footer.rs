@@ -56,7 +56,7 @@ impl Component for ModalBoxFooter
         html!{
             <footer
                 //{...props} 
-                class=(
+                class=classes!(
                     "pf-c-modal-box__footer",
                     self.props.class_name.clone(),
                 )

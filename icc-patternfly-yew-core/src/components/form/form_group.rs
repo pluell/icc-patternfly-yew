@@ -95,19 +95,19 @@ impl Component for FormGroup
         html!{
             <div 
                 //{...props} 
-                class=("pf-c-form__group", self.props.class_name.to_string())
+                class=classes!("pf-c-form__group", self.props.class_name.clone())
             >
             {
                 if !self.props.label.is_empty()
                 {
                     html!{
                         <div
-                            class=(
+                            class=classes!(
                                 "pf-c-form__group-label",
                                 if self.props.has_no_padding_top {"pf-m-no-padding-top"} else {""},
                             )
                         >
-                            <label class="pf-c-form__label" for=self.props.field_id>
+                            <label class="pf-c-form__label" for=self.props.field_id.clone()>
                                 <span class="pf-c-form__label-text">{&self.props.label}</span>
                                 {
                                     if self.props.is_required
@@ -135,7 +135,7 @@ impl Component for FormGroup
                 }
             }
                 <div 
-                    class=(
+                    class=classes!(
                         "pf-c-form__group-control", 
                         if self.props.is_inline {"pf-m-inline"} else {""},
                     )
@@ -179,7 +179,7 @@ impl FormGroup
             if !self.props.helper_text.is_empty() {
                 html!{
                     <div
-                        class=(
+                        class=classes!(
                             "pf-c-form__helper-text",
                             if self.props.validated == ValidatedOptions::Success { "pf-m-success" } else { "" },
                             if self.props.validated == ValidatedOptions::Warning { "pf-m-warning" } else { "" },
@@ -201,7 +201,7 @@ impl FormGroup
             {
                 html!{
                     <div 
-                        class=(
+                        class=classes!(
                             "pf-c-form__helper-text",
                             "pf-m-error"
                         )

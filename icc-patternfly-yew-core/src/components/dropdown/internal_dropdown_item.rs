@@ -199,17 +199,17 @@ impl InternalDropdownItem
         let mut component_node = VTag::new(self.props.component.clone());
 
         // Add properties
-        component_node.add_attribute("class", &classes);
-        component_node.add_attribute("aria-disabled", &self.props.is_disabled);
+        component_node.add_attribute("class", classes);
+        component_node.add_attribute("aria-disabled", self.props.is_disabled.to_string());
 
         if self.props.href.len() > 0
         {
-            component_node.add_attribute("href", &self.props.href);
+            component_node.add_attribute("href", self.props.href.clone());
         }
 
         if self.props.id.len() > 0
         {
-            component_node.add_attribute("id", &self.props.component_id);
+            component_node.add_attribute("id", self.props.component_id.clone());
         }
         
         component_node.add_child(self.render_default_component_content());

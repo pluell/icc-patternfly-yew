@@ -60,7 +60,7 @@ impl Component for CardExpandableContent
         {
             html!{
                 <div
-                    class=(
+                    class=classes!(
                         "pf-c-card__expandable-content", 
                         self.props.class_name.clone()
                     )

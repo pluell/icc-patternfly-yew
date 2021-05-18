@@ -20,15 +20,13 @@ pub struct TabProperties
     pub href: String,
     /** Content rendered in the tab title. Should be <TabTitleText> and/or <TabTitleIcon> for proper styling. */
     #[prop_or_default]
-    pub title: Html, //React.ReactNode;
+    pub title: Html,
     /** uniquely identifies the tab */
     #[prop_or_default]
-    pub event_key:  String, // number | string;
+    pub event_key:  String,
     /** child id for case in which a TabContent section is defined outside of a Tabs component */
     #[prop_or_default]
-    pub tab_content_id: String,    // string | number;
-    /** child reference for case in which a TabContent section is defined outside of a Tabs component */
-    // pub tab_content_ref: React.RefObject<any>;
+    pub tab_content_id: String,
     /** whether to render the tab or not */
     #[prop_or_default]
     pub is_hidden: bool,

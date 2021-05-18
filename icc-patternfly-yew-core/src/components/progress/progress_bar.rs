@@ -22,7 +22,7 @@ pub struct ProgressBarProps
     pub value: i32,
     /** Minimal value of progress. */
     #[prop_or_default]
-    pub progress_bar_aria_props: HashMap<String, String>,
+    pub progress_bar_aria_props: HashMap<&'static str, String>,
     
     /** Extra properties */
     #[prop_or_default]
@@ -65,16 +65,16 @@ impl Component for ProgressBar
     {
         let mut div_container = VTag::new("div");
 
-        div_container.add_attribute("role", &self.props.role);
+        div_container.add_attribute("role", self.props.role.clone());
 
         let classes = format!("pf-c-progress__bar {}", &self.props.class_name);
 
-        div_container.add_attribute("class", &classes);
+        div_container.add_attribute("class", classes);
 
         // Add the aria props
         for (key, value) in self.props.progress_bar_aria_props.iter()
         {
-            div_container.add_attribute(key, value);
+            div_container.add_attribute(key, value.to_string());
         }
 
         div_container.add_child(html!{

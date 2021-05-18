@@ -148,11 +148,11 @@ impl Component for TextInput
     {
         html!{
             <input
-                id=self.props.id
+                id=self.props.id.clone()
                 // {...props}
                 // onFocus={this.onFocus}
                 // onBlur={this.onBlur}
-                class=(
+                class=classes!(
                     "pf-c-form-control",
                     if self.props.validated == ValidatedOptions::Success { "pf-m-success" } else { "" },
                     if self.props.validated == ValidatedOptions::Warning { "pf-m-warning" } else { "" },
@@ -162,11 +162,11 @@ impl Component for TextInput
                 )
                 oninput=self.link.callback(|input_data| TextInputMsg::OnInput(input_data))
                 type=INPUT_TYPES[self.props.input_type.clone() as usize]
-                value=self.props.value
-                aria-invalid={self.props.validated == ValidatedOptions::Error}
+                value=self.props.value.clone()
+                aria-invalid=(self.props.validated == ValidatedOptions::Error).to_string()
                 required=self.props.is_required
                 disabled=self.props.is_disabled
-                read_only=self.props.is_read_only
+                read_only=self.props.is_read_only.to_string()
                 // ref={innerRef || this.inputRef}
                 // {...((customIconUrl || customIconDimensions) && { style: customIconStyle })}
             />

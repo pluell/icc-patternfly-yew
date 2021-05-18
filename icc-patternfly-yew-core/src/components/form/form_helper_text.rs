@@ -63,7 +63,7 @@ impl Component for FormHelperText
     {
         html!{
             <p
-                class=(
+                class=classes!(
                     "pf-c-form__helper-text",
                     if self.props.is_error {"pf-m-error"} else {""},
                     if self.props.is_hidden {"pf-m-hidden"} else {""},

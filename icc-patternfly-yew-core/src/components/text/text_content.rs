@@ -56,7 +56,7 @@ impl Component for TextContent
         html!{
             <div 
                 // {...props}
-                class=(
+                class=classes!(
                     "pf-c-content", 
                     self.props.class_name.clone(),
                 )

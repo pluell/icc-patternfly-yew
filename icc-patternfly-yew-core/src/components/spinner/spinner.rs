@@ -75,27 +75,27 @@ impl Component for Spinner
         // Get the base component if using the new SVG or old span
         let mut component = if self.props.is_svg { VTag::new("svg") } else { VTag::new("span") };
 
-        component.add_attribute("role", &"progressbar");
+        component.add_attribute("role", "progressbar".to_string());
 
         component.add_attribute("class", 
-            &format!("pf-c-spinner {} {}",
+            format!("pf-c-spinner {} {}",
                 SPINNER_SIZE_CLASSES[self.props.size.clone() as usize],
                 &self.props.class_name
         ));
 
         if self.props.aria_valuetext.len() > 0
         {
-            component.add_attribute("aria-valuetext", &self.props.aria_valuetext);
+            component.add_attribute("aria-valuetext", self.props.aria_valuetext.to_string());
         }
 
         if self.props.diameter.len() > 0
         {
-            component.add_attribute("style", &format!("--pf-c-spinner--diameter: {}", self.props.diameter));
+            component.add_attribute("style", format!("--pf-c-spinner--diameter: {}", self.props.diameter));
         }
 
         if self.props.is_svg
         {
-            component.add_attribute("viewBox", &"0 0 100 100");
+            component.add_attribute("viewBox", "0 0 100 100".to_string());
 
             component.add_child(html!{
                 <circle class="pf-c-spinner__path" cx="50" cy="50" r="45" fill="none" />

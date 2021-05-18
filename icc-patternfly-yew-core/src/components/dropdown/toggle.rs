@@ -192,7 +192,7 @@ impl Component for Toggle
                 ref=self.button_ref.clone()
                 // {...props}
                 id=self.props.id.clone()
-                class=(
+                class=classes!(
                     if self.props.is_split_button { "pf-c-dropdown__toggle-button" } else { "pf-c-dropdown__toggle" },
                     if self.props.is_active { "pf-m-active" } else { "" },
                     if self.props.is_plain { "pf-m-plain" } else { "" },
@@ -201,7 +201,7 @@ impl Component for Toggle
                 )
                 type=BTN_TYPES[self.props.toggle_type.clone() as usize]
                 onclick=self.link.callback(|_| ToggleMsg::OnToggle)
-                aria-expanded=self.props.is_open
+                aria-expanded=self.props.is_open.to_string()
                 aria-haspopup=self.props.aria_haspopup.clone()
                 onkeydown=self.link.callback(|event| ToggleMsg::OnKeyDown(event))
                 disabled=self.props.is_disabled

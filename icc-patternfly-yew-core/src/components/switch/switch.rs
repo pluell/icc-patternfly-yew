@@ -84,12 +84,12 @@ impl Component for Switch
     {
         html!{
             <label
-                class=("pf-c-switch", self.props.class_name.to_string())
-                for=self.props.id
+                class=classes!("pf-c-switch", self.props.class_name.to_string())
+                for=self.props.id.clone()
                 // {...getOUIAProps(Switch.displayName, ouiaId !== undefined ? ouiaId : this.state.ouiaStateId, ouiaSafe)}
             >
                 <input
-                    id=self.props.id
+                    id=self.props.id.clone()
                     class="pf-c-switch__input"
                     type="checkbox"
                     onclick=self.link.callback(|_| SwitchMsg::OnClick)

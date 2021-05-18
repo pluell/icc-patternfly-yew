@@ -59,8 +59,8 @@ impl Component for Form
     {
         html!{
             <form
-                no_validate=true
-                class=(
+                no_validate=true.to_string()
+                class=classes!(
                     "pf-c-form",
                     if self.props.is_horizontal {"pf-m-horizontal"} else {""},
                     if self.props.is_width_limited {"pf-m-limit-width"} else {""},

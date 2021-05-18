@@ -110,8 +110,8 @@ impl Component for Button
 
         html!{
             <button
-                id=&self.props.id
-                class=(
+                id=self.props.id.clone()
+                class=classes!(
                     "pf-c-button",
                     BTN_VARIANT_STYLES[self.props.variant.clone() as usize],
                     if self.props.is_block {"pf-m-block"} else {""},

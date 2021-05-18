@@ -97,8 +97,8 @@ impl Component for ToolbarItem
         {
             html!{
                 <div 
-                    id=&self.props.id
-                    class=(
+                    id=self.props.id.clone()
+                    class=classes!(
                         "pf-c-toolbar__item",
                         TOOLBAR_ITEM_VARIANT_STYLES[self.props.variant.clone() as usize],
                         &self.props.class_name,

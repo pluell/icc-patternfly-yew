@@ -59,8 +59,8 @@ impl Component for ModalBoxDescription
         html!{
             <div
                 // {...props} 
-                id=self.props.id
-                class=(
+                id=self.props.id.clone()
+                class=classes!(
                     "pf-c-modal-box__description",
                     self.props.class_name.clone()
                 )

@@ -83,10 +83,10 @@ impl Component for TextList
 
         if self.props.class_name.len() > 0
         {
-            component.add_attribute("class", &self.props.class_name);
+            component.add_attribute("class", self.props.class_name.clone());
         }
 
-        component.add_attribute("data-pf-content", &true);
+        component.add_attribute("data-pf-content", true.to_string());
 
         component.add_children(self.props.children.iter());
 

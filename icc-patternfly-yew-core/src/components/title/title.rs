@@ -85,7 +85,7 @@ impl Component for Title
             classes += &self.props.class_name;
         }
 
-        component.add_attribute("class", &classes);
+        component.add_attribute("class", classes);
 
         //     {...props}
 

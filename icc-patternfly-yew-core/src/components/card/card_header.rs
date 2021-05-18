@@ -86,15 +86,15 @@ impl Component for CardHeader
     {
         html!{
             <div 
-                class=(
+                class=classes!(
                     "pf-c-card__header", 
                     self.props.class_name.clone(),
                 )
-                id=&self.props.id
+                id=self.props.id.clone()
                 // {...props}
             >
             {
-                if let Some(onexpand) = &self.props.onexpand
+                if let Some(_onexpand) = &self.props.onexpand
                 {
                     html!{
                         <div class="pf-c-card__header-toggle">

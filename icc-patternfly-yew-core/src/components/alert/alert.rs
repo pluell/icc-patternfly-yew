@@ -95,13 +95,13 @@ impl Component for Alert
         html!{
             <div
                 // ref={divRef}
-                class=(
+                class=classes!(
                     "pf-c-alert",
                     if self.props.is_inline { "pf-m-inline" } else { "" },
                     self.props.variant.class(),
                     &self.props.class_name
                 )
-                aria-label=&self.props.aria_label
+                aria-label=self.props.aria_label.clone()
                 // {...ouiaProps}
                 // {...(isLiveRegion && {
                 //     'aria-live': 'polite',
@@ -189,7 +189,7 @@ impl Alert
             <h4
                 // {...(isTooltipVisible && { tabIndex: 0 })}
                 // ref={titleRef}
-                class=(
+                class=classes!(
                     "pf-c-alert__title", 
                     if self.props.truncate_title > 0 { "pf-m-truncate" } else { "" },
                 )

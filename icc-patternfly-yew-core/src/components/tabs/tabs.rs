@@ -45,7 +45,7 @@ pub struct TabsProperties
     pub active_key: String,    //number | string;
     /** Callback to handle tab selection */
     #[prop_or_default]
-    pub onselect: Callback<String>, //(event: React.MouseEvent<HTMLElement, MouseEvent>, eventKey: number | string) => void;
+    pub onselect: Callback<String>,
     /** Uniquely identifies the tabs */
     #[prop_or_default]
     pub id: String,
@@ -149,8 +149,8 @@ impl Component for Tabs
                 html!{
                     <>
                     <div
-                        aria-label=self.props.aria_label
-                        class=(
+                        aria-label=self.props.aria_label.clone()
+                        class=classes!(
                             "pf-c-tabs",
                             if self.props.is_filled { "pf-m-fill" } else { "" },
                             if self.props.is_secondary { "pf-m-secondary" } else { "" },
@@ -162,7 +162,7 @@ impl Component for Tabs
                             self.props.class_name.to_string(),
                         )
                         // {...getOUIAProps(Tabs.displayName, ouiaId !== undefined ? ouiaId : this.state.ouiaStateId, ouiaSafe)}
-                        id=self.props.id
+                        id=self.props.id.clone()
                         // {...props}
                     >
                         { self.render_tabs_control() }
@@ -188,14 +188,14 @@ impl Tabs
         html!{
             <>
             <button
-                class=(
+                class=classes!(
                     "pf-c-tabs__scroll-button", 
                     if self.props.is_secondary { "pf-m-secondary" } else { "" }
                 )
                 // aria-label={leftScrollAriaLabel}
                 onclick=self.link.callback(|_| TabsMsg::ScrollLeft)
-                diabled=true    // disabled={disableLeftScrollButton}
-                aria-hidden=true    // aria-hidden={disableLeftScrollButton}
+                diabled=true.to_string()    // disabled={disableLeftScrollButton}
+                aria-hidden=true.to_string()    // aria-hidden={disableLeftScrollButton}
             >
                 <i class="fas fa-angle-left"></i>
             </button>
@@ -208,7 +208,7 @@ impl Tabs
                         html!{
                             <li
                                 key=index
-                                class=(
+                                class=classes!(
                                     "pf-c-tabs__item", 
                                     if child.props.event_key == self.props.active_key { "pf-m-current" } else { "" },
                                     child.props.class_name.to_string(),
@@ -216,7 +216,7 @@ impl Tabs
                             >
                                 <TabButton
                                     class_name="pf-c-tabs__link"
-                                    onclick=self.link.callback(|event_key| TabsMsg::OnClickTab(event_key))   //{(event: any) => this.handleTabClick(event, eventKey, tabContentRef, mountOnEnter)}
+                                    onclick=self.link.callback(|event_key| TabsMsg::OnClickTab(event_key))
                                     id=format!("pf-tab-{}-{}", child.props.event_key, self.props.id)   // {`pf-tab-${eventKey}-${childId || uniqueId}`}
                     //               aria-controls={ariaControls}
                     //               tabContentRef={tabContentRef}
@@ -232,14 +232,14 @@ impl Tabs
                 }
             </ul>
             <button
-                class=(
+                class=classes!(
                     "pf-c-tabs__scroll-button", 
                     if self.props.is_secondary { "pf-m-secondary" } else { "" }
                 )
                 // aria-label={rightScrollAriaLabel}
                 onclick=self.link.callback(|_| TabsMsg::ScrollRight)
-                diabled=true      //   disabled={disableRightScrollButton}
-                aria-hidden=true  //   aria-hidden={disableRightScrollButton}
+                diabled=true.to_string()      //   disabled={disableRightScrollButton}
+                aria-hidden=true.to_string()  //   aria-hidden={disableRightScrollButton}
             >
                 <i class="fas fa-angle-left"></i>
             </button>

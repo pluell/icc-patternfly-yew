@@ -93,13 +93,13 @@ impl Component for ModalBox
         html!{
             <div
                 // {...props}
-                id=&self.props.id
+                id=self.props.id.clone()
                 role="dialog"
                 // aria-label={ariaLabel || null}
                 // aria-labelledby={ariaLabelledby || null}
                 // aria-describedby={ariaDescribedby}
                 aria-modal="true"
-                class=(
+                class=classes!(
                     "pf-c-modal-box",
                     self.props.class_name.clone(),
                     if self.props.position_top { "pf-m-align-top" } else { "" },
@@ -107,7 +107,7 @@ impl Component for ModalBox
                     if self.props.variant == ModalVariants::Small { "pf-m-sm" } else { "" },
                     if self.props.variant == ModalVariants::Medium { "pf-m-md" } else { "" },
                 )
-                style=&style
+                style=style
             >
                 { for self.props.children.iter() }
             </div>

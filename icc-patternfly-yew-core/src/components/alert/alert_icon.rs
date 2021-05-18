@@ -61,7 +61,7 @@ impl Component for AlertIcon
         html!{
             <div
                 // {...props}
-                class=(
+                class=classes!(
                     "pf-c-alert__icon", 
                     &self.props.class_name
                 )

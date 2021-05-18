@@ -16,7 +16,7 @@ pub struct ProgressContainerProps
 {
     /** Properties needed for aria support */
     #[prop_or_default]
-    pub progress_bar_aria_props: HashMap<String, String>,
+    pub progress_bar_aria_props: HashMap<&'static str, String>,
     /** Progress component DOM ID. */
     pub parent_id: String,
     /** Progress title. */
@@ -85,7 +85,7 @@ impl Component for ProgressContainer
                 // Title   
                 // )}
                 <div
-                    class=(
+                    class=classes!(
                         "pf-c-progress__description", 
                         if self.props.is_title_truncated { "pf-m-truncate" } else { "" },
                     )
