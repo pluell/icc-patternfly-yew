@@ -1,9 +1,19 @@
 use yew::{
     prelude::*,
+    virtual_dom::{VChild},
 };
 
 use crate::{ASTERISK, ValidatedOptions};
 
+use super::{FormHelperText};
+
+
+#[derive(Clone, PartialEq)]
+pub enum FormHelperTextTypes
+{
+    String(String),
+    FormHelperText(VChild<FormHelperText>),
+}
 
 pub struct FormGroup
 {
@@ -42,13 +52,13 @@ pub struct FormGroupProperties
     pub has_no_padding_top: bool,
     /** Helper text regarding the field. It can be a simple text or an object. */
     #[prop_or_default]
-    pub helper_text: String,
+    pub helper_text: Option<FormHelperTextTypes>,
     /** Flag to position the helper text before the field. False by default */
     #[prop_or_default]
     pub is_helper_text_before_field: bool,
     /** Helper text after the field when the field is invalid. It can be a simple text or an object. */
     #[prop_or_default]
-    pub helper_text_invalid: String,
+    pub helper_text_invalid: Option<FormHelperTextTypes>,
     /** Icon displayed to the left of the helper text. */
     #[prop_or_default]
     pub helper_text_icon: Option<Html>,
@@ -186,34 +196,44 @@ impl FormGroup
     {
         if self.props.validated != ValidatedOptions::Error
         {
-            // let valid_text_helper = if !self.props.helper_text.is_empty() {
-            if !self.props.helper_text.is_empty() {
-                html!{
-                    <div
-                        class=classes!(
-                            "pf-c-form__helper-text",
-                            if self.props.validated == ValidatedOptions::Success { "pf-m-success" } else { "" },
-                            if self.props.validated == ValidatedOptions::Warning { "pf-m-warning" } else { "" },
-                        )
-                        id=format!("{}-helper", self.props.field_id)
-                        aria-live="polite"
-                    >
-                        {
-                            if let Some(helper_text_icon) = &self.props.helper_text_icon
-                            {
-                                html!{
-                                    <span class="pf-c-form__helper-text-icon">
-                                        {helper_text_icon.clone()}
-                                    </span>
+            if let Some(helper_text) = &self.props.helper_text
+            {
+                match helper_text
+                {
+                    FormHelperTextTypes::String(helper_text_str) => {
+                        html!{
+                            <div
+                                class=classes!(
+                                    "pf-c-form__helper-text",
+                                    if self.props.validated == ValidatedOptions::Success { "pf-m-success" } else { "" },
+                                    if self.props.validated == ValidatedOptions::Warning { "pf-m-warning" } else { "" },
+                                )
+                                id=format!("{}-helper", self.props.field_id)
+                                aria-live="polite"
+                            >
+                                {
+                                    if let Some(helper_text_icon) = &self.props.helper_text_icon
+                                    {
+                                        html!{
+                                            <span class="pf-c-form__helper-text-icon">
+                                                {helper_text_icon.clone()}
+                                            </span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        html!{}
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                html!{}
-                            }
+                                {helper_text_str}
+                            </div>
                         }
-                        {&self.props.helper_text}
-                    </div>
+                    },
+                    FormHelperTextTypes::FormHelperText(helper_text_child) => {
+                        html!{
+                            helper_text_child.clone()
+                        }
+                    }
                 }
             } else {
                 html!{}
@@ -221,33 +241,43 @@ impl FormGroup
         }
         else
         {
-            if !self.props.helper_text_invalid.is_empty()
+            if let Some(helper_text_invalid) = &self.props.helper_text_invalid
             {
-                html!{
-                    <div 
-                        class=classes!(
-                            "pf-c-form__helper-text",
-                            "pf-m-error"
-                        )
-                             id=format!("{}-helper", self.props.field_id)
-                         aria-live="polite"
-                    >
-                        {
-                            if let Some(helper_text_invalid_icon) = &self.props.helper_text_invalid_icon
-                            {
-                                html!{
-                                    <span class="pf-c-form__helper-text-icon">
-                                        {helper_text_invalid_icon.clone()}
-                                    </span>
+                match helper_text_invalid
+                {
+                    FormHelperTextTypes::String(helper_text_invalid_str) => {
+                        html!{
+                            <div 
+                                class=classes!(
+                                    "pf-c-form__helper-text",
+                                    "pf-m-error"
+                                )
+                                    id=format!("{}-helper", self.props.field_id)
+                                aria-live="polite"
+                            >
+                                {
+                                    if let Some(helper_text_invalid_icon) = &self.props.helper_text_invalid_icon
+                                    {
+                                        html!{
+                                            <span class="pf-c-form__helper-text-icon">
+                                                {helper_text_invalid_icon.clone()}
+                                            </span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        html!{}
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                html!{}
-                            }
+                                {helper_text_invalid_str}
+                            </div>
                         }
-                        {&self.props.helper_text_invalid}
-                    </div>
+                    },
+                    FormHelperTextTypes::FormHelperText(helper_text_invalid_child) => {
+                        html!{
+                            helper_text_invalid_child.clone()
+                        }
+                    }
                 }
             }
             else
