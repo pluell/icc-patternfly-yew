@@ -22,8 +22,8 @@ pub struct FormGroupProperties
     #[prop_or_default]
     pub label: String,
     /** Sets an icon for the label. For providing additional context. Host element for Popover  */
-    // #[prop_or_default]
-    // labelIcon?: React.ReactElement;
+    #[prop_or_default]
+    pub label_icon: Option<Html>,
     /** Sets the FormGroup required. */
     #[prop_or_default]
     pub is_required: bool,
@@ -50,9 +50,11 @@ pub struct FormGroupProperties
     #[prop_or_default]
     pub helper_text_invalid: String,
     /** Icon displayed to the left of the helper text. */
-    // helperTextIcon?: React.ReactNode;
+    #[prop_or_default]
+    pub helper_text_icon: Option<Html>,
     /** Icon displayed to the left of the helper text when the field is invalid. */
-    // helperTextInvalidIcon?: React.ReactNode;
+    #[prop_or_default]
+    pub helper_text_invalid_icon: Option<Html>,
     /** ID of the included field. It has to be the same for proper working. */
     #[prop_or_default]
     pub field_id: String,
@@ -125,7 +127,16 @@ impl Component for FormGroup
                                     }
                                 }
                             </label>{' '}
-                            // {React.isValidElement(labelIcon) && labelIcon}
+                            {
+                                if let Some(label_icon) = &self.props.label_icon
+                                {
+                                    label_icon.clone()
+                                }
+                                else
+                                {
+                                    html!{}
+                                }
+                            }
                         </div>
                     }
                 }
@@ -187,7 +198,20 @@ impl FormGroup
                         id=format!("{}-helper", self.props.field_id)
                         aria-live="polite"
                     >
-                        // {helperTextIcon && <span className={css(styles.formHelperTextIcon)}>{helperTextIcon}</span>}
+                        {
+                            if let Some(helper_text_icon) = &self.props.helper_text_icon
+                            {
+                                html!{
+                                    <span class="pf-c-form__helper-text-icon">
+                                        {helper_text_icon.clone()}
+                                    </span>
+                                }
+                            }
+                            else
+                            {
+                                html!{}
+                            }
+                        }
                         {&self.props.helper_text}
                     </div>
                 }
@@ -208,7 +232,20 @@ impl FormGroup
                              id=format!("{}-helper", self.props.field_id)
                          aria-live="polite"
                     >
-                        // {helperTextInvalidIcon && <span className={css(styles.formHelperTextIcon)}>{helperTextInvalidIcon}</span>}
+                        {
+                            if let Some(helper_text_invalid_icon) = &self.props.helper_text_invalid_icon
+                            {
+                                html!{
+                                    <span class="pf-c-form__helper-text-icon">
+                                        {helper_text_invalid_icon.clone()}
+                                    </span>
+                                }
+                            }
+                            else
+                            {
+                                html!{}
+                            }
+                        }
                         {&self.props.helper_text_invalid}
                     </div>
                 }
