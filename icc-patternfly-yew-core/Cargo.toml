@@ -13,5 +13,5 @@ icc-patternfly-yew-icons = { path = "../icc-patternfly-yew-icons" }
 log = "0.4"
 rand = "0.8.3"
 wasm-bindgen = "0.2.71"
-web-sys = { version = "0.3.48", features = ["DomRect", "Event", "NodeList", "Window"] }
+web-sys = { version = "0.3.48", features = ["DomRect", "Event", "HtmlCollection", "NodeList", "Window"] }
 yew = { version = "0.18.0", features = ["web_sys"] }

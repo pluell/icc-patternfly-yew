@@ -1,6 +1,10 @@
 use yew::{
     prelude::*,
 };
+use web_sys::{Element, Event};
+use gloo::events::{EventListener, EventListenerOptions};
+
+use crate::helpers::{is_element_in_view};
 
 use super::*;
 
@@ -27,6 +31,11 @@ pub struct Tabs
 {
     link: ComponentLink<Self>,
     props: TabsProperties,
+    tab_list_ref: NodeRef,
+    _resize_listener_handle: Option<EventListener>,
+    show_scroll_buttons: bool,
+    disable_left_scroll_button: bool,
+    disable_right_scroll_button: bool,
 }
 
 #[derive(Clone, PartialEq, Properties)]
@@ -62,9 +71,11 @@ pub struct TabsProperties
     #[prop_or_default]
     pub is_vertical: bool,
     /** Aria-label for the left scroll button */
-    // leftScrollAriaLabel?: string;
+    #[prop_or(String::from("Scroll left"))]
+    pub left_scroll_aria_label: String,
     /** Aria-label for the right scroll button */
-    // rightScrollAriaLabel?: string;
+    #[prop_or(String::from("Scroll right"))]
+    pub right_scroll_aria_label: String,
     /** Determines what tag is used around the tabs. Use "nav" to define the tabs inside a navigation region */
     #[prop_or(TabsComponent::Div)]
     pub component: TabsComponent,
@@ -91,6 +102,7 @@ pub struct TabsProperties
 pub enum TabsMsg
 {
     OnClickTab(String),
+    HandleScrollButtons,
     ScrollLeft,
     ScrollRight,
 }
@@ -102,9 +114,43 @@ impl Component for Tabs
 
     fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
     {
+        let mut resize_listener_handle = None;
+
+        // Handle scrollbars if we are not using the vertical style of tabs
+        if !props.is_vertical
+        {
+            let window = web_sys::window()
+                    .expect("no global `window` exists");
+        
+            let callback = link.callback(|_| TabsMsg::HandleScrollButtons);
+
+            let listener = move |_: &Event| {
+                // Update scrollbars
+                callback.emit(());
+            };
+
+            let event_options = EventListenerOptions::enable_prevent_default();
+            
+            // Listen for mousedown on the whole document to handle toggle when user
+            // does not click on the toggle
+            resize_listener_handle = Some(EventListener::new_with_options(
+                window.as_ref(),
+                "resize",
+                event_options,
+                listener,
+            ));
+
+            link.send_message(TabsMsg::HandleScrollButtons);
+        }
+
         Self {
             link,
             props,
+            tab_list_ref: NodeRef::default(),
+            _resize_listener_handle: resize_listener_handle,
+            show_scroll_buttons: false,
+            disable_left_scroll_button: false,
+            disable_right_scroll_button: false,
         }
     }
 
@@ -113,7 +159,10 @@ impl Component for Tabs
         if self.props != props
         {
             self.props = props;
-            
+
+            // Recalculate scrollbars
+            self.link.send_message(TabsMsg::HandleScrollButtons);
+
             true
         }
         else
@@ -132,10 +181,90 @@ impl Component for Tabs
                 
                 false
             },
+            TabsMsg::HandleScrollButtons => {
+                if !self.props.is_vertical
+                {
+                    if let Some(container) = self.tab_list_ref.cast::<Element>()
+                    {
+                        // get first element and check if it is in view
+                        let overflow_on_left = if let Some(first_child) = container.first_element_child() {
+                            !is_element_in_view(&container, &first_child, false)
+                        } else {
+                            false
+                        };
+            
+                        // get last element and check if it is in view
+                        let overflow_on_right = if let Some(first_child) = container.last_element_child() {
+                            !is_element_in_view(&container, &first_child, false)
+                        } else {
+                            false
+                        };
+            
+                        self.show_scroll_buttons = overflow_on_left || overflow_on_right;
+                
+                        self.disable_left_scroll_button = !overflow_on_left;
+                        self.disable_right_scroll_button = !overflow_on_right;
+                    }
+                }
+
+                true
+            },
             TabsMsg::ScrollLeft => {
+                // find first Element that is fully in view on the left, then scroll to the element before it
+                if let Some(container) = self.tab_list_ref.cast::<Element>()
+                {
+                    let child_arr = container.children();
+                    
+                    let mut last_element_out_of_view = None;
+                    
+                    for i in 0..child_arr.length()
+                    {
+                        if let Some(child_element) = child_arr.get_with_index(i)
+                        {
+                            if is_element_in_view(&container, &child_element, false)
+                            {
+                                last_element_out_of_view = child_arr.get_with_index(i - 1);
+
+                                break;
+                            }
+                        }
+                    }
+                    
+                    if let Some(last_element) = last_element_out_of_view
+                    {
+                        container.set_scroll_left(container.scroll_left() - last_element.scroll_width());
+                    }
+                }
+
                 true
             },
             TabsMsg::ScrollRight => {
+                // find last Element that is fully in view on the right, then scroll to the element after it
+                if let Some(container) = self.tab_list_ref.cast::<Element>()
+                {
+                    let child_arr = container.children();
+                    
+                    let mut first_element_out_of_view = None;
+                    
+                    for i in 0..child_arr.length()
+                    {
+                        if let Some(child_element) = child_arr.get_with_index(i)
+                        {
+                            if is_element_in_view(&container, &child_element, false)
+                            {
+                                first_element_out_of_view = child_arr.get_with_index(i + 1);
+
+                                break;
+                            }
+                        }
+                    }
+
+                    if let Some(first_element) = first_element_out_of_view
+                    {
+                        container.set_scroll_left(container.scroll_left() + first_element.scroll_width());
+                    }
+                }
+
                 true
             },
         }
@@ -156,7 +285,7 @@ impl Component for Tabs
                             if self.props.is_secondary { "pf-m-secondary" } else { "" },
                             if self.props.is_vertical { "pf-m-vertical" } else { "" },
                             if self.props.is_box { "pf-m-box" } else { "" },
-                            // showScrollButtons && !isVertical && { "pf-m-scrollable" },
+                            if self.show_scroll_buttons && !self.props.is_vertical { "pf-m-scrollable" } else {""},
                             // formatBreakpointMods(inset, styles),
                             TABS_VARIANT_STYLES[self.props.variant.clone() as usize],
                             self.props.class_name.to_string(),
@@ -192,16 +321,18 @@ impl Tabs
                     "pf-c-tabs__scroll-button", 
                     if self.props.is_secondary { "pf-m-secondary" } else { "" }
                 )
-                // aria-label={leftScrollAriaLabel}
+                aria-label=self.props.left_scroll_aria_label.clone()
                 onclick=self.link.callback(|_| TabsMsg::ScrollLeft)
-                diabled=true.to_string()    // disabled={disableLeftScrollButton}
-                aria-hidden=true.to_string()    // aria-hidden={disableLeftScrollButton}
+                disabled=self.disable_left_scroll_button
+                aria-hidden=self.disable_left_scroll_button.to_string()
             >
-                <i class="fas fa-angle-left"></i>
+            {
+                icc_patternfly_yew_icons::angle_left_icon!{}
+            }
             </button>
             <ul class="pf-c-tabs__list"
-                //ref={this.tabList} 
-                //onScroll={this.handleScrollButtons}
+                ref=self.tab_list_ref.clone()
+                onscroll=self.link.callback(|_| TabsMsg::HandleScrollButtons)
             >
                 {
                     for self.props.children.iter().enumerate().map(|(index, child)| {
@@ -236,12 +367,14 @@ impl Tabs
                     "pf-c-tabs__scroll-button", 
                     if self.props.is_secondary { "pf-m-secondary" } else { "" }
                 )
-                // aria-label={rightScrollAriaLabel}
+                aria-label=self.props.right_scroll_aria_label.clone()
                 onclick=self.link.callback(|_| TabsMsg::ScrollRight)
-                diabled=true.to_string()      //   disabled={disableRightScrollButton}
-                aria-hidden=true.to_string()  //   aria-hidden={disableRightScrollButton}
+                disabled=self.disable_right_scroll_button
+                aria-hidden=self.disable_right_scroll_button.to_string()
             >
-                <i class="fas fa-angle-left"></i>
+            {
+                icc_patternfly_yew_icons::angle_right_icon!{}
+            }
             </button>
             </>
         }
