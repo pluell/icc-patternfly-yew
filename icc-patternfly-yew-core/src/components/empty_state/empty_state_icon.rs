@@ -80,9 +80,7 @@ impl Component for EmptyStateIcon
                     for (attr, value) in icon.attributes.iter()
                     {
                         if attr == "class"
-                        {
-                            log::info!("Found class attr");
-                            
+                        {   
                             // Add the icon classes to the common classes
                             classes = classes!(value.to_string(), classes);
                         }
