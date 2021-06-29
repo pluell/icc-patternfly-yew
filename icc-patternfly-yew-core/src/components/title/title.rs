@@ -25,6 +25,10 @@ pub struct TitleProperties
     pub class_name: String,
     /** The heading level to use */
     pub heading_level: TitleHeadingLevels,
+
+    // Additional Props
+    #[prop_or_default]
+    pub id: Option<String>,
 }
 
 impl Component for Title
@@ -88,6 +92,10 @@ impl Component for Title
         component.add_attribute("class", classes);
 
         //     {...props}
+        if let Some(id) = &self.props.id
+        {
+            component.add_attribute("id", id.clone());
+        }
 
         component.add_children(self.props.children.iter());
 
