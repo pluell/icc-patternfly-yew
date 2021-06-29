@@ -74,7 +74,7 @@ impl Component for ModalBoxCloseButton
                 class_name=self.props.class_name.clone() 
                 variant=ButtonVariant::Plain
                 onclick=self.link.callback(|_| ModalBoxCloseButtonMsg::OnButtonClick)
-                aria_label="Close" 
+                aria_label="Close".to_string()
                 // {...props}
             >
                 <i class="fas fa-times" aria-hidden="true"></i>

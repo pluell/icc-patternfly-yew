@@ -59,7 +59,7 @@ pub struct ButtonProperties
     pub children: Children,
     /** Adds accessible text to the button. */
     #[prop_or_default]
-    pub aria_label: String,
+    pub aria_label: Option<String>,
 }
 
 impl Component for Button
