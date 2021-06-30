@@ -1,3 +1,4 @@
+mod about_modal;
 mod alert;
 mod backdrop;
 mod button;
@@ -22,6 +23,7 @@ mod title;
 mod toggle_group;
 mod toolbar;
 
+pub use about_modal::*;
 pub use alert::*;
 pub use backdrop::*;
 pub use button::*;
