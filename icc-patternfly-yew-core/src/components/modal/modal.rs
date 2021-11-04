@@ -100,7 +100,7 @@ pub struct ModalProperties
     pub id: String,
     /** Modal handles pressing of the Escape key and closes the modal. If you want to handle this yourself you can use this callback function */
     #[prop_or_default]
-    pub onescapepress: Callback<KeyboardEvent>,
+    pub onescapepress: Option<Callback<KeyboardEvent>>,
 }
 
 pub enum ModalMsg
@@ -154,9 +154,14 @@ impl Component for Modal
             ModalMsg::OnKeyDown(event) => {
                 if event.key_code() == KeyCodes::EscapeKey as u32 && self.props.is_open
                 {
-                    self.props.onclose.emit(());
-
-                    self.props.onescapepress.emit(event);
+                    if let Some(onescapepress) = &self.props.onescapepress
+                    {
+                        onescapepress.emit(event);
+                    }
+                    else
+                    {
+                        self.props.onclose.emit(());
+                    }
                 }
             },
         }
