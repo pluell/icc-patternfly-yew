@@ -131,8 +131,8 @@ impl Component for Tabs
 
             let event_options = EventListenerOptions::enable_prevent_default();
             
-            // Listen for mousedown on the whole document to handle toggle when user
-            // does not click on the toggle
+            // Listen for resize on the whole window to handle the scrollbars
+            // when the user resizes the window
             resize_listener_handle = Some(EventListener::new_with_options(
                 window.as_ref(),
                 "resize",
