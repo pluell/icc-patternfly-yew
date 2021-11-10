@@ -57,6 +57,9 @@ pub struct KebabToggleProperties
     /** Whether or not the dropdown toggle button should have primary button styling */
     #[prop_or_default]
     pub is_primary: bool,
+
+    #[prop_or_default]
+    pub aria_haspopup: String,
 }
 
 impl Component for KebabToggle

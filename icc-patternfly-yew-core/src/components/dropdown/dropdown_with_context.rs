@@ -73,8 +73,20 @@ impl Component for DropdownWithContext
                         new_toggle.props.aria_haspopup = aria_haspopup.to_string();
                         //     onEnter: () => this.onEnter()
 
-                        new_toggle
-                    }
+                        html!{new_toggle}
+                    },
+                    DropdownToggleComponents::KebabToggle(toggle) => {
+                        let mut new_toggle = toggle.clone();
+
+                        new_toggle.props.menu_ref = self.menu_ref.clone();
+                        new_toggle.props.is_open = self.props.is_open;
+                        //     id,
+                        new_toggle.props.is_plain = self.props.is_plain;
+                        new_toggle.props.aria_haspopup = aria_haspopup.to_string();
+                        //     onEnter: () => this.onEnter()
+
+                        html!{new_toggle}
+                    },
                 }
             }
             {

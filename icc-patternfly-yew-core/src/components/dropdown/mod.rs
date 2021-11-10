@@ -27,4 +27,5 @@ pub enum DropdownToggleComponents
     DropdownToggle(VChild<DropdownToggle>),
     // DropdownToggleAction(VChild<DropdownToggleAction>),
     // DropdownToggleCheckbox(VChild<DropdownToggleCheckbox>),
+    KebabToggle(VChild<KebabToggle>),
 }
