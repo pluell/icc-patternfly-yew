@@ -19,6 +19,7 @@ const BTN_VARIANT_STYLES: &'static [&'static str] = &[
 pub struct Button
 {
     props: ButtonProperties,
+    button_ref: NodeRef,
 }
 
 #[derive(Clone, PartialEq, Properties)]
@@ -106,8 +107,11 @@ impl Component for Button
 
     fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
     {
+        let button_ref = props.inner_ref.clone().unwrap_or(NodeRef::default());
+
         Self {
             props,
+            button_ref,
         }
     }
 
@@ -148,24 +152,28 @@ impl Component for Button
         html!{
             <button
                 id=self.props.id.clone()
+                aria-disabled=(self.props.is_disabled || self.props.is_aria_disabled).to_string()
+                aria-label=self.props.aria_label.clone()
                 class=classes!(
                     "pf-c-button",
                     BTN_VARIANT_STYLES[self.props.variant.clone() as usize],
                     if self.props.is_block {"pf-m-block"} else {""},
                     if self.props.is_disabled {"pf-m-disabled"} else {""},
+                    if self.props.is_aria_disabled {"pf-m-aria-disabled"} else {""},
                     if self.props.is_active {"pf-m-active"} else {""},
-                    // TODO: Implement inline
+                    if self.props.is_inline && self.props.variant == ButtonVariant::Link {"pf-m-inline"} else {""},
+                    if self.props.is_danger && 
+                        (self.props.variant == ButtonVariant::Secondary || self.props.variant == ButtonVariant::Link) {"pf-m-danger"} else {""},
                     cls_loading,
                     if self.props.is_small {"pf-m-small"} else {""},
                     if self.props.is_large {"pf-m-display-lg"} else {""},
-                    if self.props.is_inline && self.props.variant == ButtonVariant::Link {"pf-m-inline"} else {""},
                     self.props.class_name.clone(),
                 )
                 onclick=self.props.onclick.clone()
                 disabled=self.props.is_disabled
                 type=BTN_TYPES[self.props.btn_type.clone() as usize]
                 role="button"
-                aria-label=self.props.aria_label.clone()
+                ref=self.button_ref.clone()
                 aria-controls=self.props.aria_controls.clone()
                 aria-expanded=self.props.aria_expanded.clone()
                 aria-labelledby=self.props.aria_labelledby.clone()
@@ -190,9 +198,61 @@ impl Component for Button
                     html!{}
                 }
             }
-            // TODO: Implement icon left
+            {
+                if let Some(icon) = &self.props.icon
+                {
+                    if self.props.variant != ButtonVariant::Plain && self.props.icon_position == ButtonIconPosition::Left
+                    {
+                        html!{
+                            <span 
+                                class=classes!(
+                                    "pf-c-button__icon",
+                                    "pf-m-start"
+                                )
+                            >
+                                {icon.clone()}
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        html!{}
+                    }
+                }
+                else
+                {
+                    html!{}
+                }
+                
+            }
             { self.props.children.clone() }
-            // TODO: Implement icon right
+            {
+                if let Some(icon) = &self.props.icon
+                {
+                    if self.props.variant != ButtonVariant::Plain && self.props.icon_position == ButtonIconPosition::Right
+                    {
+                        html!{
+                            <span 
+                                class=classes!(
+                                    "pf-c-button__icon",
+                                    "pf-m-end"
+                                )
+                            >
+                                {icon.clone()}
+                            </span>
+                        }
+                    }
+                    else
+                    {
+                        html!{}
+                    }
+                }
+                else
+                {
+                    html!{}
+                }
+                
+            }
             </button>
         }
     }
