@@ -8,7 +8,7 @@ edition = "2018"
 
 [dependencies]
 getrandom = { version = "0.2", features = ["js"] }
-gloo = "0.2.1"
+gloo = "^0.4.0"
 icc-patternfly-yew-icons = { path = "../icc-patternfly-yew-icons" }
 log = "0.4"
 rand = "0.8.3"
