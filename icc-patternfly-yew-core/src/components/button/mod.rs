@@ -28,3 +28,10 @@ pub const BTN_TYPES: &'static [&'static str] = &[
     "submit",
     "reset",
 ];
+
+#[derive(Clone, PartialEq)]
+pub enum ButtonIconPosition
+{
+    Left,
+    Right
+}

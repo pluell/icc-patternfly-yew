@@ -24,46 +24,71 @@ pub struct Button
 #[derive(Clone, PartialEq, Properties)]
 pub struct ButtonProperties
 {
+    /** Content rendered inside the button */
     #[prop_or_default]
-    pub id: String,
-    /** Adds button variant styles */
-    pub variant: ButtonVariant,
-    /** Sets button type */
-    #[prop_or(ButtonType::Button)]
-    pub btn_type: ButtonType,
+    pub children: Children,
+    /** Additional classes added to the button */
+    #[prop_or_default]
+    pub class_name: String,
+    // /** Sets the base component to render. defaults to button */
+    // component?: React.ElementType<any> | React.ComponentType<any>;
     /** Adds active styling to button. */
     #[prop_or_default]
     pub is_active: bool,
+    /** Adds block styling to button */
+    #[prop_or_default]
+    pub is_block: bool,
     /** Adds disabled styling and disables the button using the disabled html attribute */
     #[prop_or_default]
     pub is_disabled: bool,
+    /** Adds disabled styling and communicates that the button is disabled using the aria-disabled html attribute */
+    #[prop_or_default]
+    pub is_aria_disabled: bool,
     /** Adds progress styling to button */
     #[prop_or_default]
     pub is_loading: Option<bool>,
     /** Aria-valuetext for the loading spinner */
     #[prop_or_default]
     pub spinner_aria_value_text: String,
-    /** Adds block styling to button */
+    // /** Events to prevent when the button is in an aria-disabled state */
+    // inoperableEvents?: string[];
+    /** Adds inline styling to a link button */
     #[prop_or_default]
-    pub is_block: bool,
+    pub is_inline: bool,
+    /** Sets button type */
+    #[prop_or(ButtonType::Button)]
+    pub btn_type: ButtonType,
+    /** Adds button variant styles */
+    pub variant: ButtonVariant,
+    /** Sets position of the link icon */
+    #[prop_or(ButtonIconPosition::Left)]
+    pub icon_position: ButtonIconPosition,
+    /** Adds accessible text to the button. */
+    #[prop_or_default]
+    pub aria_label: Option<String>,
+    /** Icon for the button. Usable by all variants except for plain. */
+    #[prop_or_default]
+    pub icon: Option<Html>,
+    /** Sets the button tabindex. */
+    #[prop_or_default]
+    pub tab_index: Option<i32>,
     /** Adds small styling to the button */
     #[prop_or_default]
     pub is_small: bool,
     /** Adds large styling to the button */
     #[prop_or_default]
     pub is_large: bool,
-    /** Adds inline styling to a link button */
+    /** Adds danger styling to secondary or link button variants */
     #[prop_or_default]
-    pub is_inline: bool,
-    /** Additional classes added to the button */
+    pub is_danger: bool,
+    /** Forwarded ref */
     #[prop_or_default]
-    pub class_name: String,
+    pub inner_ref: Option<NodeRef>,
+
+    #[prop_or_default]
+    pub id: String,
+
     pub onclick: Callback<MouseEvent>,
-    /** Content rendered inside the button */
-    pub children: Children,
-    /** Adds accessible text to the button. */
-    #[prop_or_default]
-    pub aria_label: Option<String>,
 
     // Extra aria properties
     #[prop_or_default]
