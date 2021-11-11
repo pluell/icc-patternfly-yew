@@ -3,6 +3,7 @@ use yew::{
 };
 
 use super::*;
+use crate::{Spinner, SpinnerSize};
 
 const BTN_VARIANT_STYLES: &'static [&'static str] = &[
     "pf-m-primary",
@@ -39,6 +40,9 @@ pub struct ButtonProperties
     /** Adds progress styling to button */
     #[prop_or_default]
     pub is_loading: Option<bool>,
+    /** Aria-valuetext for the loading spinner */
+    #[prop_or_default]
+    pub spinner_aria_value_text: String,
     /** Adds block styling to button */
     #[prop_or_default]
     pub is_block: bool,
@@ -60,6 +64,14 @@ pub struct ButtonProperties
     /** Adds accessible text to the button. */
     #[prop_or_default]
     pub aria_label: Option<String>,
+
+    // Extra aria properties
+    #[prop_or_default]
+    pub aria_controls: Option<String>,
+    #[prop_or_default]
+    pub aria_expanded: Option<String>,
+    #[prop_or_default]
+    pub aria_labelledby: Option<String>,
 }
 
 impl Component for Button
@@ -129,6 +141,9 @@ impl Component for Button
                 type=BTN_TYPES[self.props.btn_type.clone() as usize]
                 role="button"
                 aria-label=self.props.aria_label.clone()
+                aria-controls=self.props.aria_controls.clone()
+                aria-expanded=self.props.aria_expanded.clone()
+                aria-labelledby=self.props.aria_labelledby.clone()
             >
             {
                 if let Some(is_loading) = self.props.is_loading
@@ -138,8 +153,7 @@ impl Component for Button
                         true => {
                             html!{
                                 <span class="pf-c-button__progress">
-                                    // TODO: implement Spinner component
-                                    // <Spinner size={spinnerSize.md} aria-valuetext={spinnerAriaValueText} />
+                                    <Spinner size=SpinnerSize::Md aria_valuetext=self.props.spinner_aria_value_text.clone() />
                                 </span>
                             }
                         },
