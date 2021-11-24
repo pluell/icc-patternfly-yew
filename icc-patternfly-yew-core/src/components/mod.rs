@@ -1,6 +1,7 @@
 mod about_modal;
 mod alert;
 mod backdrop;
+mod brand;
 mod button;
 mod card;
 mod chip_group;
@@ -27,6 +28,7 @@ mod toolbar;
 pub use about_modal::*;
 pub use alert::*;
 pub use backdrop::*;
+pub use brand::*;
 pub use button::*;
 pub use card::*;
 pub use dropdown::*;
