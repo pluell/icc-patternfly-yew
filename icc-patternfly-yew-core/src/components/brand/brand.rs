@@ -18,6 +18,10 @@ pub struct BrandProps
     pub src: String,
     /** Attribute that specifies the alt text of the image for the Brand. */
     pub alt: String,
+
+    // Additional properties
+    #[prop_or_default]
+    pub style: Option<String>,
 }
 
 impl Component for Brand
@@ -57,6 +61,7 @@ impl Component for Brand
         html!{
             <img
                 // {...props}
+                style=self.props.style.clone()
                 class=classes!(
                     "pf-c-brand",
                     self.props.class_name.clone()
