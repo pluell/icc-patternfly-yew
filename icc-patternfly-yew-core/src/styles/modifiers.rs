@@ -32,6 +32,22 @@ pub enum Breakpoints
     Xxl,
 }
 
+impl Breakpoints
+{
+    pub fn get_class_appendix(&self) -> &'static str
+    {
+        match self
+        {
+            Breakpoints::Default => "",
+            Breakpoints::Sm => "-on-sm",
+            Breakpoints::Md => "-on-md",
+            Breakpoints::Lg => "-on-lg",
+            Breakpoints::Xl => "-on-xl",
+            Breakpoints::Xxl => "-on-2xl",
+        }
+    }
+}
+
 #[derive(Clone, PartialEq)]
 pub struct VisibilityModifer
 {
@@ -45,15 +61,58 @@ impl VisibilityModifer
     {
         let modifier = if self.is_visible {"visible"} else {"hidden"};
 
-        let breakpoint = match self.breakpoint {
-            Breakpoints::Default => "",
-            Breakpoints::Sm => "-on-sm",
-            Breakpoints::Md => "-on-md",
-            Breakpoints::Lg => "-on-lg",
-            Breakpoints::Xl => "-on-xl",
-            Breakpoints::Xxl => "-on-2xl",
-        };
+        let breakpoint = self.breakpoint.get_class_appendix();
 
         format!("pf-m-{}{}", modifier, breakpoint)
+    }
+}
+
+#[derive(Clone, PartialEq)]
+pub enum Insets
+{
+    None,
+    Xs,
+    Sm,
+    Md,
+    Lg,
+    Xl,
+    Xxl,
+    Xxxl,
+}
+
+impl Insets
+{
+    pub fn get_class_appendix(&self) -> &'static str
+    {
+        match self
+        {
+            Self::None => "-inset-none",
+            Self::Xs => "-inset-xs",
+            Self::Sm => "-inset-sm",
+            Self::Md => "-inset-md",
+            Self::Lg => "-inset-lg",
+            Self::Xl => "-inset-xl",
+            Self::Xxl => "-inset-2xl",
+            Self::Xxxl => "-inset-3xl",
+        }
+    }
+}
+
+#[derive(Clone, PartialEq)]
+pub struct InsetModifer
+{
+    pub breakpoint: Breakpoints,
+    pub inset: Insets,
+}
+
+impl InsetModifer
+{
+    pub fn get_class(&self) -> String
+    {
+        let inset = self.inset.get_class_appendix();
+
+        let breakpoint = self.breakpoint.get_class_appendix();
+
+        format!("pf-m{}{}", inset, breakpoint)
     }
 }
