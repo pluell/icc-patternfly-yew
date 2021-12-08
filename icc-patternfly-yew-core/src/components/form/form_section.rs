@@ -1,6 +1,37 @@
 use yew::{
     prelude::*,
+    virtual_dom::{VTag},
 };
+
+#[derive(Clone, PartialEq)]
+pub enum TitleElements
+{
+    Div,
+    H1,
+    H2,
+    H3,
+    H4,
+    H5,
+    H6,
+}
+
+impl From<TitleElements> for VTag
+{
+    fn from(element: TitleElements) -> VTag
+    {
+        match element
+        {
+            TitleElements::Div => VTag::new("div"),
+            TitleElements::H1 => VTag::new("h1"),
+            TitleElements::H2 => VTag::new("h2"),
+            TitleElements::H3 => VTag::new("h3"),
+            TitleElements::H4 => VTag::new("h4"),
+            TitleElements::H5 => VTag::new("h5"),
+            TitleElements::H6 => VTag::new("h6"),
+        }
+    }
+}
+
 
 pub struct FormSection
 {
@@ -15,9 +46,12 @@ pub struct FormSectionProperties
     /** Additional classes added to the FormSection. */
     #[prop_or_default]
     pub class_name: String,
-    /** Label text for the section. */
+    /** Title for the section */
     #[prop_or_default]
-    pub label: String,
+    pub title: Option<Html>,
+    /** Element to wrap the section title*/
+    #[prop_or(TitleElements::Div)]
+    pub title_element: TitleElements,
 }
 
 impl Component for FormSection
@@ -61,11 +95,21 @@ impl Component for FormSection
                 class=classes!("pf-c-form__section", self.props.class_name.to_string())
             >
                 {
-                    if !self.props.label.is_empty()
+                    if let Some(title) = &self.props.title
                     {
-                        html!{
-                            <div class="pf-c-form__section-title">{&self.props.label}</div>
-                        }
+                        let mut title_element: VTag = self.props.title_element.clone().into();
+
+                        title_element.add_attribute(
+                            "class",
+                            classes!(
+                                "pf-c-form__section-title",
+                                self.props.class_name.to_string()
+                            ).to_string()
+                        );
+
+                        title_element.add_child(title.clone());
+
+                        title_element.into()
                     }
                     else
                     {
