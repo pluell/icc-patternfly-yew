@@ -31,6 +31,9 @@ pub struct FormGroupProperties
     /** Label text before the field. */
     #[prop_or_default]
     pub label: String,
+    /** Additional label information displayed after the label. */
+    #[prop_or_default]
+    pub label_info: Option<Html>,
     /** Sets an icon for the label. For providing additional context. Host element for Popover  */
     #[prop_or_default]
     pub label_icon: Option<Html>,
@@ -47,6 +50,9 @@ pub struct FormGroupProperties
     /** Sets the FormGroup isInline. */
     #[prop_or_default]
     pub is_inline: bool,
+    /** Sets the FormGroupControl to be stacked */
+    #[prop_or_default]
+    pub is_stack: bool,
     /** Removes top spacer from label. */
     #[prop_or_default]
     pub has_no_padding_top: bool,
@@ -112,42 +118,18 @@ impl Component for FormGroup
             {
                 if !self.props.label.is_empty()
                 {
-                    html!{
-                        <div
-                            class=classes!(
-                                "pf-c-form__group-label",
-                                if self.props.has_no_padding_top {"pf-m-no-padding-top"} else {""},
-                            )
-                        >
-                            <label class="pf-c-form__label" for=self.props.field_id.clone()>
-                                <span class="pf-c-form__label-text">{&self.props.label}</span>
-                                {
-                                    if self.props.is_required
-                                    {
-                                        html!{
-                                            <span class="pf-c-form__label-required" aria-hidden="true">
-                                                {' '}
-                                                {ASTERISK}
-                                            </span>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        html!{}
-                                    }
-                                }
-                            </label>{' '}
-                            {
-                                if let Some(label_icon) = &self.props.label_icon
-                                {
-                                    label_icon.clone()
-                                }
-                                else
-                                {
-                                    html!{}
-                                }
-                            }
-                        </div>
+                    if let Some(label_info) = &self.props.label_info
+                    {
+                        html!{
+                            <>
+                                <div class="pf-c-form__group-label-main">{self.get_label_content()}</div>
+                                <div class="pf-c-form__group-label-info">{label_info.clone()}</div>
+                            </>
+                        }
+                    }
+                    else
+                    {
+                        self.get_label_content()
                     }
                 }
                 else
@@ -159,6 +141,7 @@ impl Component for FormGroup
                     class=classes!(
                         "pf-c-form__group-control", 
                         if self.props.is_inline {"pf-m-inline"} else {""},
+                        if self.props.is_stack {"pf-m-stack"} else {""},
                     )
                 >
                     {
@@ -192,6 +175,48 @@ impl Component for FormGroup
 
 impl FormGroup
 {
+    fn get_label_content(&self) -> Html
+    {
+        html!{
+            <div
+                class=classes!(
+                    "pf-c-form__group-label",
+                    if self.props.label_info.is_some() {"pf-m-info"} else {""},
+                    if self.props.has_no_padding_top {"pf-m-no-padding-top"} else {""},
+                )
+            >
+                <label class="pf-c-form__label" for=self.props.field_id.clone()>
+                    <span class="pf-c-form__label-text">{&self.props.label}</span>
+                    {
+                        if self.props.is_required
+                        {
+                            html!{
+                                <span class="pf-c-form__label-required" aria-hidden="true">
+                                    {' '}
+                                    {ASTERISK}
+                                </span>
+                            }
+                        }
+                        else
+                        {
+                            html!{}
+                        }
+                    }
+                </label>{' '}
+                {
+                    if let Some(label_icon) = &self.props.label_icon
+                    {
+                        label_icon.clone()
+                    }
+                    else
+                    {
+                        html!{}
+                    }
+                }
+            </div>
+        }
+    }
+
     fn get_helper_text(&self) -> Html
     {
         if self.props.validated != ValidatedOptions::Error
