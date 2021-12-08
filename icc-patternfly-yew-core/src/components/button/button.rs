@@ -87,7 +87,7 @@ pub struct ButtonProperties
     pub inner_ref: Option<NodeRef>,
 
     #[prop_or_default]
-    pub id: String,
+    pub id: Option<String>,
 
     pub onclick: Callback<MouseEvent>,
 
