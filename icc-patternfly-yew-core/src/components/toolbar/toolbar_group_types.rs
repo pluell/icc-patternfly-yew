@@ -10,6 +10,7 @@ pub enum ToolbarGroupTypes
 {
     Item(<ToolbarItem as Component>::Properties),
     Filter(<ToolbarFilter as Component>::Properties),
+    VNode(Html),
 }
 
 impl From<ToolbarItemProperties> for ToolbarGroupTypes
@@ -25,6 +26,14 @@ impl From<ToolbarFilterProperties> for ToolbarGroupTypes
     fn from(props: ToolbarFilterProperties) -> Self
     {
         ToolbarGroupTypes::Filter(props)
+    }
+}
+
+impl From<Html> for ToolbarGroupTypes
+{
+    fn from(node: Html) -> Self
+    {
+        ToolbarGroupTypes::VNode(node)
     }
 }
 
@@ -47,6 +56,16 @@ where
     }
 }
 
+impl From<Html> for ToolbarGroupChild
+{
+    fn from(node: Html) -> Self
+    {
+        Self {
+            props: node.into()
+        }
+    }
+}
+
 impl From<ToolbarGroupChild> for Html
 {
     fn from(variant: ToolbarGroupChild) -> Html
@@ -59,6 +78,9 @@ impl From<ToolbarGroupChild> for Html
             ToolbarGroupTypes::Filter(props) => {
                 VComp::new::<ToolbarFilter>(props, NodeRef::default(), None).into()
             },
+            ToolbarGroupTypes::VNode(node) => {
+                node
+            }
         }
     }
 }
