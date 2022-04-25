@@ -6,10 +6,7 @@ use yew::{
 use super::*;
 
 
-pub struct ToolbarContent
-{
-    props: ToolbarContentProperties,
-}
+pub struct ToolbarContent;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct ToolbarContentProperties
@@ -62,56 +59,40 @@ impl Component for ToolbarContent
     type Message = ();
     type Properties = ToolbarContentProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
+        // Update the child properties if necessary
+        for child in ctx.props().children.iter()
         {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
+            match child
+            {
+                ToolbarContentChild::Group(mut child) => {
+                    let mut props = (&*child.props).clone();
 
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
+                    props.chip_group_content_ref = Some(ctx.props().chip_group_content_ref.clone());
+                    props.update_number_filters = ctx.props().update_number_filters.clone();
 
-    fn view(&self) -> Html
-    {
+                    child.props = std::rc::Rc::new(props);
+                },
+                _ => {}
+            }
+        }
+        
         html!{
             <div
-                class=classes!(
+                class={classes!(
                     "pf-c-toolbar__content",
-                    &self.props.class_name,
-                )
+                    &ctx.props().class_name,
+                )}
             >
                 <div class="pf-c-toolbar__content-section">
                 {
-                    for self.props.children.iter().map(|mut child| {
-                        match child.props
-                        {
-                            ToolbarContentTypes::Group(ref mut props) => {
-                                props.chip_group_content_ref = Some(self.props.chip_group_content_ref.clone());
-                                props.update_number_filters = self.props.update_number_filters.clone();
-                            },
-                            _ => {}
-                        }
-                        
-                        child
-                    })
+                    for ctx.props().children.iter()
                 }
                 </div>
             </div>

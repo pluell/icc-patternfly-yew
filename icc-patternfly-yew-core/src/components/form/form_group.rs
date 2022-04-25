@@ -15,10 +15,7 @@ pub enum FormHelperTextTypes
     FormHelperText(VChild<FormHelperText>),
 }
 
-pub struct FormGroup
-{
-    props: FormGroupProperties,
-}
+pub struct FormGroup;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct FormGroupProperties
@@ -81,55 +78,33 @@ impl Component for FormGroup
     type Message = ();
     type Properties = FormGroupProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div 
                 //{...props} 
-                class=classes!("pf-c-form__group", self.props.class_name.clone())
+                class={classes!("pf-c-form__group", ctx.props().class_name.clone())}
             >
             {
-                if !self.props.label.is_empty()
+                if !ctx.props().label.is_empty()
                 {
-                    if let Some(label_info) = &self.props.label_info
+                    if let Some(label_info) = &ctx.props().label_info
                     {
                         html!{
                             <>
-                                <div class="pf-c-form__group-label-main">{self.get_label_content()}</div>
+                                <div class="pf-c-form__group-label-main">{self.get_label_content(ctx)}</div>
                                 <div class="pf-c-form__group-label-info">{label_info.clone()}</div>
                             </>
                         }
                     }
                     else
                     {
-                        self.get_label_content()
+                        self.get_label_content(ctx)
                     }
                 }
                 else
@@ -138,16 +113,16 @@ impl Component for FormGroup
                 }
             }
                 <div 
-                    class=classes!(
+                    class={classes!(
                         "pf-c-form__group-control", 
-                        if self.props.is_inline {"pf-m-inline"} else {""},
-                        if self.props.is_stack {"pf-m-stack"} else {""},
-                    )
+                        if ctx.props().is_inline {"pf-m-inline"} else {""},
+                        if ctx.props().is_stack {"pf-m-stack"} else {""},
+                    )}
                 >
                     {
-                        if self.props.is_helper_text_before_field
+                        if ctx.props().is_helper_text_before_field
                         {
-                            self.get_helper_text()
+                            self.get_helper_text(ctx)
                         }
                         else
                         {
@@ -155,12 +130,12 @@ impl Component for FormGroup
                         }
                     }
                     {
-                        self.props.children.clone() 
+                        ctx.props().children.clone() 
                     }
                     {
-                        if !self.props.is_helper_text_before_field
+                        if !ctx.props().is_helper_text_before_field
                         {
-                            self.get_helper_text()
+                            self.get_helper_text(ctx)
                         }
                         else
                         {
@@ -175,20 +150,20 @@ impl Component for FormGroup
 
 impl FormGroup
 {
-    fn get_label_content(&self) -> Html
+    fn get_label_content(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div
-                class=classes!(
+                class={classes!(
                     "pf-c-form__group-label",
-                    if self.props.label_info.is_some() {"pf-m-info"} else {""},
-                    if self.props.has_no_padding_top {"pf-m-no-padding-top"} else {""},
-                )
+                    if ctx.props().label_info.is_some() {"pf-m-info"} else {""},
+                    if ctx.props().has_no_padding_top {"pf-m-no-padding-top"} else {""},
+                )}
             >
-                <label class="pf-c-form__label" for=self.props.field_id.clone()>
-                    <span class="pf-c-form__label-text">{&self.props.label}</span>
+                <label class="pf-c-form__label" for={ctx.props().field_id.clone()}>
+                    <span class="pf-c-form__label-text">{&ctx.props().label}</span>
                     {
-                        if self.props.is_required
+                        if ctx.props().is_required
                         {
                             html!{
                                 <span class="pf-c-form__label-required" aria-hidden="true">
@@ -204,7 +179,7 @@ impl FormGroup
                     }
                 </label>{' '}
                 {
-                    if let Some(label_icon) = &self.props.label_icon
+                    if let Some(label_icon) = &ctx.props().label_icon
                     {
                         label_icon.clone()
                     }
@@ -217,27 +192,27 @@ impl FormGroup
         }
     }
 
-    fn get_helper_text(&self) -> Html
+    fn get_helper_text(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props.validated != ValidatedOptions::Error
+        if ctx.props().validated != ValidatedOptions::Error
         {
-            if let Some(helper_text) = &self.props.helper_text
+            if let Some(helper_text) = &ctx.props().helper_text
             {
                 match helper_text
                 {
                     FormHelperTextTypes::String(helper_text_str) => {
                         html!{
                             <div
-                                class=classes!(
+                                class={classes!(
                                     "pf-c-form__helper-text",
-                                    if self.props.validated == ValidatedOptions::Success { "pf-m-success" } else { "" },
-                                    if self.props.validated == ValidatedOptions::Warning { "pf-m-warning" } else { "" },
-                                )
-                                id=format!("{}-helper", self.props.field_id)
+                                    if ctx.props().validated == ValidatedOptions::Success { "pf-m-success" } else { "" },
+                                    if ctx.props().validated == ValidatedOptions::Warning { "pf-m-warning" } else { "" },
+                                )}
+                                id={format!("{}-helper", ctx.props().field_id)}
                                 aria-live="polite"
                             >
                                 {
-                                    if let Some(helper_text_icon) = &self.props.helper_text_icon
+                                    if let Some(helper_text_icon) = &ctx.props().helper_text_icon
                                     {
                                         html!{
                                             <span class="pf-c-form__helper-text-icon">
@@ -266,22 +241,22 @@ impl FormGroup
         }
         else
         {
-            if let Some(helper_text_invalid) = &self.props.helper_text_invalid
+            if let Some(helper_text_invalid) = &ctx.props().helper_text_invalid
             {
                 match helper_text_invalid
                 {
                     FormHelperTextTypes::String(helper_text_invalid_str) => {
                         html!{
                             <div 
-                                class=classes!(
+                                class={classes!(
                                     "pf-c-form__helper-text",
                                     "pf-m-error"
-                                )
-                                    id=format!("{}-helper", self.props.field_id)
+                                )}
+                                id={format!("{}-helper", ctx.props().field_id)}
                                 aria-live="polite"
                             >
                                 {
-                                    if let Some(helper_text_invalid_icon) = &self.props.helper_text_invalid_icon
+                                    if let Some(helper_text_invalid_icon) = &ctx.props().helper_text_invalid_icon
                                     {
                                         html!{
                                             <span class="pf-c-form__helper-text-icon">

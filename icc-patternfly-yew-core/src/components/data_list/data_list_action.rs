@@ -5,10 +5,7 @@ use yew::{
 use crate::{VisibilityModifer};
 
 
-pub struct DataListAction
-{
-    props: DataListActionProps,
-}
+pub struct DataListAction;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct DataListActionProps
@@ -37,57 +34,35 @@ impl Component for DataListAction
     type Message = ();
     type Properties = DataListActionProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div 
-                class=classes!(
+                class={classes!(
                     "pf-c-data-list__item-action",
-                    self.props.visibility.iter().map(|vis_mod| vis_mod.get_class()).collect::<Vec<String>>(),
-                    self.props.class_name.clone()
-                )
+                    ctx.props().visibility.iter().map(|vis_mod| vis_mod.get_class()).collect::<Vec<String>>(),
+                    ctx.props().class_name.clone()
+                )}
                 // {...props}
             >
             {
-                if self.props.is_plain_button_action
+                if ctx.props().is_plain_button_action
                 {
                     html!{
-                        <div class="pf-c-data-list__action">
-                            { for self.props.children.iter() }
+                        <div class={"pf-c-data-list__action"}>
+                            { for ctx.props().children.iter() }
                         </div>
                     }
                 }
                 else
                 {
                     html!{
-                        for self.props.children.iter()
+                        for ctx.props().children.iter()
                     }
                 }
             }

@@ -7,10 +7,7 @@ use crate::{Backdrop};
 use super::*;
 
 
-pub struct AboutModalContainer
-{
-    props: AboutModalContainerProps,
-}
+pub struct AboutModalContainer;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct AboutModalContainerProps
@@ -54,36 +51,14 @@ impl Component for AboutModalContainer
     type Message = ();
     type Properties = AboutModalContainerProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
-    {
-        if !self.props.is_open
+        if !ctx.props().is_open
         {
             html!{}
         }
@@ -94,17 +69,17 @@ impl Component for AboutModalContainer
                     // TODO: Convert this to a FocusTrap
                     <div class="pf-l-bullseye">
                         <AboutModalBox
-                            class_name=self.props.class_name.clone()
-                            aria_labelledby=self.props.about_modal_box_header_id.clone()
-                            aria_describedby=self.props.about_modal_box_content_id.clone()
+                            class_name={ctx.props().class_name.clone()}
+                            aria_labelledby={ctx.props().about_modal_box_header_id.clone()}
+                            aria_describedby={ctx.props().about_modal_box_content_id.clone()}
                         >
-                            <AboutModalBoxBrand src=self.props.brand_image_src.clone() alt=self.props.brand_image_alt.clone() />
-                            <AboutModalBoxCloseButton aria_label=self.props.close_button_aria_label.clone() onclose=self.props.onclose.clone() />
+                            <AboutModalBoxBrand src={ctx.props().brand_image_src.clone()} alt={ctx.props().brand_image_alt.clone()} />
+                            <AboutModalBoxCloseButton aria_label={ctx.props().close_button_aria_label.clone()} onclose={ctx.props().onclose.clone()} />
                             {
-                                if let Some(product_name) = &self.props.product_name
+                                if let Some(product_name) = &ctx.props().product_name
                                 {
                                     html!{
-                                        <AboutModalBoxHeader id=self.props.about_modal_box_header_id.clone() product_name=product_name.clone() />
+                                        <AboutModalBoxHeader id={ctx.props().about_modal_box_header_id.clone()} product_name={product_name.clone()} />
                                     }
                                 }
                                 else
@@ -113,14 +88,14 @@ impl Component for AboutModalContainer
                                 }
                             }
                             <AboutModalBoxContent
-                                trademark=self.props.trademark.clone()
-                                id=self.props.about_modal_box_content_id.clone()
-                                no_about_modal_box_content_container=false
+                                trademark={ctx.props().trademark.clone()}
+                                id={ctx.props().about_modal_box_content_id.clone()}
+                                no_about_modal_box_content_container={false}
                                 // {...props}
                             >
-                                {for self.props.children.iter()}
+                                {for ctx.props().children.iter()}
                             </AboutModalBoxContent>
-                            <AboutModalBoxHero background_image_src=self.props.background_image_src.clone() />
+                            <AboutModalBoxHero background_image_src={ctx.props().background_image_src.clone()} />
                         </AboutModalBox>
                     </div>
                 </Backdrop>

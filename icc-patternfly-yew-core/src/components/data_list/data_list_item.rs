@@ -3,10 +3,7 @@ use yew::{
 };
 
 
-pub struct DataListItem
-{
-    props: DataListItemProps,
-}
+pub struct DataListItem;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct DataListItemProps
@@ -33,46 +30,24 @@ impl Component for DataListItem
     type Message = ();
     type Properties = DataListItemProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <li
-                id=self.props.id.clone()
-                class=classes!(
+                id={ctx.props().id.clone()}
+                class={classes!(
                     "pf-c-data-list__item",
-                    if self.props.is_expanded { "pf-m-expanded" } else { "" },
+                    if ctx.props().is_expanded { "pf-m-expanded" } else { "" },
                     // isSelectable && styles.modifiers.selectable,
                     // selectedDataListItemId && selectedDataListItemId === id && styles.modifiers.selected,
-                    self.props.class_name.clone()
-                )
-                aria-labelledby=self.props.aria_labelledby.clone()
+                    ctx.props().class_name.clone()
+                )}
+                aria-labelledby={ctx.props().aria_labelledby.clone()}
                 // {...(isSelectable && { tabIndex: 0, onClick: selectDataListItem, onKeyDown })}
                 // {...(isSelectable && selectedDataListItemId === id && { 'aria-selected': true })}
                 // {...props}
@@ -86,7 +61,7 @@ impl Component for DataListItem
             //         rowid: ariaLabelledBy
             //       })
             //   )}
-                { for self.props.children.iter() }
+                { for ctx.props().children.iter() }
             </li>
         }
     }

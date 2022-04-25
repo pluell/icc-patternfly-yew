@@ -5,10 +5,7 @@ use yew::{
 use super::{BreadcrumbItem};
 
 
-pub struct Breadcrumb
-{
-    props: BreadcrumbProps,
-}
+pub struct Breadcrumb;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct BreadcrumbProps
@@ -29,51 +26,33 @@ impl Component for Breadcrumb
     type Message = ();
     type Properties = BreadcrumbProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <nav
                 // {...props}
-                aria-label=self.props.aria_label.clone()
-                class=classes!(
+                aria-label={ctx.props().aria_label.clone()}
+                class={classes!(
                     "pf-c-breadcrumb",
-                    self.props.class_name.clone(),
-                )
+                    ctx.props().class_name.clone(),
+                )}
                 // {...ouiaProps}
             >
                 <ol class="pf-c-breadcrumb__list">
                 {
-                    for self.props.children.iter().enumerate().map(|(index, mut child)|{
+                    for ctx.props().children.iter().enumerate().map(|(index, mut child)|{
                         if index > 0
                         {
-                            child.props.show_divider = true;
+                            let mut props = (&*child.props).clone();
+
+                            props.show_divider = true;
+
+                            child.props = std::rc::Rc::new(props);
                         }
 
                         child

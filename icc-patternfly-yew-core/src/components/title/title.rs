@@ -6,10 +6,7 @@ use yew::{
 use super::{TitleHeadingLevels, TitleSizes};
 
 
-pub struct Title
-{
-    props: TitleProperties,
-}
+pub struct Title;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct TitleProperties
@@ -36,42 +33,20 @@ impl Component for Title
     type Message = ();
     type Properties = TitleProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
-    {
-        let mut component: VTag = self.props.heading_level.clone().into();
+        let mut component: VTag = ctx.props().heading_level.clone().into();
 
         // Build list of classes
         let mut classes = String::from("pf-c-title");
 
         // Get the size class or default size
-        if let Some(size) = &self.props.size
+        if let Some(size) = &ctx.props().size
         {
             classes += " ";
             classes += size.get_class();
@@ -79,25 +54,25 @@ impl Component for Title
         else
         {
             classes += " ";
-            classes += self.props.heading_level.get_default_size().get_class();
+            classes += ctx.props().heading_level.get_default_size().get_class();
         }
         
         // Add extra classes specified on the parent
-        if self.props.class_name.len() > 0
+        if ctx.props().class_name.len() > 0
         {
             classes += " ";
-            classes += &self.props.class_name;
+            classes += &ctx.props().class_name;
         }
 
         component.add_attribute("class", classes);
 
         //     {...props}
-        if let Some(id) = &self.props.id
+        if let Some(id) = &ctx.props().id
         {
             component.add_attribute("id", id.clone());
         }
 
-        component.add_children(self.props.children.iter());
+        component.add_children(ctx.props().children.iter());
 
         component.into()
     }

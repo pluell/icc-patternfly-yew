@@ -11,10 +11,7 @@ pub enum EmptyStateIconVariants
     Container,
 }
 
-pub struct EmptyStateIcon
-{
-    props: EmptyStateIconProps,
-}
+pub struct EmptyStateIcon;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct EmptyStateIconProps
@@ -40,41 +37,19 @@ impl Component for EmptyStateIcon
     type Message = ();
     type Properties = EmptyStateIconProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
+        let mut classes = classes!("pf-c-empty-state__icon", ctx.props().class_name.clone());
 
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
-    {
-        let mut classes = classes!("pf-c-empty-state__icon", self.props.class_name.clone());
-
-        match self.props.variant
+        match ctx.props().variant
         {
             EmptyStateIconVariants::Icon => {
-                if let Some(icon) = &self.props.icon
+                if let Some(icon) = &ctx.props().icon
                 {
                     // Find class attribue
                     for (attr, value) in icon.attributes.iter()
@@ -97,9 +72,9 @@ impl Component for EmptyStateIcon
             },
             EmptyStateIconVariants::Container => {
                 html!{
-                    <div class=classes>
+                    <div class={classes}>
                     {
-                        if let Some(component) = &self.props.component
+                        if let Some(component) = &ctx.props().component
                         {
                             component.clone()
                         }

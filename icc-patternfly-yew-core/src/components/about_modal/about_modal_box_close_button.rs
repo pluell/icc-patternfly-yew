@@ -7,11 +7,7 @@ use icc_patternfly_yew_icons::{times_icon};
 use crate::{Button, ButtonVariant};
 
 
-pub struct AboutModalBoxCloseButton
-{
-    props: AboutModalBoxCloseButtonProps,
-    link: ComponentLink<AboutModalBoxCloseButton>,
-}
+pub struct AboutModalBoxCloseButton;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct AboutModalBoxCloseButtonProps
@@ -37,52 +33,35 @@ impl Component for AboutModalBoxCloseButton
     type Message = AboutModalBoxCloseButtonMsg;
     type Properties = AboutModalBoxCloseButtonProps;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_ctx: &Context<Self>) -> Self
     {
-        Self {
-            props,
-            link,
-        }
-    }
-
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
+        Self
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             AboutModalBoxCloseButtonMsg::OnCloseClick => {
-                self.props.onclose.emit(());
+                ctx.props().onclose.emit(());
             }
         }
 
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div 
-                class=classes!("pf-c-about-modal-box__close", self.props.class_name.clone())
+                class={classes!("pf-c-about-modal-box__close", ctx.props().class_name.clone())}
                 // {...props}
             >
                 <Button 
-                    variant=ButtonVariant::Plain
-                    onclick=self.link.callback(|_| AboutModalBoxCloseButtonMsg::OnCloseClick)
-                    aria_label=self.props.aria_label.clone()
+                    variant={ButtonVariant::Plain}
+                    onclick={ctx.link().callback(|_| AboutModalBoxCloseButtonMsg::OnCloseClick)}
+                    aria_label={ctx.props().aria_label.clone()}
                 >
                 {
                     times_icon!{}

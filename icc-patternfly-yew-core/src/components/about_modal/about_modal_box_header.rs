@@ -4,10 +4,7 @@ use yew::{
 
 use crate::{Title, TitleHeadingLevels, TitleSizes};
 
-pub struct AboutModalBoxHeader
-{
-    props: AboutModalBoxHeaderProps,
-}
+pub struct AboutModalBoxHeader;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct AboutModalBoxHeaderProps
@@ -27,41 +24,19 @@ impl Component for AboutModalBoxHeader
     type Message = ();
     type Properties = AboutModalBoxHeaderProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
-            <div class=classes!("pf-c-about-modal-box__header", self.props.class_name.clone())
+            <div class={classes!("pf-c-about-modal-box__header", ctx.props().class_name.clone())}
                 //{...props}
             >
-                <Title heading_level=TitleHeadingLevels::H1 size=TitleSizes::X4l id=self.props.id.clone()>
-                    {&self.props.product_name}
+                <Title heading_level={TitleHeadingLevels::H1} size={TitleSizes::X4l} id={ctx.props().id.clone()}>
+                    {&ctx.props().product_name}
                 </Title>
             </div>
         }

@@ -5,10 +5,7 @@ use yew::{
 use super::{ModalTitleIconVariants};
 
 
-pub struct ModalBoxTitle
-{
-    props: ModalBoxTitleProperties,
-}
+pub struct ModalBoxTitle;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct ModalBoxTitleProperties
@@ -37,38 +34,16 @@ impl Component for ModalBoxTitle
     type Message = ();
     type Properties = ModalBoxTitleProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
+        let label = if ctx.props().title_label.len() > 0
         {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
-    {
-        let label = if self.props.title_label.len() > 0
-        {
-            self.props.title_label.clone() 
+            ctx.props().title_label.clone() 
         }
         else
         { 
@@ -78,17 +53,17 @@ impl Component for ModalBoxTitle
 
         html!{
             <h1
-                id=self.props.id.clone()
+                id={ctx.props().id.clone()}
                 // ref={h1}
-                class=classes!(
+                class={classes!(
                     "pf-c-modal-box__title", 
-                    if self.props.title_icon_variant.is_some() { "pf-m-icon" } else { "" },
-                    self.props.class_name.clone()
-                )
+                    if ctx.props().title_icon_variant.is_some() { "pf-m-icon" } else { "" },
+                    ctx.props().class_name.clone()
+                )}
                 // {...props}
             >
                 {
-                    if let Some(title_icon) = &self.props.title_icon_variant
+                    if let Some(title_icon) = &ctx.props().title_icon_variant
                     {
                         html!{
                             <span class="pf-c-modal-box__title-icon">
@@ -127,7 +102,7 @@ impl Component for ModalBoxTitle
                     if label.len() > 0
                     {
                         html!{
-                            <span class="pf-u-screen-reader">{&self.props.title_label}</span>
+                            <span class="pf-u-screen-reader">{&ctx.props().title_label}</span>
                         }
                     }
                     else
@@ -135,7 +110,7 @@ impl Component for ModalBoxTitle
                         html!{}
                     }
                 }
-                <span class="pf-c-modal-box__title">{&self.props.title}</span>
+                <span class="pf-c-modal-box__title">{&ctx.props().title}</span>
             </h1>
         }
     }

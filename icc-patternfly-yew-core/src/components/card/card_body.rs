@@ -4,10 +4,7 @@ use yew::{
 };
 
 
-pub struct CardBody
-{
-    props: CardBodyProperties,
-}
+pub struct CardBody;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct CardBodyProperties
@@ -31,54 +28,32 @@ impl Component for CardBody
     type Message = ();
     type Properties = CardBodyProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
-    {
-        let mut component = VTag::new(self.props.component.clone());
+        let mut component = VTag::new(ctx.props().component.clone());
 
         // Build list of classes
         let mut classes = String::from("pf-c-card__body");
 
-        if !self.props.is_filled { classes += " pf-m-no-fill" }
+        if !ctx.props().is_filled { classes += " pf-m-no-fill" }
         
         // Add extra classes specified on the parent
-        if self.props.class_name.len() > 0
+        if ctx.props().class_name.len() > 0
         {
             classes += " ";
-            classes += &self.props.class_name;
+            classes += &ctx.props().class_name;
         }
 
         component.add_attribute("class", classes);
 
         //     {...props}
 
-        component.add_children(self.props.children.iter());
+        component.add_children(ctx.props().children.iter());
 
         component.into()
     }

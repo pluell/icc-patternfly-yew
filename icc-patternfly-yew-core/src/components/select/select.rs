@@ -3,14 +3,14 @@ use yew::{
     html::{ChildrenWithProps},
     prelude::*,
 };
+use std::marker::PhantomData;
 
 use super::*;
 
 
 pub struct Select<V: ToString + PartialEq + Clone + 'static>
 {
-    link: ComponentLink<Self>,
-    props: SelectProperties<V>,
+    _phantom: PhantomData<V>,
     menu_ref: NodeRef,
 }
 
@@ -153,77 +153,62 @@ impl<V: ToString + PartialEq + Clone + 'static> Component for Select<V>
     type Message = SelectMsg;
     type Properties = SelectProperties<V>;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
         Self {
-            link,
-            props,
+            _phantom: PhantomData,
             menu_ref: NodeRef::default(),
         }
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             SelectMsg::ToggleList(is_open) => {
-                self.props.ontoggle.emit(is_open);
+                ctx.props().ontoggle.emit(is_open);
 
                 false
             },
         }
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div class="pf-c-select">
                 <SelectToggle
-                    id=self.props.toggle_id.clone()
-                    menu_ref=self.menu_ref.clone()
-                    is_open=self.props.is_open
-                    is_plain=self.props.is_plain
-                    is_disabled=self.props.is_disabled
-                    ontoggle=self.link.callback(|is_open| SelectMsg::ToggleList(is_open))
-                    variant=self.props.variant.clone()
-                    aria_labelledby=self.props.aria_labelledby.clone()
-                    aria_label=self.props.aria_label.clone()
+                    id={ctx.props().toggle_id.clone()}
+                    menu_ref={self.menu_ref.clone()}
+                    is_open={ctx.props().is_open}
+                    is_plain={ctx.props().is_plain}
+                    is_disabled={ctx.props().is_disabled}
+                    ontoggle={ctx.link().callback(|is_open| SelectMsg::ToggleList(is_open))}
+                    variant={ctx.props().variant.clone()}
+                    aria_labelledby={ctx.props().aria_labelledby.clone()}
+                    aria_label={ctx.props().aria_label.clone()}
                 >
                 {
-                    match self.props.variant
+                    match ctx.props().variant
                     {
                         SelectVariant::Single => {
                             html!{
                                 <div class="pf-c-select__toggle-wrapper">
-                                    <span class="pf-c-select__toggle-text">{ self.get_display_string() }</span>
+                                    <span class="pf-c-select__toggle-text">{ self.get_display_string(ctx) }</span>
                                 </div>
                             }
                         },
                         SelectVariant::Checkbox => {
                             html!{
                                 <div class="pf-c-select__toggle-wrapper">
-                                    <span class="pf-c-select__toggle-text">{ self.props.placeholder_text.clone() }</span>
+                                    <span class="pf-c-select__toggle-text">{ ctx.props().placeholder_text.clone() }</span>
                                     {
-                                        if self.props.selections.len() > 0
+                                        if ctx.props().selections.len() > 0
                                         {
                                             html!{
                                                 <div class="pf-c-select__toggle-badge">
-                                                    <span class="pf-c-badge pf-m-read">{self.props.selections.len()}</span>
+                                                    <span class="pf-c-badge pf-m-read">{ctx.props().selections.len()}</span>
                                                 </div>
                                             }
                                         }
@@ -245,14 +230,14 @@ impl<V: ToString + PartialEq + Clone + 'static> Component for Select<V>
                 }
                 </SelectToggle>
                 {
-                    if self.props.is_open
+                    if ctx.props().is_open
                     {
                         html!{
                             <SelectMenu
-                                ref=self.menu_ref.clone()
-                                variant=self.props.variant.clone()
+                                ref={self.menu_ref.clone()}
+                                variant={ctx.props().variant.clone()}
                             >
-                                { self.render_select_list() }
+                                { self.render_select_list(ctx) }
                             </SelectMenu>
                         }
                     }
@@ -268,22 +253,24 @@ impl<V: ToString + PartialEq + Clone + 'static> Component for Select<V>
 
 impl<V: ToString + PartialEq + Clone + 'static> Select<V>
 {
-    fn render_select_list(&self) -> Html
+    fn render_select_list(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props.children.is_empty()
+        if ctx.props().children.is_empty()
         {
             html!{}
         }
         else
         {
             html! {
-                for self.props.children.iter()
+                for ctx.props().children.iter()
                     .map(|mut select_opt| {
-                        select_opt.props.is_selected = self.props.selections.contains(&select_opt.props.opt_val);
+                        let mut props = (&*select_opt.props).clone();
 
-                        select_opt.props.variant = self.props.variant.clone();
-                        
-                        select_opt.props.onclick = self.props.onselect.clone();
+                        props.is_selected = ctx.props().selections.contains(&props.opt_val);
+                        props.variant = ctx.props().variant.clone();
+                        props.onclick = ctx.props().onselect.clone();
+
+                        select_opt.props = std::rc::Rc::new(props);
 
                         select_opt
                     })
@@ -291,14 +278,14 @@ impl<V: ToString + PartialEq + Clone + 'static> Select<V>
         }
     }
 
-    fn get_display_string(&self) -> Html
+    fn get_display_string(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props.selections.len() == 1
+        if ctx.props().selections.len() == 1
         {
             // Find selected item
-            for c in self.props.children.iter()
+            for c in ctx.props().children.iter()
             {
-                if self.props.selections.contains(&c.props.opt_val)
+                if ctx.props().selections.contains(&c.props.opt_val)
                 {
                     // Display the value of the select option if it matches the selected key
                     match &c.props.opt_val
@@ -319,6 +306,6 @@ impl<V: ToString + PartialEq + Clone + 'static> Select<V>
         }
 
         // Use placeholder text if there is a placeholder
-        self.props.placeholder_text.clone()
+        ctx.props().placeholder_text.clone()
     }
 }

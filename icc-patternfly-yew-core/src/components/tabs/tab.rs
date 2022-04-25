@@ -2,10 +2,7 @@ use yew::{
     prelude::*,
 };
 
-pub struct Tab
-{
-    props: TabProperties,
-}
+pub struct Tab;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct TabProperties
@@ -37,34 +34,12 @@ impl Component for Tab
     type Message = ();
     type Properties = TabProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, _: &Context<Self>) -> Html
     {
         html!{}
     }

@@ -13,10 +13,7 @@ const SPINNER_SIZE_CLASSES: &'static [&'static str] = &[
     "pf-m-xl",
 ];
 
-pub struct Spinner
-{
-    props: SpinnerProperties,
-}
+pub struct Spinner;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct SpinnerProperties
@@ -43,57 +40,35 @@ impl Component for Spinner
     type Message = ();
     type Properties = SpinnerProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         // Get the base component if using the new SVG or old span
-        let mut component = if self.props.is_svg { VTag::new("svg") } else { VTag::new("span") };
+        let mut component = if ctx.props().is_svg { VTag::new("svg") } else { VTag::new("span") };
 
         component.add_attribute("role", "progressbar".to_string());
 
         component.add_attribute("class", 
             format!("pf-c-spinner {} {}",
-                SPINNER_SIZE_CLASSES[self.props.size.clone() as usize],
-                &self.props.class_name
+                SPINNER_SIZE_CLASSES[ctx.props().size.clone() as usize],
+                &ctx.props().class_name
         ));
 
-        if self.props.aria_valuetext.len() > 0
+        if ctx.props().aria_valuetext.len() > 0
         {
-            component.add_attribute("aria-valuetext", self.props.aria_valuetext.to_string());
+            component.add_attribute("aria-valuetext", ctx.props().aria_valuetext.to_string());
         }
 
-        if self.props.diameter.len() > 0
+        if ctx.props().diameter.len() > 0
         {
-            component.add_attribute("style", format!("--pf-c-spinner--diameter: {}", self.props.diameter));
+            component.add_attribute("style", format!("--pf-c-spinner--diameter: {}", ctx.props().diameter));
         }
 
-        if self.props.is_svg
+        if ctx.props().is_svg
         {
             component.add_attribute("viewBox", "0 0 100 100".to_string());
 

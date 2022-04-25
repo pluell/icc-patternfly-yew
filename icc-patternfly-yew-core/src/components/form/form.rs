@@ -2,10 +2,7 @@ use yew::{
     prelude::*,
 };
 
-pub struct Form
-{
-    props: FormProperties,
-}
+pub struct Form;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct FormProperties
@@ -28,46 +25,24 @@ impl Component for Form
     type Message = ();
     type Properties = FormProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <form
-                no_validate=true.to_string()
-                class=classes!(
+                no_validate={true.to_string()}
+                class={classes!(
                     "pf-c-form",
-                    if self.props.is_horizontal {"pf-m-horizontal"} else {""},
-                    if self.props.is_width_limited {"pf-m-limit-width"} else {""},
-                    self.props.class_name.to_string(),
-                )
+                    if ctx.props().is_horizontal {"pf-m-horizontal"} else {""},
+                    if ctx.props().is_width_limited {"pf-m-limit-width"} else {""},
+                    ctx.props().class_name.to_string(),
+                )}
             >
-                { self.props.children.clone() }
+                { ctx.props().children.clone() }
             </form>
         }
     }

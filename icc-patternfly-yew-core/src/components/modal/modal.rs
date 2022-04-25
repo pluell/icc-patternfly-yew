@@ -14,8 +14,6 @@ use super::{ModalVariants, ModalContent, ModalTitleIconVariants};
 
 pub struct Modal
 {
-    props: ModalProperties,
-    link: ComponentLink<Modal>,
     html_body: HtmlElement,
     container_node: NodeRef,
     key_listener_handle: Option<EventListener>,
@@ -113,7 +111,7 @@ impl Component for Modal
     type Message = ModalMsg;
     type Properties = ModalProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
         // Get the body component as a default target container
         let html_body = web_sys::window()
@@ -124,43 +122,27 @@ impl Component for Modal
             .expect("Unable to load the HTML body element!");
 
         Self {
-            props,
-            link,
             html_body,
             container_node: NodeRef::default(),
             key_listener_handle: None,
         }
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             ModalMsg::OnKeyDown(event) => {
-                if event.key_code() == KeyCodes::EscapeKey as u32 && self.props.is_open
+                if event.key_code() == KeyCodes::EscapeKey as u32 && ctx.props().is_open
                 {
-                    if let Some(onescapepress) = &self.props.onescapepress
+                    if let Some(onescapepress) = &ctx.props().onescapepress
                     {
                         onescapepress.emit(event);
                     }
                     else
                     {
-                        self.props.onclose.emit(());
+                        ctx.props().onclose.emit(());
                     }
                 }
             },
@@ -169,45 +151,45 @@ impl Component for Modal
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
-            <div ref=self.container_node.clone()>
+            <div ref={self.container_node.clone()}>
                 <ModalContent
                     // {...props}
-                    children=self.props.children.clone()
-                    is_open=self.props.is_open
-                    header=self.props.header.clone()
-                    show_close=self.props.show_close
-                    onclose=self.props.onclose.clone()
-                    box_id=self.props.id.clone()
+                    children={ctx.props().children.clone()}
+                    is_open={ctx.props().is_open}
+                    header={ctx.props().header.clone()}
+                    show_close={ctx.props().show_close}
+                    onclose={ctx.props().onclose.clone()}
+                    box_id={ctx.props().id.clone()}
                     // labelId={this.labelId}
                     // descriptorId={this.descriptorId}
-                    title=self.props.title.clone()
-                    title_icon_variant=self.props.title_icon_variant.clone()
-                    title_label=self.props.title_label.clone()
-                    aria_label=self.props.aria_label.clone()
-                    aria_describedby=self.props.aria_describedby.clone()
-                    aria_labelledby=self.props.aria_labelledby.clone()
+                    title={ctx.props().title.clone()}
+                    title_icon_variant={ctx.props().title_icon_variant.clone()}
+                    title_label={ctx.props().title_label.clone()}
+                    aria_label={ctx.props().aria_label.clone()}
+                    aria_describedby={ctx.props().aria_describedby.clone()}
+                    aria_labelledby={ctx.props().aria_labelledby.clone()}
                     // ouiaId={ouiaId !== undefined ? ouiaId : this.state.ouiaStateId}
                     // ouiaSafe={ouiaSafe}
-                    footer=self.props.footer.clone()
-                    actions=self.props.actions.clone()
-                    width=self.props.width.clone()
-                    description=self.props.description.clone()
-                    variant=self.props.variant.clone()
-                    has_no_body_wrapper=self.props.has_no_body_wrapper
-                    position_top=self.props.position_top
-                    position_offset=self.props.position_offset.clone()
+                    footer={ctx.props().footer.clone()}
+                    actions={ctx.props().actions.clone()}
+                    width={ctx.props().width.clone()}
+                    description={ctx.props().description.clone()}
+                    variant={ctx.props().variant.clone()}
+                    has_no_body_wrapper={ctx.props().has_no_body_wrapper}
+                    position_top={ctx.props().position_top}
+                    position_offset={ctx.props().position_offset.clone()}
                 />
             </div>
         }
     }
 
-    fn rendered(&mut self, _first_render: bool)
+    fn rendered(&mut self, ctx: &Context<Self>, _first_render: bool)
     {
         // Get target element to attach the modal dialog to
-        let target = if let Some(append_to) = &self.props.append_to {
+        let target = if let Some(append_to) = &ctx.props().append_to {
             append_to.clone()
         } else {
             self.html_body.clone()
@@ -218,7 +200,7 @@ impl Component for Modal
 
         if !target_classes.contains("pf-c-backdrop__open")
         {
-            if self.props.is_open
+            if ctx.props().is_open
             {
                 target_classes += " pf-c-backdrop__open";
             }
@@ -226,7 +208,7 @@ impl Component for Modal
         else
         {
             // Remove the backdrop open class if the modal is closed now
-            if !self.props.is_open
+            if !ctx.props().is_open
             {
                 let class_len = " pf-c-backdrop__open".len();
                 let class_offset = target_classes.find(" pf-c-backdrop__open").unwrap_or(target_classes.len());
@@ -240,7 +222,7 @@ impl Component for Modal
         // Set up the key handler event on the target for the user hitting "esc"
         if self.key_listener_handle.is_none()
         {
-            let callback = self.link.callback(|event| ModalMsg::OnKeyDown(event));
+            let callback = ctx.link().callback(|event| ModalMsg::OnKeyDown(event));
 
             let listener = move |event: &Event| {
                 // Try to convert event to KeyboardEvent

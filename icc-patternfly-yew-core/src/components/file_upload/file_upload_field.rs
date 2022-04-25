@@ -12,11 +12,7 @@ use crate::{
 };
 
 
-pub struct FileUploadField
-{
-    props: FileUploadFieldProperties,
-    link: ComponentLink<FileUploadField>,
-}
+pub struct FileUploadField;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct FileUploadFieldProperties
@@ -116,101 +112,84 @@ impl Component for FileUploadField
     type Message = FileUploadFieldMsg;
     type Properties = FileUploadFieldProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-            link,
-        }
-    }
-
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
+        Self
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             FileUploadFieldMsg::OnBrowseButtonClick => {
-                self.props.on_browse_button_click.emit(());
+                ctx.props().on_browse_button_click.emit(());
             },
             FileUploadFieldMsg::OnClearButtonClick => {
-                self.props.on_clear_button_click.emit(());
+                ctx.props().on_clear_button_click.emit(());
             },
         }
 
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div
-                class=classes!(
+                class={classes!(
                     "pf-c-file-upload",
                     // isDragActive && styles.modifiers.dragHover,
                     // isLoading && styles.modifiers.loading,
-                    &self.props.class_name
-                )
+                    &ctx.props().class_name
+                )}
                 // ref={containerRef}
                 // {...props}
             >
                 <div class="pf-c-file-upload__file-select">
                     <InputGroup>
                         <TextInput
-                            is_read_only=true // Always read-only regardless of isReadOnly prop (which is just for the TextArea)
-                            is_disabled=self.props.is_disabled
-                            id=format!("{}-filename", self.props.id)
+                            is_read_only={true} // Always read-only regardless of isReadOnly prop (which is just for the TextArea)
+                            is_disabled={ctx.props().is_disabled}
+                            id={format!("{}-filename", ctx.props().id)}
                             // name={`${id}-filename`}
                             // aria-label={filenameAriaLabel}
                             // placeholder={filenamePlaceholder}
                             // aria-describedby={`${id}-browse-button`}
-                            value=self.props.filename.clone()
+                            value={ctx.props().filename.clone()}
                         />
                         <Button
-                            id=format!("{}-browse-button", self.props.id)
-                            variant=ButtonVariant::Control
-                            onclick=self.link.callback(|_| FileUploadFieldMsg::OnBrowseButtonClick)
-                            is_disabled=self.props.is_disabled
+                            id={format!("{}-browse-button", ctx.props().id)}
+                            variant={ButtonVariant::Control}
+                            onclick={ctx.link().callback(|_| FileUploadFieldMsg::OnBrowseButtonClick)}
+                            is_disabled={ctx.props().is_disabled}
                         >
-                            {&self.props.browse_button_text}
+                            {&ctx.props().browse_button_text}
                         </Button>
                         <Button
-                            variant=ButtonVariant::Control
-                            is_disabled={self.props.is_disabled || self.props.is_clear_button_disabled}
-                            onclick=self.link.callback(|_| FileUploadFieldMsg::OnClearButtonClick)
+                            variant={ButtonVariant::Control}
+                            is_disabled={ctx.props().is_disabled || ctx.props().is_clear_button_disabled}
+                            onclick={ctx.link().callback(|_| FileUploadFieldMsg::OnClearButtonClick)}
                         >
-                            {&self.props.clear_button_text}
+                            {&ctx.props().clear_button_text}
                         </Button>
                     </InputGroup>
                 </div>
                 <div class="pf-c-file-upload__file-details">
                 {
-                    if !self.props.hide_default_preview // && type is text
+                    if !ctx.props().hide_default_preview // && type is text
                     {
                         html!{
                             <TextArea
-                                is_read_only=self.props.is_read_only    // {isReadOnly || (!!filename && !allowEditingUploadedText)}
-                                is_disabled=self.props.is_disabled
-                                is_required=self.props.is_required
-                                resize_orientation=TextAreResizeOrientation::Vertical
-                                validated=self.props.validated.clone()
-                                id=self.props.id.clone()
-                                // name=&self.props.id
-                                aria_label=self.props.aria_label.clone()
-                                value=self.props.value.clone()
+                                is_read_only={ctx.props().is_read_only}    // {isReadOnly || (!!filename && !allowEditingUploadedText)}
+                                is_disabled={ctx.props().is_disabled}
+                                is_required={ctx.props().is_required}
+                                resize_orientation={TextAreResizeOrientation::Vertical}
+                                validated={ctx.props().validated.clone()}
+                                id={ctx.props().id.clone()}
+                                // name={&ctx.props().id}
+                                aria_label={ctx.props().aria_label.clone()}
+                                value={ctx.props().value.clone()}
                                 // onchange={onTextAreaChange}
                             />
                         }
@@ -221,13 +200,13 @@ impl Component for FileUploadField
                     }
                 }
                 {
-                    if self.props.is_loading
+                    if ctx.props().is_loading
                     {
                         html!{
                             <div class="pf-c-file-upload__file-details-spinner">
                                 <Spinner
-                                    size=SpinnerSize::Lg 
-                                    aria_valuetext=self.props.spinner_aria_value_text.clone()
+                                    size={SpinnerSize::Lg} 
+                                    aria_valuetext={ctx.props().spinner_aria_value_text.clone()}
                                 />
                             </div>
                         }
@@ -239,7 +218,7 @@ impl Component for FileUploadField
                 }
                 </div>
                 {
-                    for self.props.children.iter()
+                    for ctx.props().children.iter()
                 }
             </div>
         }

@@ -12,10 +12,7 @@ pub struct FormFiledGroupHeaderTitleTextObject
     pub id: String,
 }
 
-pub struct FormFieldGroupHeader
-{
-    props: FormFieldGroupHeaderProps,
-}
+pub struct FormFieldGroupHeader;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct FormFieldGroupHeaderProps
@@ -39,50 +36,28 @@ impl Component for FormFieldGroupHeader
     type Message = ();
     type Properties = FormFieldGroupHeaderProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div 
-                class=classes!(
+                class={classes!(
                     "pf-c-form__field-group-header",
-                    self.props.class_name.clone(),
-                )
+                    ctx.props().class_name.clone(),
+                )}
                 // {...props}
             >
                 <div class="pf-c-form__field-group-header-main">
                 {
-                    if let Some(title_text) = &self.props.title_text
+                    if let Some(title_text) = &ctx.props().title_text
                     {
                         html!{
                             <div class="pf-c-form__field-group-header-title">
-                                <div class="pf-c-form__field-group-header-title-text" id=title_text.id.clone()>
+                                <div class="pf-c-form__field-group-header-title-text" id={title_text.id.clone()}>
                                     {title_text.text.clone()}
                                 </div>
                             </div>
@@ -94,7 +69,7 @@ impl Component for FormFieldGroupHeader
                     }
                 }
                 {
-                    if let Some(title_description) = &self.props.title_description
+                    if let Some(title_description) = &ctx.props().title_description
                     {
                         html!{
                             <div class="pf-c-form__field-group-header-description">{title_description.clone()}</div>
@@ -108,7 +83,7 @@ impl Component for FormFieldGroupHeader
                 </div>
                 <div class="pf-c-form__field-group-header-actions">
                 {
-                    if let Some(actions) = &self.props.actions
+                    if let Some(actions) = &ctx.props().actions
                     {
                         actions.clone()
                     }

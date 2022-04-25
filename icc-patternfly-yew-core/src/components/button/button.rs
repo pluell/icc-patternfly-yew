@@ -18,7 +18,6 @@ const BTN_VARIANT_STYLES: &'static [&'static str] = &[
 
 pub struct Button
 {
-    props: ButtonProperties,
     button_ref: NodeRef,
 }
 
@@ -105,39 +104,18 @@ impl Component for Button
     type Message = ();
     type Properties = ButtonProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(ctx: &Context<Self>) -> Self
     {
-        let button_ref = props.inner_ref.clone().unwrap_or(NodeRef::default());
+        let button_ref = ctx.props().inner_ref.clone().unwrap_or(NodeRef::default());
 
         Self {
-            props,
             button_ref,
         }
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
-    {
-        let cls_loading = if let Some(is_loading) = self.props.is_loading {
+        let cls_loading = if let Some(is_loading) = ctx.props().is_loading {
             match is_loading
             {
                 true => "pf-m-progress pf-m-in-progress",
@@ -151,42 +129,42 @@ impl Component for Button
 
         html!{
             <button
-                id=self.props.id.clone()
-                aria-disabled=(self.props.is_disabled || self.props.is_aria_disabled).to_string()
-                aria-label=self.props.aria_label.clone()
-                class=classes!(
+                id={ctx.props().id.clone()}
+                aria-disabled={(ctx.props().is_disabled || ctx.props().is_aria_disabled).to_string()}
+                aria-label={ctx.props().aria_label.clone()}
+                class={classes!(
                     "pf-c-button",
-                    BTN_VARIANT_STYLES[self.props.variant.clone() as usize],
-                    if self.props.is_block {"pf-m-block"} else {""},
-                    if self.props.is_disabled {"pf-m-disabled"} else {""},
-                    if self.props.is_aria_disabled {"pf-m-aria-disabled"} else {""},
-                    if self.props.is_active {"pf-m-active"} else {""},
-                    if self.props.is_inline && self.props.variant == ButtonVariant::Link {"pf-m-inline"} else {""},
-                    if self.props.is_danger && 
-                        (self.props.variant == ButtonVariant::Secondary || self.props.variant == ButtonVariant::Link) {"pf-m-danger"} else {""},
+                    BTN_VARIANT_STYLES[ctx.props().variant.clone() as usize],
+                    if ctx.props().is_block {"pf-m-block"} else {""},
+                    if ctx.props().is_disabled {"pf-m-disabled"} else {""},
+                    if ctx.props().is_aria_disabled {"pf-m-aria-disabled"} else {""},
+                    if ctx.props().is_active {"pf-m-active"} else {""},
+                    if ctx.props().is_inline && ctx.props().variant == ButtonVariant::Link {"pf-m-inline"} else {""},
+                    if ctx.props().is_danger && 
+                        (ctx.props().variant == ButtonVariant::Secondary || ctx.props().variant == ButtonVariant::Link) {"pf-m-danger"} else {""},
                     cls_loading,
-                    if self.props.is_small {"pf-m-small"} else {""},
-                    if self.props.is_large {"pf-m-display-lg"} else {""},
-                    self.props.class_name.clone(),
-                )
-                onclick=self.props.onclick.clone()
-                disabled=self.props.is_disabled
-                type=BTN_TYPES[self.props.btn_type.clone() as usize]
+                    if ctx.props().is_small {"pf-m-small"} else {""},
+                    if ctx.props().is_large {"pf-m-display-lg"} else {""},
+                    ctx.props().class_name.clone(),
+                )}
+                onclick={ctx.props().onclick.clone()}
+                disabled={ctx.props().is_disabled}
+                type={BTN_TYPES[ctx.props().btn_type.clone() as usize]}
                 role="button"
-                ref=self.button_ref.clone()
-                aria-controls=self.props.aria_controls.clone()
-                aria-expanded=self.props.aria_expanded.clone()
-                aria-labelledby=self.props.aria_labelledby.clone()
+                ref={self.button_ref.clone()}
+                aria-controls={ctx.props().aria_controls.clone()}
+                aria-expanded={ctx.props().aria_expanded.clone()}
+                aria-labelledby={ctx.props().aria_labelledby.clone()}
             >
             {
-                if let Some(is_loading) = self.props.is_loading
+                if let Some(is_loading) = ctx.props().is_loading
                 {
                     match is_loading
                     {
                         true => {
                             html!{
                                 <span class="pf-c-button__progress">
-                                    <Spinner size=SpinnerSize::Md aria_valuetext=self.props.spinner_aria_value_text.clone() />
+                                    <Spinner size={SpinnerSize::Md} aria_valuetext={ctx.props().spinner_aria_value_text.clone()} />
                                 </span>
                             }
                         },
@@ -199,16 +177,16 @@ impl Component for Button
                 }
             }
             {
-                if let Some(icon) = &self.props.icon
+                if let Some(icon) = &ctx.props().icon
                 {
-                    if self.props.variant != ButtonVariant::Plain && self.props.icon_position == ButtonIconPosition::Left
+                    if ctx.props().variant != ButtonVariant::Plain && ctx.props().icon_position == ButtonIconPosition::Left
                     {
                         html!{
                             <span 
-                                class=classes!(
+                                class={classes!(
                                     "pf-c-button__icon",
                                     "pf-m-start"
-                                )
+                                )}
                             >
                                 {icon.clone()}
                             </span>
@@ -225,18 +203,18 @@ impl Component for Button
                 }
                 
             }
-            { self.props.children.clone() }
+            { ctx.props().children.clone() }
             {
-                if let Some(icon) = &self.props.icon
+                if let Some(icon) = &ctx.props().icon
                 {
-                    if self.props.variant != ButtonVariant::Plain && self.props.icon_position == ButtonIconPosition::Right
+                    if ctx.props().variant != ButtonVariant::Plain && ctx.props().icon_position == ButtonIconPosition::Right
                     {
                         html!{
                             <span 
-                                class=classes!(
+                                class={classes!(
                                     "pf-c-button__icon",
                                     "pf-m-end"
-                                )
+                                )}
                             >
                                 {icon.clone()}
                             </span>

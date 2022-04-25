@@ -22,10 +22,7 @@ const TOOLBAR_GROUP_STYLE: &'static [&'static str] = &[
     "pf-m-button-group",
 ];
 
-pub struct ToolbarGroup
-{
-    props: ToolbarGroupProperties,
-}
+pub struct ToolbarGroup;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct ToolbarGroupProperties
@@ -53,62 +50,46 @@ impl Component for ToolbarGroup
     type Message = ();
     type Properties = ToolbarGroupProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
+        // Update the child properties if necessary
+        for child in ctx.props().children.iter()
         {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
+            match child
+            {
+                ToolbarGroupChild::Filter(mut child) => {
+                    let mut props = (&*child.props).clone();
+                    
+                    if let Some(chip_group_content_ref) = &ctx.props().chip_group_content_ref
+                    {
+                        props.chip_group_content_ref = chip_group_content_ref.clone();
+                    }
 
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
+                    props.update_number_filters = ctx.props().update_number_filters.clone();
 
-    fn view(&self) -> Html
-    {
+                    child.props = std::rc::Rc::new(props);
+                },
+                _ => {}
+            }
+        }
+
         html!{
             <div
-                class=classes!(
+                class={classes!(
                     "pf-c-toolbar__group",
-                    TOOLBAR_GROUP_STYLE[self.props.variant.clone() as usize],
-                    &self.props.class_name,
-                )
-                hidden=self.props.hidden
-                aria-hidden=self.props.hidden.to_string()
+                    TOOLBAR_GROUP_STYLE[ctx.props().variant.clone() as usize],
+                    &ctx.props().class_name,
+                )}
+                hidden={ctx.props().hidden}
+                aria-hidden={ctx.props().hidden.to_string()}
             >
             {
-                for self.props.children.iter().map(|mut child| {
-                    match child.props
-                    {
-                        ToolbarGroupTypes::Filter(ref mut props) => {
-                            if let Some(chip_group_content_ref) = &self.props.chip_group_content_ref
-                            {
-                                props.chip_group_content_ref = chip_group_content_ref.clone();
-                            }
-
-                            props.update_number_filters = self.props.update_number_filters.clone();
-                        },
-                        _ => {}
-                    }
-                    
-                    child
-                })
+                for ctx.props().children.iter()
             }
             </div>
         }

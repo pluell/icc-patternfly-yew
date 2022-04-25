@@ -5,11 +5,7 @@ use yew::{
 use super::{DropdownItem, DropdownPosition};
 
 
-pub struct DropdownMenu
-{
-    link: ComponentLink<Self>,
-    props: DropdownMenuProperties,
-}
+pub struct DropdownMenu;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct DropdownMenuProperties
@@ -52,62 +48,45 @@ impl Component for DropdownMenu
     type Message = DropdownMenuMsg;
     type Properties = DropdownMenuProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            link,
-            props,
-        }
-    }
-
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
+        Self
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             DropdownMenuMsg::OnClickDiv => {
-                self.props.onselect.emit(());
+                ctx.props().onselect.emit(());
             }
         }
 
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props.component == "div"
+        if ctx.props().component == "div"
         {
             html!{
                 <div
-                    class=classes!(
+                    class={classes!(
                         "pf-c-dropdown__menu",
-                        if self.props.position == DropdownPosition::Right { "pf-m-align-right" } else { "" },
-                        self.props.class_name.clone()
-                    )
-                    hidden=!self.props.is_open
-                    onclick=self.link.callback(|_| DropdownMenuMsg::OnClickDiv)
+                        if ctx.props().position == DropdownPosition::Right { "pf-m-align-right" } else { "" },
+                        ctx.props().class_name.clone()
+                    )}
+                    hidden={!ctx.props().is_open}
+                    onclick={ctx.link().callback(|_| DropdownMenuMsg::OnClickDiv)}
                 >
-                    { for self.props.children.iter() }
+                    { for ctx.props().children.iter() }
                 </div>
             }
         }
         else
         {
-            if self.props.is_grouped
+            if ctx.props().is_grouped
             {
                 // TODO: Render grouped
                 html!{}
@@ -117,18 +96,22 @@ impl Component for DropdownMenu
 
 
                 html!{
-                    <@{self.props.component.clone()}
-                        class=classes!(
+                    <@{ctx.props().component.clone()}
+                        class={classes!(
                             "pf-c-dropdown__menu",
-                            if self.props.position == DropdownPosition::Right { "pf-m-align-right" } else { "" },
-                            self.props.class_name.clone(),
-                        )
-                        hidden=!self.props.is_open
-                        role="menu"
+                            if ctx.props().position == DropdownPosition::Right { "pf-m-align-right" } else { "" },
+                            ctx.props().class_name.clone(),
+                        )}
+                        hidden={!ctx.props().is_open}
+                        role={"menu"}
                     >
                     {
-                        for self.props.children.iter().map(|mut child| {
-                            child.props.onselect = self.props.onselect.clone();
+                        for ctx.props().children.iter().map(|mut child| {
+                            let mut props = (&*child.props).clone();
+                            
+                            props.onselect = ctx.props().onselect.clone();
+
+                            child.props = std::rc::Rc::new(props);
 
                             child
                         })

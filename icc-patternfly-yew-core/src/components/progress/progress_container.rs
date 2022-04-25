@@ -6,10 +6,7 @@ use yew::{
 use super::*;
 
 
-pub struct ProgressContainer
-{
-    props: ProgressContainerProps,
-}
+pub struct ProgressContainer;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct ProgressContainerProps
@@ -45,34 +42,12 @@ impl Component for ProgressContainer
     type Message = ();
     type Properties = ProgressContainerProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <>
@@ -85,16 +60,16 @@ impl Component for ProgressContainer
                 // Title   
                 // )}
                 <div
-                    class=classes!(
+                    class={classes!(
                         "pf-c-progress__description", 
-                        if self.props.is_title_truncated { "pf-m-truncate" } else { "" },
-                    )
-                    id=format!("{}-description", self.props.parent_id)
+                        if ctx.props().is_title_truncated { "pf-m-truncate" } else { "" },
+                    )}
+                    id={format!("{}-description", ctx.props().parent_id)}
                     aria-hidden="true"
                     // onMouseEnter={isTitleTruncated ? onMouseEnter : null}
                 >
                 {
-                    if let Some(title) = &self.props.title
+                    if let Some(title) = &ctx.props().title
                     {
                         &title
                     }
@@ -106,19 +81,19 @@ impl Component for ProgressContainer
                 </div>
                 <div class="pf-c-progress__status" aria-hidden="true">
                 {
-                    if self.props.measure_location == ProgressMeasureLocations::Top
-                        || self.props.measure_location == ProgressMeasureLocations::Outside
+                    if ctx.props().measure_location == ProgressMeasureLocations::Top
+                        || ctx.props().measure_location == ProgressMeasureLocations::Outside
                     {
                         html!{
                             <span class="pf-c-progress__measure">
                             {
-                                if let Some(label) = &self.props.label
+                                if let Some(label) = &ctx.props().label
                                 {
                                     label.clone()
                                 }
                                 else
                                 {
-                                    html!{format!("{}%", self.props.value)}
+                                    html!{format!("{}%", ctx.props().value)}
                                 }
                             }
                             </span>
@@ -130,7 +105,7 @@ impl Component for ProgressContainer
                     }
                 }
                 {
-                    if let Some(variant) = &self.props.variant
+                    if let Some(variant) = &ctx.props().variant
                     {
                         match variant
                         {
@@ -165,13 +140,13 @@ impl Component for ProgressContainer
                 </div>
                 <ProgressBar 
                     role="progressbar" 
-                    progress_bar_aria_props=self.props.progress_bar_aria_props.clone() 
-                    value=self.props.value
+                    progress_bar_aria_props={ctx.props().progress_bar_aria_props.clone()} 
+                    value={ctx.props().value}
                 >
                 {
-                    if self.props.measure_location == ProgressMeasureLocations::Inside
+                    if ctx.props().measure_location == ProgressMeasureLocations::Inside
                     {
-                        format!("{}%", self.props.value)
+                        format!("{}%", ctx.props().value)
                     }
                     else
                     {

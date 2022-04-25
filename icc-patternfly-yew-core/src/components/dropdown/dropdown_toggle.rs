@@ -8,10 +8,7 @@ use crate::{ButtonType};
 use super::{Toggle};
 
 
-pub struct DropdownToggle
-{
-    props: DropdownToggleProperties,
-}
+pub struct DropdownToggle;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct DropdownToggleProperties
@@ -76,54 +73,32 @@ impl Component for DropdownToggle
     type Message = ();
     type Properties = DropdownToggleProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <Toggle
                 // {...props}
-                id=self.props.id.clone()
-                class_name=self.props.class_name.clone()
-                is_open=self.props.is_open
-                menu_ref=self.props.menu_ref.clone()
-                is_active=self.props.is_active
-                is_disabled=self.props.is_disabled
-                is_plain=self.props.is_plain
-                is_primary=self.props.is_primary
-                ontoggle=self.props.ontoggle.clone()
-                aria_haspopup=self.props.aria_haspopup.clone()
-                toggle_type=self.props.toggle_type.clone()
+                id={ctx.props().id.clone()}
+                class_name={ctx.props().class_name.clone()}
+                is_open={ctx.props().is_open}
+                menu_ref={ctx.props().menu_ref.clone()}
+                is_active={ctx.props().is_active}
+                is_disabled={ctx.props().is_disabled}
+                is_plain={ctx.props().is_plain}
+                is_primary={ctx.props().is_primary}
+                ontoggle={ctx.props().ontoggle.clone()}
+                aria_haspopup={ctx.props().aria_haspopup.clone()}
+                toggle_type={ctx.props().toggle_type.clone()}
                 // {...ouiaProps}
                 // {...(splitButtonItems && { isSplitButton: true, 'aria-label': props['aria-label'] || 'Select' })}
             >
                 {
-                    if let Some(icon) = &self.props.icon
+                    if let Some(icon) = &ctx.props().icon
                     {
                         html!{
                             <span class="pf-c-dropdown__toggle-icon">{ icon.clone() }</span>
@@ -135,25 +110,25 @@ impl Component for DropdownToggle
                     }
                 }
                 { 
-                    if self.props.children.is_empty()
+                    if ctx.props().children.is_empty()
                     {
                         html!{}
                     }
                     else
                     {
                         html!{
-                            <span class=if self.props.toggle_indicator.is_some() { "pf-c-dropdown__toggle-text" } else { "" }>
-                                { self.props.children.clone() }
+                            <span class={if ctx.props().toggle_indicator.is_some() { "pf-c-dropdown__toggle-text" } else { "" }}>
+                                { ctx.props().children.clone() }
                             </span>
                         }
                     }
                 }
                 {
-                    if let Some(toggle_indicator) = &self.props.toggle_indicator
+                    if let Some(toggle_indicator) = &ctx.props().toggle_indicator
                     {
                         html!{
-                            <span 
-                                class={if self.props.split_button_items.len() == 0 { "pf-c-dropdown__toggle-icon" } else { "" }}
+                            <span
+                                class={if ctx.props().split_button_items.len() == 0 { "pf-c-dropdown__toggle-icon" } else { "" }}
                             >
                                 { toggle_indicator.clone() }
                             </span>

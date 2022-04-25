@@ -3,10 +3,7 @@ use yew::{
 };
 
 
-pub struct DataListContent
-{
-    props: DataListContentProps,
-}
+pub struct DataListContent;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct DataListContentProps
@@ -38,53 +35,31 @@ impl Component for DataListContent
     type Message = ();
     type Properties = DataListContentProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <section
-                id=self.props.id.clone()
-                class=classes!(
+                id={ctx.props().id.clone()}
+                class={classes!(
                     "pf-c-data-list__expandable-content",
-                    self.props.class_name.clone()
-                )
-                hidden=self.props.is_hidden
-                aria-label=self.props.aria_label.to_string()
+                    ctx.props().class_name.clone()
+                )}
+                hidden={ctx.props().is_hidden}
+                aria-label={ctx.props().aria_label.to_string()}
                 // {...props}
             >
                 <div 
-                    class=classes!(
+                    class={classes!(
                         "pf-c-data-list__expandable-content-body", 
-                        if self.props.has_no_padding { "pf-m-no-padding" } else { "" }
-                    )
+                        if ctx.props().has_no_padding { "pf-m-no-padding" } else { "" }
+                    )}
                 >
-                    { for self.props.children.iter() }
+                    { for ctx.props().children.iter() }
                 </div>
             </section>
         }

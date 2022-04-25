@@ -11,10 +11,7 @@ pub struct BreadcrumbItemRenderArgs
 }
 
 
-pub struct BreadcrumbItem
-{
-    props: BreadcrumbItemProps,
-}
+pub struct BreadcrumbItem;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct BreadcrumbItemProps
@@ -53,51 +50,29 @@ impl Component for BreadcrumbItem
     type Message = ();
     type Properties = BreadcrumbItemProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
-    {
-        let aria_current = if self.props.is_active { Some("page") } else {None};
+        let aria_current = if ctx.props().is_active { Some("page") } else {None};
         let classes = classes!(
                         "pf-c-breadcrumb__link",
-                        if self.props.is_active {"pf-m-current"} else {""}
+                        if ctx.props().is_active {"pf-m-current"} else {""}
                     );
 
         html!{
             <li
                 //{...props}
-                class=classes!(
+                class={classes!(
                     "pf-c-breadcrumb__item",
-                    self.props.class_name.clone(),
-                )
+                    ctx.props().class_name.clone(),
+                )}
             >
             {
-                if self.props.show_divider
+                if ctx.props().show_divider
                 {
                     html!{
                         <span class="pf-c-breadcrumb__item-divider">
@@ -111,40 +86,40 @@ impl Component for BreadcrumbItem
                 }
             }
             {
-                if self.props.component == "button"
+                if ctx.props().component == "button"
                 {
                     html!{
                         <button
-                            class=classes
-                            aria-current=aria_current
+                            class={classes}
+                            aria-current={aria_current}
                             type="button"
                         >
-                            {for self.props.children.iter()}
+                            {for ctx.props().children.iter()}
                         </button>
                     }
                 }
-                else if self.props.is_dropdown
+                else if ctx.props().is_dropdown
                 {
                     html!{
                         <span class="pf-c-breadcrumb__dropdown">
-                            {for self.props.children.iter()}
+                            {for ctx.props().children.iter()}
                         </span>
                     }
                 }
-                else if let Some(render) = &self.props.render
+                else if let Some(render) = &ctx.props().render
                 {
                     render(BreadcrumbItemRenderArgs{
                         class_name: classes.to_string(),
                         aria_current,
                     })
                 }
-                else if let Some(to) = &self.props.to
+                else if let Some(to) = &ctx.props().to
                 {
-                    let mut component = VTag::new(self.props.component.clone());
+                    let mut component = VTag::new(ctx.props().component.clone());
             
                     component.add_attribute("href", to.to_string());
 
-                    if let Some(target) = &self.props.target
+                    if let Some(target) = &ctx.props().target
                     {
                         component.add_attribute("target", target.to_string());
                     }
@@ -156,14 +131,14 @@ impl Component for BreadcrumbItem
                         component.add_attribute("aria-current", aria_current.to_string());
                     }
                             
-                    component.add_children(self.props.children.iter());
+                    component.add_children(ctx.props().children.iter());
             
                     component.into()
                 }
                 else
                 {
                     html!{
-                        for self.props.children.iter()
+                        for ctx.props().children.iter()
                     }
                 }
             }

@@ -5,10 +5,7 @@ use yew::{
 use super::{InternalDropdownItem};
 
 
-pub struct DropdownItem
-{
-    props: DropdownItemProperties,
-}
+pub struct DropdownItem;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct DropdownItemProperties
@@ -82,61 +79,39 @@ impl Component for DropdownItem
     type Message = ();
     type Properties = DropdownItemProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <InternalDropdownItem
                 // context={context} // TODO
-                role="menuitem"
+                role={"menuitem"}
                 // tab_index={tabIndex}
-                class_name=self.props.class_name.clone()
-                component=self.props.component.clone()
-                is_disabled=self.props.is_disabled
-                is_plain_text=self.props.is_plain_text
-                is_hovered=self.props.is_hovered
-                href=self.props.href.clone()
-                tooltip=self.props.tooltip.clone()
-                tooltip_props=self.props.tooltip_props.clone()
-                list_item_class_name=self.props.list_item_class_name.clone()
-                onclick=self.props.onclick.clone() // TODO
-                additional_child=self.props.additional_child.clone()
-                custom_child=self.props.custom_child.clone()
-                icon=self.props.icon.clone()
-                auto_focus=self.props.auto_focus
-                style_children=self.props.style_children
-                description=self.props.description.clone()
+                class_name={ctx.props().class_name.clone()}
+                component={ctx.props().component.clone()}
+                is_disabled={ctx.props().is_disabled}
+                is_plain_text={ctx.props().is_plain_text}
+                is_hovered={ctx.props().is_hovered}
+                href={ctx.props().href.clone()}
+                tooltip={ctx.props().tooltip.clone()}
+                tooltip_props={ctx.props().tooltip_props.clone()}
+                list_item_class_name={ctx.props().list_item_class_name.clone()}
+                onclick={ctx.props().onclick.clone()} // TODO
+                additional_child={ctx.props().additional_child.clone()}
+                custom_child={ctx.props().custom_child.clone()}
+                icon={ctx.props().icon.clone()}
+                auto_focus={ctx.props().auto_focus}
+                style_children={ctx.props().style_children}
+                description={ctx.props().description.clone()}
                 // {...ouiaProps}
                 // {...props}
-                onselect=self.props.onselect.clone()
+                onselect={ctx.props().onselect.clone()}
             >
-            { self.props.children.clone() }
+            { ctx.props().children.clone() }
             </InternalDropdownItem>
         }
     }

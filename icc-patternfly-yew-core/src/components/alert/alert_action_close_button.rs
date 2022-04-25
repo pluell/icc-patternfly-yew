@@ -7,11 +7,7 @@ use icc_patternfly_yew_icons::{times_icon};
 use crate::{Button, ButtonVariant};
 
 
-pub struct AlertActionCloseButton
-{
-    link: ComponentLink<Self>,
-    props: AlertActionCloseButtonProps,
-}
+pub struct AlertActionCloseButton;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct AlertActionCloseButtonProps
@@ -44,54 +40,37 @@ impl Component for AlertActionCloseButton
     type Message = AlertActionCloseButtonMsg;
     type Properties = AlertActionCloseButtonProps;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_ctx: &Context<Self>) -> Self
     {
-        Self {
-            link,
-            props,
-        }
-    }
-
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
+        Self
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             AlertActionCloseButtonMsg::OnClick => {
-                self.props.onclose.emit(());
+                ctx.props().onclose.emit(());
             },
         }
 
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        let aria_label = if let Some(aria_label) = &self.props.aria_label {
+        let aria_label = if let Some(aria_label) = &ctx.props().aria_label {
             aria_label.clone()
         } else {
-            format!("Close {} alert: {}", self.props.variant_label, self.props.title)
+            format!("Close {} alert: {}", ctx.props().variant_label, ctx.props().title)
         };
 
         html!{
             <Button
-                variant=ButtonVariant::Plain
-                onclick=self.link.callback(|_| AlertActionCloseButtonMsg::OnClick)
-                aria_label=aria_label
+                variant={ButtonVariant::Plain}
+                onclick={ctx.link().callback(|_| AlertActionCloseButtonMsg::OnClick)}
+                {aria_label}
                 // {...props}
             >
             {

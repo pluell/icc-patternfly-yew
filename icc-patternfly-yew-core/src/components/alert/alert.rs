@@ -5,10 +5,7 @@ use yew::{
 
 use super::*;
 
-pub struct Alert
-{
-    props: AlertProps,
-}
+pub struct Alert;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct AlertProps
@@ -63,45 +60,23 @@ impl Component for Alert
     type Message = ();
     type Properties = AlertProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div
                 // ref={divRef}
-                class=classes!(
+                class={classes!(
                     "pf-c-alert",
-                    if self.props.is_inline { "pf-m-inline" } else { "" },
-                    self.props.variant.class(),
-                    &self.props.class_name
-                )
-                aria-label=self.props.aria_label.clone()
+                    if ctx.props().is_inline { "pf-m-inline" } else { "" },
+                    ctx.props().variant.class(),
+                    &ctx.props().class_name
+                )}
+                aria-label={ctx.props().aria_label.clone()}
                 // {...ouiaProps}
                 // {...(isLiveRegion && {
                 //     'aria-live': 'polite',
@@ -111,7 +86,7 @@ impl Component for Alert
                 // onMouseLeave={myOnMouseLeave}
                 // {...props}
             >
-                <AlertIcon variant=self.props.variant.clone() custom_icon=self.props.custom_icon.clone() />
+                <AlertIcon variant={ctx.props().variant.clone()} custom_icon={ctx.props().custom_icon.clone()} />
                 // if is_tooltip_visible
                 // {
                 //     <Tooltip content={getHeadingContent} position={tooltipPosition}>
@@ -120,15 +95,18 @@ impl Component for Alert
                 // }
                 // else
                 {
-                    self.view_title()
+                    self.view_title(ctx)
                 }
                 {
-                    if let Some(action_close) = &self.props.action_close
+                    if let Some(action_close) = &ctx.props().action_close
                     {
                         let mut action_button = action_close.clone();
+                        let mut props = (&*action_button.props).clone();
 
                         // Pass through the title for context
-                        action_button.props.title = self.props.title.clone();
+                        props.title = ctx.props().title.clone();
+
+                        action_button.props = std::rc::Rc::new(props);
 
                         html!{
                             <div class="pf-c-alert__action">
@@ -137,7 +115,6 @@ impl Component for Alert
                             }
                             </div>
                         }
-                        
                     }
                     else
                     {
@@ -148,14 +125,14 @@ impl Component for Alert
                     html!{
                         <div class="pf-c-alert__description">
                         {
-                            for self.props.children.iter()
+                            for ctx.props().children.iter()
                         }
                         </div>
                     }
 
                 }
                 {
-                    if let Some(action_links) = &self.props.action_links
+                    if let Some(action_links) = &ctx.props().action_links
                     {
                         html!{
                             <div class="pf-c-alert__action-group">
@@ -177,25 +154,25 @@ impl Component for Alert
 
 impl Alert
 {
-    pub fn view_title(&self) -> Html
+    pub fn view_title(&self, ctx: &Context<Self>) -> Html
     {
-        let variant_label = if self.props.variant_label.len() > 0 {
-            self.props.variant_label.clone()
+        let variant_label = if ctx.props().variant_label.len() > 0 {
+            ctx.props().variant_label.clone()
         } else {
-            format!("{} alert:", self.props.variant)
+            format!("{} alert:", ctx.props().variant)
         };
 
         html!{
             <h4
                 // {...(isTooltipVisible && { tabIndex: 0 })}
                 // ref={titleRef}
-                class=classes!(
+                class={classes!(
                     "pf-c-alert__title", 
-                    if self.props.truncate_title > 0 { "pf-m-truncate" } else { "" },
-                )
+                    if ctx.props().truncate_title > 0 { "pf-m-truncate" } else { "" },
+                )}
             >
                 <span class="pf-screen-reader">{&variant_label}</span>
-                {&self.props.title}
+                {&ctx.props().title}
             </h4>
         }
     }

@@ -12,8 +12,6 @@ use crate::{ButtonType, BTN_TYPES};
 
 pub struct Toggle
 {
-    link: ComponentLink<Self>,
-    props: ToggleProperties,
     _key_listener_handle: EventListener,
     button_ref: NodeRef,
 }
@@ -83,14 +81,14 @@ impl Component for Toggle
     type Message = ToggleMsg;
     type Properties = ToggleProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(ctx: &Context<Self>) -> Self
     {
         let document = web_sys::window()
             .expect("no global `window` exists")
             .document()
             .expect("should have a document on window");
     
-        let callback = link.callback(|event| ToggleMsg::OnDocClick(event));
+        let callback = ctx.link().callback(|event| ToggleMsg::OnDocClick(event));
 
         let listener = move |event: &Event| {
             // Try to convert event to MouseEvent
@@ -113,53 +111,38 @@ impl Component for Toggle
         );
 
         Self {
-            link,
-            props,
             _key_listener_handle: key_listener_handle,
             button_ref: NodeRef::default()
         }
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             ToggleMsg::OnToggle => {
-                self.props.ontoggle.emit(!self.props.is_open);
+                ctx.props().ontoggle.emit(!ctx.props().is_open);
             },
             ToggleMsg::OnKeyDown(event) => {
-                if event.key() != "Tab" || self.props.is_open
+                if event.key() != "Tab" || ctx.props().is_open
                 {
-                    // if !self.props.bubble_event
+                    // if !ctx.props().bubble_event
                     // {
                     //     event.stopPropagation();
                     // }
 
                     // event.preventDefault();
                     
-                    if (event.key() == "Tab" || event.key() == "Enter" || event.key() == " ") && self.props.is_open
+                    if (event.key() == "Tab" || event.key() == "Enter" || event.key() == " ") && ctx.props().is_open
                     {
-                        self.props.ontoggle.emit(!self.props.is_open);
+                        ctx.props().ontoggle.emit(!ctx.props().is_open);
+                        // ctx.props().ontoggle.emit(ctx.props().is_open);
                     } 
-                    else if (event.key() == "Enter" || event.key() == " " || event.key() == "ArrowDown") && !self.props.is_open
+                    else if (event.key() == "Enter" || event.key() == " " || event.key() == "ArrowDown") && !ctx.props().is_open
                     {
-                        self.props.ontoggle.emit(!self.props.is_open);
-                        self.props.onenter.emit(());
+                        ctx.props().ontoggle.emit(!ctx.props().is_open);
+                        ctx.props().onenter.emit(());
                     }
                 }
             },
@@ -168,13 +151,13 @@ impl Component for Toggle
                 {
                     if let Some(button_node) = self.button_ref.get()
                     {
-                        if let Some(menu_ref) = self.props.menu_ref.get()
+                        if let Some(menu_ref) = ctx.props().menu_ref.get()
                         {
-                            if self.props.is_open
+                            if ctx.props().is_open
                                 && !button_node.contains(Some(&event_node))
                                 && !menu_ref.contains(Some(&event_node))
                             {
-                                self.props.ontoggle.emit(false);
+                                ctx.props().ontoggle.emit(false);
                             }
                         }
                     }
@@ -185,29 +168,29 @@ impl Component for Toggle
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <button
-                ref=self.button_ref.clone()
+                ref={self.button_ref.clone()}
                 // {...props}
-                id=self.props.id.clone()
-                class=classes!(
-                    if self.props.is_split_button { "pf-c-dropdown__toggle-button" } else { "pf-c-dropdown__toggle" },
-                    if self.props.is_active { "pf-m-active" } else { "" },
-                    if self.props.is_plain { "pf-m-plain" } else { "" },
-                    if self.props.is_primary { "pf-m-primary" } else { "" },
-                    self.props.class_name.clone(),
-                )
-                type=BTN_TYPES[self.props.toggle_type.clone() as usize]
-                onclick=self.link.callback(|_| ToggleMsg::OnToggle)
-                aria-expanded=self.props.is_open.to_string()
-                aria-haspopup=self.props.aria_haspopup.clone()
-                onkeydown=self.link.callback(|event| ToggleMsg::OnKeyDown(event))
-                disabled=self.props.is_disabled
-                aria-label=self.props.aria_label.clone()
+                id={ctx.props().id.clone()}
+                class={classes!(
+                    if ctx.props().is_split_button { "pf-c-dropdown__toggle-button" } else { "pf-c-dropdown__toggle" },
+                    if ctx.props().is_active { "pf-m-active" } else { "" },
+                    if ctx.props().is_plain { "pf-m-plain" } else { "" },
+                    if ctx.props().is_primary { "pf-m-primary" } else { "" },
+                    ctx.props().class_name.clone(),
+                )}
+                type={BTN_TYPES[ctx.props().toggle_type.clone() as usize]}
+                onclick={ctx.link().callback(|_| ToggleMsg::OnToggle)}
+                aria-expanded={ctx.props().is_open.to_string()}
+                aria-haspopup={ctx.props().aria_haspopup.clone()}
+                onkeydown={ctx.link().callback(|event| ToggleMsg::OnKeyDown(event))}
+                disabled={ctx.props().is_disabled}
+                aria-label={ctx.props().aria_label.clone()}
             >
-                { self.props.children.clone() }
+                { ctx.props().children.clone() }
             </button>
         }
     }

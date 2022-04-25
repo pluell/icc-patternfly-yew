@@ -29,8 +29,6 @@ const TABS_VARIANT_STYLES: &'static [&'static str] = &[
 
 pub struct Tabs
 {
-    link: ComponentLink<Self>,
-    props: TabsProperties,
     tab_list_ref: NodeRef,
     _resize_listener_handle: Option<EventListener>,
     show_scroll_buttons: bool,
@@ -112,17 +110,17 @@ impl Component for Tabs
     type Message = TabsMsg;
     type Properties = TabsProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(ctx: &Context<Self>) -> Self
     {
         let mut resize_listener_handle = None;
 
         // Handle scrollbars if we are not using the vertical style of tabs
-        if !props.is_vertical
+        if !ctx.props().is_vertical
         {
             let window = web_sys::window()
                     .expect("no global `window` exists");
         
-            let callback = link.callback(|_| TabsMsg::HandleScrollButtons);
+            let callback = ctx.link().callback(|_| TabsMsg::HandleScrollButtons);
 
             let listener = move |_: &Event| {
                 // Update scrollbars
@@ -140,12 +138,10 @@ impl Component for Tabs
                 listener,
             ));
 
-            link.send_message(TabsMsg::HandleScrollButtons);
+            ctx.link().send_message(TabsMsg::HandleScrollButtons);
         }
 
         Self {
-            link,
-            props,
             tab_list_ref: NodeRef::default(),
             _resize_listener_handle: resize_listener_handle,
             show_scroll_buttons: false,
@@ -154,35 +150,26 @@ impl Component for Tabs
         }
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn changed(&mut self, ctx: &Context<Self>) -> bool
     {
-        if self.props != props
-        {
-            self.props = props;
+        // Recalculate scrollbars
+        ctx.link().send_message(TabsMsg::HandleScrollButtons);
 
-            // Recalculate scrollbars
-            self.link.send_message(TabsMsg::HandleScrollButtons);
-
-            true
-        }
-        else
-        {
-            false
-        }
+        true
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             TabsMsg::OnClickTab(event_key) => {
-                self.props.onselect.emit(event_key.clone());
+                ctx.props().onselect.emit(event_key.clone());
                 
                 false
             },
             TabsMsg::HandleScrollButtons => {
-                if !self.props.is_vertical
+                if !ctx.props().is_vertical
                 {
                     if let Some(container) = self.tab_list_ref.cast::<Element>()
                     {
@@ -270,33 +257,33 @@ impl Component for Tabs
         }
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        match self.props.component
+        match ctx.props().component
         {
             TabsComponent::Div => {
                 html!{
                     <>
                     <div
-                        aria-label=self.props.aria_label.clone()
-                        class=classes!(
+                        aria-label={ctx.props().aria_label.clone()}
+                        class={classes!(
                             "pf-c-tabs",
-                            if self.props.is_filled { "pf-m-fill" } else { "" },
-                            if self.props.is_secondary { "pf-m-secondary" } else { "" },
-                            if self.props.is_vertical { "pf-m-vertical" } else { "" },
-                            if self.props.is_box { "pf-m-box" } else { "" },
-                            if self.show_scroll_buttons && !self.props.is_vertical { "pf-m-scrollable" } else {""},
+                            if ctx.props().is_filled { "pf-m-fill" } else { "" },
+                            if ctx.props().is_secondary { "pf-m-secondary" } else { "" },
+                            if ctx.props().is_vertical { "pf-m-vertical" } else { "" },
+                            if ctx.props().is_box { "pf-m-box" } else { "" },
+                            if self.show_scroll_buttons && !ctx.props().is_vertical { "pf-m-scrollable" } else {""},
                             // formatBreakpointMods(inset, styles),
-                            TABS_VARIANT_STYLES[self.props.variant.clone() as usize],
-                            self.props.class_name.to_string(),
-                        )
+                            TABS_VARIANT_STYLES[ctx.props().variant.clone() as usize],
+                            ctx.props().class_name.to_string(),
+                        )}
                         // {...getOUIAProps(Tabs.displayName, ouiaId !== undefined ? ouiaId : this.state.ouiaStateId, ouiaSafe)}
-                        id=self.props.id.clone()
+                        id={ctx.props().id.clone()}
                         // {...props}
                     >
-                        { self.render_tabs_control() }
+                        { self.render_tabs_control(ctx) }
                     </div>
-                    { self.render_child() }
+                    { self.render_child(ctx) }
                     </>
                 }
             },
@@ -312,50 +299,50 @@ impl Component for Tabs
 
 impl Tabs
 {
-    fn render_tabs_control(&self) -> Html
+    fn render_tabs_control(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <>
             <button
-                class=classes!(
+                class={classes!(
                     "pf-c-tabs__scroll-button", 
-                    if self.props.is_secondary { "pf-m-secondary" } else { "" }
-                )
-                aria-label=self.props.left_scroll_aria_label.clone()
-                onclick=self.link.callback(|_| TabsMsg::ScrollLeft)
-                disabled=self.disable_left_scroll_button
-                aria-hidden=self.disable_left_scroll_button.to_string()
+                    if ctx.props().is_secondary { "pf-m-secondary" } else { "" }
+                )}
+                aria-label={ctx.props().left_scroll_aria_label.clone()}
+                onclick={ctx.link().callback(|_| TabsMsg::ScrollLeft)}
+                disabled={self.disable_left_scroll_button}
+                aria-hidden={self.disable_left_scroll_button.to_string()}
             >
             {
                 icc_patternfly_yew_icons::angle_left_icon!{}
             }
             </button>
             <ul class="pf-c-tabs__list"
-                ref=self.tab_list_ref.clone()
-                onscroll=self.link.callback(|_| TabsMsg::HandleScrollButtons)
+                ref={self.tab_list_ref.clone()}
+                onscroll={ctx.link().callback(|_| TabsMsg::HandleScrollButtons)}
             >
                 {
-                    for self.props.children.iter().enumerate().map(|(index, child)| {
+                    for ctx.props().children.iter().enumerate().map(|(index, child)| {
                         html!{
                             <li
-                                key=index
-                                class=classes!(
+                                key={index}
+                                class={classes!(
                                     "pf-c-tabs__item", 
-                                    if child.props.event_key == self.props.active_key { "pf-m-current" } else { "" },
+                                    if child.props.event_key == ctx.props().active_key { "pf-m-current" } else { "" },
                                     child.props.class_name.to_string(),
-                                )
+                                )}
                             >
                                 <TabButton
                                     class_name="pf-c-tabs__link"
-                                    onclick=self.link.callback(|event_key| TabsMsg::OnClickTab(event_key))
-                                    id=format!("pf-tab-{}-{}", child.props.event_key, self.props.id)   // {`pf-tab-${eventKey}-${childId || uniqueId}`}
+                                    onclick={ctx.link().callback(|event_key| TabsMsg::OnClickTab(event_key))}
+                                    id={format!("pf-tab-{}-{}", child.props.event_key, ctx.props().id)}   // {`pf-tab-${eventKey}-${childId || uniqueId}`}
                     //               aria-controls={ariaControls}
                     //               tabContentRef={tabContentRef}
                     //               ouiaId={childOuiaId}
                     //               {...rest}
-                                    event_key=child.props.event_key.clone()
+                                    event_key={child.props.event_key.clone()}
                                 >
-                                    {child.props.title}
+                                    {child.props.title.clone()}
                                 </TabButton>
                             </li>
                         }
@@ -363,14 +350,14 @@ impl Tabs
                 }
             </ul>
             <button
-                class=classes!(
+                class={classes!(
                     "pf-c-tabs__scroll-button", 
-                    if self.props.is_secondary { "pf-m-secondary" } else { "" }
-                )
-                aria-label=self.props.right_scroll_aria_label.clone()
-                onclick=self.link.callback(|_| TabsMsg::ScrollRight)
-                disabled=self.disable_right_scroll_button
-                aria-hidden=self.disable_right_scroll_button.to_string()
+                    if ctx.props().is_secondary { "pf-m-secondary" } else { "" }
+                )}
+                aria-label={ctx.props().right_scroll_aria_label.clone()}
+                onclick={ctx.link().callback(|_| TabsMsg::ScrollRight)}
+                disabled={self.disable_right_scroll_button}
+                aria-hidden={self.disable_right_scroll_button.to_string()}
             >
             {
                 icc_patternfly_yew_icons::angle_right_icon!{}
@@ -380,15 +367,15 @@ impl Tabs
         }
     }
 
-    fn render_child(&self) -> Html
+    fn render_child(&self, ctx: &Context<Self>) -> Html
     {
-        self.props.children.iter().map(|tab| {
+        ctx.props().children.iter().map(|tab| {
             html!{
                 <TabContent
                     // key={index}
-                    active_key=self.props.active_key.to_string()
-                    child=tab.clone()
-                    // id=tab.props.id.to_string() //{child.props.id || uniqueId}
+                    active_key={ctx.props().active_key.to_string()}
+                    child={tab.clone()}
+                    // id={tab.props.id.to_string()} //{child.props.id || uniqueId}
                     // ouiaId={child.props.ouiaId}
                 />
             }

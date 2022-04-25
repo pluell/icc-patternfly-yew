@@ -2,10 +2,7 @@ use yew::{
     prelude::*,
 };
 
-pub struct AboutModalBoxHero
-{
-    props: AboutModalBoxHeroProps,
-}
+pub struct AboutModalBoxHero;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct AboutModalBoxHeroProps
@@ -23,45 +20,23 @@ impl Component for AboutModalBoxHero
     type Message = ();
     type Properties = AboutModalBoxHeroProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div
                 style={
-                    if let Some(background_image_src) = &self.props.background_image_src {
+                    if let Some(background_image_src) = &ctx.props().background_image_src {
                         Some(format!("--pf-c-about-modal-box__hero--sm--BackgroundImage: {}", background_image_src))
                     } else {
                         None
                     }
                 }
-                class=classes!("pf-c-about-modal-box__hero", self.props.class_name.clone())
+                class={classes!("pf-c-about-modal-box__hero", ctx.props().class_name.clone())}
                 // {...props}
             />
         }

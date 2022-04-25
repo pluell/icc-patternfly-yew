@@ -6,10 +6,7 @@ use yew::{
 use super::{Tab};
 
 
-pub struct TabContent
-{
-    props: TabContentProperties,
-}
+pub struct TabContent;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct TabContentProperties
@@ -45,43 +42,21 @@ impl Component for TabContent
     type Message = ();
     type Properties = TabContentProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
-    {
-        let has_children = self.props.children.len() > 0;
+        let has_children = ctx.props().children.len() > 0;
 
         let is_hidden = if has_children {
                 false
             }
-            else if let Some(child) = &self.props.child
+            else if let Some(child) = &ctx.props().child
             {
-                child.props.event_key != self.props.active_key
+                child.props.event_key != ctx.props().active_key
             }
             else
             {
@@ -91,17 +66,17 @@ impl Component for TabContent
         html!{
             <section
                 // ref={innerRef}
-                // hidden={if has_children { false } else { child.props.eventKey != self.props.active_key } }
-                hidden=is_hidden
-                class=classes!("pf-c-tab-content")
+                // hidden={if has_children { false } else { child.props.eventKey != ctx.props().active_key } }
+                hidden={is_hidden}
+                class={classes!("pf-c-tab-content")}
                 // children
                 //     ? css('', className, variantStyle[variant])
                 //     : css('pf-c-tab-content', child.props.className, variantStyle[variant])
-                id={if has_children { self.props.id.to_string() } else { format!("pf-tab-section-{}-{}", self.props.event_key, self.props.id) } }
-                aria-label=self.props.aria_label.clone()
+                id={if has_children { ctx.props().id.to_string() } else { format!("pf-tab-section-{}-{}", ctx.props().event_key, ctx.props().id) } }
+                aria-label={ctx.props().aria_label.clone()}
                 // aria-labelledby={labelledBy}
                 role="tabpanel"
-                tabIndex=0
+                tabIndex={0}
                 // {...getOUIAProps('TabContent', ouiaId, ouiaSafe)}
                 // {...props}
             >
@@ -109,10 +84,10 @@ impl Component for TabContent
                 if has_children
                 {
                     html!{
-                        <>{ self.props.children.clone() }</>
+                        <>{ ctx.props().children.clone() }</>
                     }
                 }
-                else if let Some(child) = &self.props.child
+                else if let Some(child) = &ctx.props().child
                 {
                     html!{
                         <>{ child.props.children.clone() }</>

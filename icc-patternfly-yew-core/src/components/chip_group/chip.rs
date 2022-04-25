@@ -5,10 +5,7 @@ use yew::{
 use crate::components::{Button, ButtonVariant};
 
 
-pub struct Chip
-{
-    props: ChipProperties,
-}
+pub struct Chip;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct ChipProperties
@@ -25,52 +22,29 @@ impl Component for Chip
     type Message = ();
     type Properties = ChipProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            // link,
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div
-                class="pf-c-chip"
+                class={"pf-c-chip"}
             >
-                <span class="pf-c-chip__text">
-                    {self.props.children.clone() }
+                <span class={"pf-c-chip__text"}>
+                    {ctx.props().children.clone()}
                 </span>
                 {
-                    if !self.props.is_read_only
+                    if !ctx.props().is_read_only
                     {
                         html!{
                             <Button
-                                variant=ButtonVariant::Plain
-                                onclick=self.props.onclick.clone()
+                                variant={ButtonVariant::Plain}
+                                onclick={ctx.props().onclick.clone()}
                             >
-                                <i class="fas fa-times"></i>
+                                <i class={"fas fa-times"}></i>
                             </Button>
                         }
                     }

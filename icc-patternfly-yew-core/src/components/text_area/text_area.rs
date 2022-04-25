@@ -1,5 +1,10 @@
+
+use web_sys::HtmlInputElement;
 use yew::{
     prelude::*,
+    events::Event,
+    html,
+    Component, Context, Html, TargetCast,
 };
 
 use crate::{ValidatedOptions};
@@ -22,8 +27,6 @@ const RESIZE_ORIENTATION_STYLES: &'static [&'static str] = &[
 pub struct TextArea
 {
     text_area_ref: NodeRef,
-    props: TextAreaProperties,
-    link: ComponentLink<TextArea>,
 }
 
 #[derive(Clone, PartialEq, Properties)]
@@ -73,7 +76,7 @@ pub struct TextAreaProperties
 
 pub enum TextAreaMsg
 {
-    OnChange(ChangeData),
+    OnChange(String),
 }
 
 impl Component for TextArea
@@ -81,69 +84,56 @@ impl Component for TextArea
     type Message = TextAreaMsg;
     type Properties = TextAreaProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
         Self {
             text_area_ref: NodeRef::default(),
-            props,
-            link,
-        }
-    }
-
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
         }
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
-            TextAreaMsg::OnChange(change_data) => {
+            TextAreaMsg::OnChange(value) => {
                 // TODO: Calculate size for resizing
 
                 // Call onchange property
-                if let ChangeData::Value(value) = change_data
-                {
-                    self.props.onchange.emit(value);
-                }
+                ctx.props().onchange.emit(value);
             },
         }
 
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
+        let onchange = ctx.link().batch_callback(|e: Event| {
+            let input = e.target_dyn_into::<HtmlInputElement>();
+
+            input.map(|input| TextAreaMsg::OnChange(input.value()))
+        });
+
         html!{
             <textarea
-                ref=self.text_area_ref.clone()
-                class=classes!(
+                ref={self.text_area_ref.clone()}
+                class={classes!(
                     "pf-c-form-control",
-                    &self.props.class_name,
-                    RESIZE_ORIENTATION_STYLES[self.props.resize_orientation.clone() as usize],
-                    if self.props.validated == ValidatedOptions::Success { "pf-m-success" } else { "" },
-                    if self.props.validated == ValidatedOptions::Warning { "pf-m-warning" } else { "" },
-                )
-                onchange=self.link.callback(|data| TextAreaMsg::OnChange(data))
+                    &ctx.props().class_name,
+                    RESIZE_ORIENTATION_STYLES[ctx.props().resize_orientation.clone() as usize],
+                    if ctx.props().validated == ValidatedOptions::Success { "pf-m-success" } else { "" },
+                    if ctx.props().validated == ValidatedOptions::Warning { "pf-m-warning" } else { "" },
+                )}
+                {onchange}
                 // {...(typeof this.props.defaultValue !== 'string' && { value })}
-                aria-invalid=(self.props.validated == ValidatedOptions::Error).to_string()
-                required=self.props.is_required
-                disabled=self.props.is_disabled
-                readOnly=self.props.is_read_only.to_string()
+                aria-invalid={(ctx.props().validated == ValidatedOptions::Error).to_string()}
+                required={ctx.props().is_required}
+                disabled={ctx.props().is_disabled}
+                readOnly={ctx.props().is_read_only.to_string()}
                 // ref={innerRef}
                 // {...props}
-                id=self.props.id.clone()
+                id={ctx.props().id.clone()}
             />
         }
     }

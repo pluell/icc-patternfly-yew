@@ -3,10 +3,7 @@ use yew::{
 };
 
 
-pub struct AboutModalBox
-{
-    props: AboutModalBoxProps,
-}
+pub struct AboutModalBox;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct AboutModalBoxProps
@@ -30,44 +27,22 @@ impl Component for AboutModalBox
     type Message = ();
     type Properties = AboutModalBoxProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div 
                 role="dialog" aria-modal="true" 
-                class=classes!("pf-c-about-modal-box", self.props.class_name.clone()) 
+                class={classes!("pf-c-about-modal-box",ctx.props().class_name.clone())}
                 // {...props}
-                aria-labelledby=self.props.aria_labelledby.clone()
-                aria-describedby=self.props.aria_describedby.clone()
+                aria-labelledby={ctx.props().aria_labelledby.clone()}
+                aria-describedby={ctx.props().aria_describedby.clone()}
             >
-                {for self.props.children.iter()}
+                {for ctx.props().children.iter()}
             </div>
         }
     }

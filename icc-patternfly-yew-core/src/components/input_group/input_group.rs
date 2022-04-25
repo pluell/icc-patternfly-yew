@@ -3,10 +3,7 @@ use yew::{
 };
 
 
-pub struct InputGroup
-{
-    props: InputGroupProperties,
-}
+pub struct InputGroup;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct InputGroupProperties
@@ -24,41 +21,19 @@ impl Component for InputGroup
     type Message = ();
     type Properties = InputGroupProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div 
-                class=classes!(
+                class={classes!(
                     "pf-c-input-group", 
-                    &self.props.class_name,
-                )
+                    &ctx.props().class_name,
+                )}
                 // {...props}
             >
             {
@@ -69,7 +44,7 @@ impl Component for InputGroup
                 //         : child
                 //     )
                 // : children}
-                for self.props.children.iter()
+                for ctx.props().children.iter()
             }
             </div>
         }

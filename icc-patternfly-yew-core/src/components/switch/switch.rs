@@ -2,11 +2,7 @@ use yew::{
     prelude::*,
 };
 
-pub struct Switch
-{
-    link: ComponentLink<Self>,
-    props: SwitchProperties,
-}
+pub struct Switch;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct SwitchProperties
@@ -45,61 +41,44 @@ impl Component for Switch
     type Message = SwitchMsg;
     type Properties = SwitchProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            link,
-            props,
-        }
-    }
-
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
+        Self
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             SwitchMsg::OnClick => {
-                self.props.onchange.emit(self.props.is_checked);
+                ctx.props().onchange.emit(ctx.props().is_checked);
 
                 false
             }
         }
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <label
-                class=classes!("pf-c-switch", self.props.class_name.to_string())
-                for=self.props.id.clone()
+                class={classes!("pf-c-switch", ctx.props().class_name.to_string())}
+                for={ctx.props().id.clone()}
                 // {...getOUIAProps(Switch.displayName, ouiaId !== undefined ? ouiaId : this.state.ouiaStateId, ouiaSafe)}
             >
                 <input
-                    id=self.props.id.clone()
+                    id={ctx.props().id.clone()}
                     class="pf-c-switch__input"
                     type="checkbox"
-                    onclick=self.link.callback(|_| SwitchMsg::OnClick)
-                    checked=self.props.is_checked
-                    disabled=self.props.is_disabled
+                    onclick={ctx.link().callback(|_| SwitchMsg::OnClick)}
+                    checked={ctx.props().is_checked}
+                    disabled={ctx.props().is_disabled}
                     // aria-labelledby={isAriaLabelledBy ? `${this.id}-on` : null}
                     // {...props}
                 />
                 {
-                    if !self.props.label.is_empty()
+                    if !ctx.props().label.is_empty()
                     {
                         html!{
                             <>
@@ -109,14 +88,14 @@ impl Component for Switch
                                     // id={isAriaLabelledBy ? `${this.id}-on` : null}
                                     aria-hidden="true"
                                 >
-                                    {&self.props.label}
+                                    {&ctx.props().label}
                                 </span>
                                 <span
                                     class="pf-c-switch__label pf-m-off"
                                     // id={isAriaLabelledBy ? `${this.id}-off` : null}
                                     aria-hidden="true"
                                 >
-                                    { if !self.props.label_off.is_empty() { &self.props.label_off } else { &self.props.label } }
+                                    { if !ctx.props().label_off.is_empty() { &ctx.props().label_off } else { &ctx.props().label } }
                                 </span>
                             </>
                         }

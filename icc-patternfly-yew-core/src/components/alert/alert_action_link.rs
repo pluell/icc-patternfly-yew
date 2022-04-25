@@ -5,10 +5,7 @@ use yew::{
 use crate::{Button, ButtonVariant};
 
 
-pub struct AlertActionLink
-{
-    props: AlertActionLinkProps,
-}
+pub struct AlertActionLink;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct AlertActionLinkProps
@@ -34,45 +31,23 @@ impl Component for AlertActionLink
     type Message = AlertActionLinkMsg;
     type Properties = AlertActionLinkProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <Button
-                variant=ButtonVariant::Link
-                onclick=self.props.onclick.clone()
-                is_inline=true
-                class_name=self.props.class_name.clone()
+                variant={ButtonVariant::Link}
+                onclick={ctx.props().onclick.clone()}
+                is_inline={true}
+                class_name={ctx.props().class_name.clone()}
                 // {...props}
             >
             {
-                for self.props.children.iter()
+                for ctx.props().children.iter()
             }
             </Button>
         }

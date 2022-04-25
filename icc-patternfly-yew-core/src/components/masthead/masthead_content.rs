@@ -3,10 +3,7 @@ use yew::{
 };
 
 
-pub struct MastheadContent
-{
-    props: MastheadContentProps,
-}
+pub struct MastheadContent;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct MastheadContentProps
@@ -24,44 +21,22 @@ impl Component for MastheadContent
     type Message = ();
     type Properties = MastheadContentProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        true
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div 
-                class=classes!(
+                class={classes!(
                     "pf-c-masthead__content",
-                    self.props.class_name.clone(),
-                )
+                    ctx.props().class_name.clone(),
+                )}
                 // {...props}
             >
-                {for self.props.children.iter()}
+                {for ctx.props().children.iter()}
             </div>
         }
     }

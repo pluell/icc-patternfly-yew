@@ -43,10 +43,7 @@ impl MastheadDisplay
 }
 
 
-pub struct Masthead
-{
-    props: MastheadProps,
-}
+pub struct Masthead;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct MastheadProps
@@ -73,48 +70,26 @@ impl Component for Masthead
     type Message = ();
     type Properties = MastheadProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        true
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <header
-                class=classes!(
+                class={classes!(
                     "pf-c-masthead",
-                    self.props.display.iter().map(|disp_mod| disp_mod.get_class()).collect::<Vec<String>>(),
-                    self.props.inset.iter().map(|inset_mod| inset_mod.get_class()).collect::<Vec<String>>(),
-                    if self.props.background_color == MastheadBackgroundColor::Light {"pf-m-light"} else {""},
-                    if self.props.background_color == MastheadBackgroundColor::Light200 {"pf-m-light-200"} else {""},
-                    self.props.class_name.clone(),
-                )
+                    ctx.props().display.iter().map(|disp_mod| disp_mod.get_class()).collect::<Vec<String>>(),
+                    ctx.props().inset.iter().map(|inset_mod| inset_mod.get_class()).collect::<Vec<String>>(),
+                    if ctx.props().background_color == MastheadBackgroundColor::Light {"pf-m-light"} else {""},
+                    if ctx.props().background_color == MastheadBackgroundColor::Light200 {"pf-m-light-200"} else {""},
+                    ctx.props().class_name.clone(),
+                )}
                 // {...props}
             >
-                {for self.props.children.iter()}
+                {for ctx.props().children.iter()}
             </header>
         }
     }

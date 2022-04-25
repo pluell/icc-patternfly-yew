@@ -5,10 +5,7 @@ use yew::{
 use crate::{Button, ButtonVariant};
 
 
-pub struct FormFieldGroupToggle
-{
-    props: FormFieldGroupToggleProps,
-}
+pub struct FormFieldGroupToggle;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct FormFieldGroupToggleProps
@@ -38,53 +35,31 @@ impl Component for FormFieldGroupToggle
     type Message = ();
     type Properties = FormFieldGroupToggleProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
-    {
-        let ontoggle = self.props.ontoggle.clone();
+        let ontoggle = ctx.props().ontoggle.clone();
 
         html!{
             <div 
-                class=classes!(
+                class={classes!(
                     "pf-c-form__field-group-toggle",
-                    self.props.class_name.clone(),
-                )
+                    ctx.props().class_name.clone(),
+                )}
                 // {...props}
             >
                 <div class="pf-c-form__field-group-toggle-button">
                     <Button
-                        variant=ButtonVariant::Plain
-                        aria_label=self.props.aria_label.clone()
-                        onclick=Callback::from(move |_| ontoggle.emit(()))
-                        aria_expanded=self.props.is_expanded.to_string()
-                        aria_labelledby=self.props.aria_labelledby.clone()
-                        id=self.props.toggle_id.clone()
+                        variant={ButtonVariant::Plain}
+                        aria_label={ctx.props().aria_label.clone()}
+                        onclick={Callback::from(move |_| ontoggle.emit(()))}
+                        aria_expanded={ctx.props().is_expanded.to_string()}
+                        aria_labelledby={ctx.props().aria_labelledby.clone()}
+                        id={ctx.props().toggle_id.clone()}
                     >
                         <span class="pf-c-form__field-group-toggle-icon">
                             {icc_patternfly_yew_icons::angle_right_icon!{}}

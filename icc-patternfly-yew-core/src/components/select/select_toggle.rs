@@ -13,8 +13,6 @@ use super::{SelectVariant};
 
 pub struct SelectToggle
 {
-    link: ComponentLink<Self>,
-    props: SelectToggleProperties,
     _key_listener_handle: EventListener,
     button_ref: NodeRef,
 }
@@ -88,14 +86,14 @@ impl Component for SelectToggle
     type Message = SelectToggleMsg;
     type Properties = SelectToggleProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(ctx: &Context<Self>) -> Self
     {
         let document = web_sys::window()
             .expect("no global `window` exists")
             .document()
             .expect("should have a document on window");
     
-        let callback = link.callback(|event| SelectToggleMsg::OnDocClick(event));
+        let callback = ctx.link().callback(|event| SelectToggleMsg::OnDocClick(event));
 
         let listener = move |event: &Event| {
             // Try to convert event to MouseEvent
@@ -118,39 +116,23 @@ impl Component for SelectToggle
         );
 
         Self {
-            link,
-            props,
             _key_listener_handle: key_listener_handle,
             button_ref: NodeRef::default(),
         }
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             SelectToggleMsg::OnToggle => {
-                self.props.ontoggle.emit(!self.props.is_open);
+                ctx.props().ontoggle.emit(!ctx.props().is_open);
             },
             SelectToggleMsg::OnKeyDown(event) => {
                 if event.key() == "Enter"
                 {
-                    self.props.ontoggle.emit(!self.props.is_open);
+                    ctx.props().ontoggle.emit(!ctx.props().is_open);
                 }
             },
             SelectToggleMsg::OnDocClick(event) => {
@@ -158,13 +140,13 @@ impl Component for SelectToggle
                 {
                     if let Some(button_node) = self.button_ref.get()
                     {
-                        if let Some(menu_ref) = self.props.menu_ref.get()
+                        if let Some(menu_ref) = ctx.props().menu_ref.get()
                         {
-                            if self.props.is_open
+                            if ctx.props().is_open
                                 && !button_node.contains(Some(&event_node))
                                 && !menu_ref.contains(Some(&event_node))
                             {
-                                self.props.ontoggle.emit(false);
+                                ctx.props().ontoggle.emit(false);
                             }
                         }
                     }
@@ -175,34 +157,34 @@ impl Component for SelectToggle
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        let is_typeahead = self.props.variant == SelectVariant::TypeAhead 
-                            || self.props.variant == SelectVariant::TypeAheadMulti 
-                            || self.props.has_clear_button;
+        let is_typeahead = ctx.props().variant == SelectVariant::TypeAhead 
+                            || ctx.props().variant == SelectVariant::TypeAheadMulti 
+                            || ctx.props().has_clear_button;
 
         if !is_typeahead
         {
             html!{
                 <button 
-                    ref=self.button_ref.clone()
-                    id=self.props.id.clone()
-                    aria-labelledby=self.props.aria_labelledby.clone()
-                    aria-expanded=self.props.is_open.to_string()
+                    ref={self.button_ref.clone()}
+                    id={ctx.props().id.clone()}
+                    aria-labelledby={ctx.props().aria_labelledby.clone()}
+                    aria-expanded={ctx.props().is_open.to_string()}
                     // aria-haspopup: (variant !== SelectVariant.checkbox && 'listbox') || null
-                    type=BTN_TYPES[self.props.toggle_type.clone() as usize]
-                    class=classes!(
+                    type={BTN_TYPES[ctx.props().toggle_type.clone() as usize]}
+                    class={classes!(
                         "pf-c-select__toggle",
-                        if self.props.is_disabled { "pf-m-disabled" } else { "" },
-                        if self.props.is_plain { "pf-m-plain" } else { "" },
-                        if self.props.is_active { "pf-m-active" } else { "" },
-                        self.props.class_name.clone()
-                    )
-                    disabled=self.props.is_disabled
-                    onclick=self.link.callback(|_| SelectToggleMsg::OnToggle)
-                    onkeydown=self.link.callback(|event| SelectToggleMsg::OnKeyDown(event))
+                        if ctx.props().is_disabled { "pf-m-disabled" } else { "" },
+                        if ctx.props().is_plain { "pf-m-plain" } else { "" },
+                        if ctx.props().is_active { "pf-m-active" } else { "" },
+                        ctx.props().class_name.clone()
+                    )}
+                    disabled={ctx.props().is_disabled}
+                    onclick={ctx.link().callback(|_| SelectToggleMsg::OnToggle)}
+                    onkeydown={ctx.link().callback(|event| SelectToggleMsg::OnKeyDown(event))}
                 >
-                    { self.props.children.clone() }
+                    { ctx.props().children.clone() }
                     <span class="pf-c-select__toggle-arrow">
                         <i class="fas fa-caret-down" aria-hidden="true"></i>
                     </span>

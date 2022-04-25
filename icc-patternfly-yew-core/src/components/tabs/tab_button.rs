@@ -3,11 +3,7 @@ use yew::{
 };
 
 
-pub struct TabButton
-{
-    link: ComponentLink<Self>,
-    props: TabButtonProperties,
-}
+pub struct TabButton;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct TabButtonProperties
@@ -40,49 +36,32 @@ impl Component for TabButton
     type Message = TabButtonMsg;
     type Properties = TabButtonProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            link,
-            props,
-        }
-    }
-
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
+        Self
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             TabButtonMsg::OnClick => {
-                self.props.onclick.emit(self.props.event_key.clone());
+                ctx.props().onclick.emit(ctx.props().event_key.clone());
 
                 false
             }
         }
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <button
-                class=self.props.class_name.to_string()
-                onclick=self.link.callback(|_| TabButtonMsg::OnClick)
+                class={ctx.props().class_name.to_string()}
+                onclick={ctx.link().callback(|_| TabButtonMsg::OnClick)}
             >
-                { self.props.children.clone() }
+                { ctx.props().children.clone() }
             </button>
         }
     }

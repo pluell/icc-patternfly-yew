@@ -4,10 +4,7 @@ use yew::{
 };
 
 
-pub struct BreadcrumbHeading
-{
-    props: BreadcrumbHeadingProps,
-}
+pub struct BreadcrumbHeading;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct BreadcrumbHeadingProps
@@ -37,45 +34,23 @@ impl Component for BreadcrumbHeading
     type Message = ();
     type Properties = BreadcrumbHeadingProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <li
                 //{...props}
-                class=classes!(
+                class={classes!(
                     "pf-c-breadcrumb__item",
-                    self.props.class_name.clone(),
-                )
+                    ctx.props().class_name.clone(),
+                )}
             >
                 {
-                    if self.props.show_divider
+                    if ctx.props().show_divider
                     {
                         html!{
                             <span class="pf-c-breadcrumb__item-divider">
@@ -91,28 +66,28 @@ impl Component for BreadcrumbHeading
                 
                 <h1 class="pf-c-breadcrumb__heading">
                 {
-                    if self.props.to.is_none() && self.props.component == "button"
+                    if ctx.props().to.is_none() && ctx.props().component == "button"
                     {
                         html!{
                             <button 
-                                class=classes!(
+                                class={classes!(
                                     "pf-c-breadcrumb__link",
                                     "pf-m-current",
-                                )
-                                aria-current=true.to_string()
+                                )}
+                                aria-current={true.to_string()}
                                 type="button"
                             >
-                                {for self.props.children.iter()}
+                                {for ctx.props().children.iter()}
                             </button>
                         }
                     }
-                    else if let Some(to) = &self.props.to
+                    else if let Some(to) = &ctx.props().to
                     {
-                        let mut component = VTag::new(self.props.component.clone());
+                        let mut component = VTag::new(ctx.props().component.clone());
 
                         component.add_attribute("href", to.to_string());
 
-                        if let Some(target) = &self.props.target
+                        if let Some(target) = &ctx.props().target
                         {
                             component.add_attribute("target", target.to_string());
                         }
@@ -120,14 +95,14 @@ impl Component for BreadcrumbHeading
                         component.add_attribute("class", "pf-c-breadcrumb__link pf-m-current");
                         component.add_attribute("aria-current", "page");
                                 
-                        component.add_children(self.props.children.iter());
+                        component.add_children(ctx.props().children.iter());
                 
                         component.into()
                     }
                     else
                     {
                         html!{
-                            for self.props.children.iter()
+                            for ctx.props().children.iter()
                         }
                     }
                 }

@@ -5,11 +5,7 @@ use yew::{
 use super::*;
 
 
-pub struct ToggleGroupItem
-{
-    link: ComponentLink<Self>,
-    props: ToggleGroupItemProps,
-}
+pub struct ToggleGroupItem;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct ToggleGroupItemProps
@@ -50,65 +46,48 @@ impl Component for ToggleGroupItem
     type Message = ToggleGroupItemMsg;
     type Properties = ToggleGroupItemProps;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-            link,
-        }
-    }
-
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
+        Self
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             ToggleGroupItemMsg::OnClick(_event) => {
-                self.props.onchange.emit(!self.props.is_selected);
+                ctx.props().onchange.emit(!ctx.props().is_selected);
             },
         }
 
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div 
-                class=classes!(
+                class={classes!(
                     "pf-c-toggle-group__item", 
-                    self.props.class_name.clone()
-                )
+                    ctx.props().class_name.clone()
+                )}
                 // {...props}
             >
                 <button
                     type="button"
-                    class=classes!(
+                    class={classes!(
                         "pf-c-toggle-group__button", 
-                        if self.props.is_selected { "pf-m-selected" } else { "" },
-                    )
-                    aria-pressed=self.props.is_selected.to_string()
-                    onclick=self.link.callback(ToggleGroupItemMsg::OnClick)
-                    aria-label=self.props.aria_label.clone()
-                    disabled=self.props.is_disabled
-                    id=self.props.button_id.clone()
+                        if ctx.props().is_selected { "pf-m-selected" } else { "" },
+                    )}
+                    aria-pressed={ctx.props().is_selected.to_string()}
+                    onclick={ctx.link().callback(ToggleGroupItemMsg::OnClick)}
+                    aria-label={ctx.props().aria_label.clone()}
+                    disabled={ctx.props().is_disabled}
+                    id={ctx.props().button_id.clone()}
                 >
                 {
-                    if let Some(icon) = &self.props.icon
+                    if let Some(icon) = &ctx.props().icon
                     {
                         html!{
                             <ToggleGroupItemElement variant={ToggleGroupItemVariant::Icon}>{icon.clone()}</ToggleGroupItemElement>
@@ -120,7 +99,7 @@ impl Component for ToggleGroupItem
                     }
                 }
                 {
-                    if let Some(text) = &self.props.text
+                    if let Some(text) = &ctx.props().text
                     {
                         html!{
                             <ToggleGroupItemElement variant={ToggleGroupItemVariant::Text}>{text.clone()}</ToggleGroupItemElement>

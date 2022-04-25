@@ -23,10 +23,7 @@ const PROGRESS_SIZE_CLASSES: &'static [&'static str] = &[
 ];
 
 
-pub struct Progress
-{
-    props: ProgressProps,
-}
+pub struct Progress;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct ProgressProps
@@ -82,87 +79,65 @@ impl Component for Progress
     type Message = ();
     type Properties = ProgressProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
-    {
-        let id = if self.props.id.len() > 0 {
-            self.props.id.clone()
+        let id = if ctx.props().id.len() > 0 {
+            ctx.props().id.clone()
         } else {
             utils_get_unique_id(None)
         };
 
-        let variant_cls = if let Some(variant) = &self.props.variant {
+        let variant_cls = if let Some(variant) = &ctx.props().variant {
             PROGRESS_VARIANT_CLASSES[variant.clone() as usize]
         } else {
             ""
         };
 
-        let measure_location_cls = match self.props.measure_location {
+        let measure_location_cls = match ctx.props().measure_location {
             ProgressMeasureLocations::Inside | ProgressMeasureLocations::Outside => {
-                PROGRESS_MEASURE_LOCATION_CLASSES[self.props.measure_location.clone() as usize]
+                PROGRESS_MEASURE_LOCATION_CLASSES[ctx.props().measure_location.clone() as usize]
             },
             _ => ""
         };
 
-        let progress_size_cls = if self.props.measure_location == ProgressMeasureLocations::Inside { 
+        let progress_size_cls = if ctx.props().measure_location == ProgressMeasureLocations::Inside { 
             PROGRESS_SIZE_CLASSES[ProgressSizes::Lg as usize]
         } else {
-            PROGRESS_SIZE_CLASSES[self.props.size.clone() as usize]
+            PROGRESS_SIZE_CLASSES[ctx.props().size.clone() as usize]
         };
 
         // Build map of aria properties for the progress bar
         let mut progress_bar_aria_props = HashMap::new();
 
-        progress_bar_aria_props.insert("aria-valuemin", self.props.min.to_string());
-        progress_bar_aria_props.insert("aria-valuenow", self.props.value.to_string());
-        progress_bar_aria_props.insert("aria-valuemax", self.props.max.to_string());
+        progress_bar_aria_props.insert("aria-valuemin", ctx.props().min.to_string());
+        progress_bar_aria_props.insert("aria-valuenow", ctx.props().value.to_string());
+        progress_bar_aria_props.insert("aria-valuemax", ctx.props().max.to_string());
 
-        if self.props.title.is_some()
+        if ctx.props().title.is_some()
         {
             progress_bar_aria_props.insert("aria-labelledby", format!("{}-description", id));
         }
-        else if self.props.aria_labelledby.len() > 0
+        else if ctx.props().aria_labelledby.len() > 0
         {
-            progress_bar_aria_props.insert("aria-labelledby", self.props.aria_labelledby.clone());
+            progress_bar_aria_props.insert("aria-labelledby", ctx.props().aria_labelledby.clone());
         }
 
-        if self.props.aria_label.len() > 0
+        if ctx.props().aria_label.len() > 0
         {
-            progress_bar_aria_props.insert("aria-label", self.props.aria_label.clone());
+            progress_bar_aria_props.insert("aria-label", ctx.props().aria_label.clone());
         }
       
-        if self.props.value_text.len() > 0
+        if ctx.props().value_text.len() > 0
         {
-            progress_bar_aria_props.insert("aria-valuetext", self.props.value_text.clone());
+            progress_bar_aria_props.insert("aria-valuetext", ctx.props().value_text.clone());
         }
       
-        if self.props.title.is_none() && self.props.aria_labelledby.len() == 0 && self.props.aria_label.len() == 0
+        if ctx.props().title.is_none() && ctx.props().aria_labelledby.len() == 0 && ctx.props().aria_label.len() == 0
         {
             log::warn!(
               "One of aria-label or aria-labelledby properties should be passed when using the progress component without a title."
@@ -171,32 +146,32 @@ impl Component for Progress
 
         // Make sure the value for the progress bar is never less than 0 and never greather than 100
         let scaled_value = std::cmp::min(100, std::cmp::max(0, (
-                ((self.props.value - self.props.min) / (self.props.max - self.props.min)) * 100.0)as i32
+                ((ctx.props().value - ctx.props().min) / (ctx.props().max - ctx.props().min)) * 100.0)as i32
             )
         );
 
         html!{
             <div
                 // {...props}
-                class=classes!(
+                class={classes!(
                     "pf-c-progress",
                     variant_cls,
                     measure_location_cls,
                     progress_size_cls,
-                    if self.props.title.is_none() { "pf-m-singleline" } else { "" },
-                    &self.props.class_name
-                )
-                id=id.clone()
+                    if ctx.props().title.is_none() { "pf-m-singleline" } else { "" },
+                    &ctx.props().class_name
+                )}
+                id={id.clone()}
             >
                 <ProgressContainer
-                    parent_id=id.clone()
-                    value=scaled_value
-                    title=self.props.title.clone()
-                    label=self.props.label.clone()
-                    variant=self.props.variant.clone()
-                    measure_location=self.props.measure_location.clone()
-                    progress_bar_aria_props=progress_bar_aria_props
-                    is_title_truncated=self.props.is_title_truncated
+                    parent_id={id.clone()}
+                    value={scaled_value}
+                    title={ctx.props().title.clone()}
+                    label={ctx.props().label.clone()}
+                    variant={ctx.props().variant.clone()}
+                    measure_location={ctx.props().measure_location.clone()}
+                    progress_bar_aria_props={progress_bar_aria_props}
+                    is_title_truncated={ctx.props().is_title_truncated}
                     // tooltipPosition={tooltipPosition}
                 />
             </div>

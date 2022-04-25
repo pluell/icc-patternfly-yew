@@ -2,10 +2,7 @@ use yew::{
     prelude::*,
 };
 
-pub struct Brand
-{
-    props: BrandProps,
-}
+pub struct Brand;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct BrandProps
@@ -29,45 +26,23 @@ impl Component for Brand
     type Message = ();
     type Properties = BrandProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        true
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <img
                 // {...props}
-                style=self.props.style.clone()
-                class=classes!(
+                style={ctx.props().style.clone()}
+                class={classes!(
                     "pf-c-brand",
-                    self.props.class_name.clone()
-                )
-                src=self.props.src.to_string()
-                alt=self.props.alt.to_string()
+                    ctx.props().class_name.clone()
+                )}
+                src={ctx.props().src.to_string()}
+                alt={ctx.props().alt.to_string()}
             />
         }
     }

@@ -5,10 +5,7 @@ use yew::{
 use super::{AlertVariant};
 
 
-pub struct AlertIcon
-{
-    props: AlertIconProps,
-}
+pub struct AlertIcon;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct AlertIconProps
@@ -29,51 +26,29 @@ impl Component for AlertIcon
     type Message = ();
     type Properties = AlertIconProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div
                 // {...props}
-                class=classes!(
+                class={classes!(
                     "pf-c-alert__icon", 
-                    &self.props.class_name
-                )
+                    &ctx.props().class_name
+                )}
             >
             {
-                if let Some(custom_icon) = &self.props.custom_icon
+                if let Some(custom_icon) = &ctx.props().custom_icon
                 {
                     custom_icon.clone()
                 }
                 else
                 {
-                    self.props.variant.view()
+                    ctx.props().variant.view()
                 }
             }
             </div>

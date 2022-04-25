@@ -25,10 +25,7 @@ const MODAL_TITLE_ICON_CLASSES: &'static [&'static str] = &[
 ];
 
 
-pub struct ModalContent
-{
-    props: ModalContentProperties,
-}
+pub struct ModalContent;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct ModalContentProperties
@@ -117,43 +114,21 @@ impl Component for ModalContent
     type Message = ();
     type Properties = ModalContentProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
-    {
-        if !self.props.is_open
+        if !ctx.props().is_open
         {
             html!{}
         }
         else
         {
             // Get the css class for the icon type
-            let modal_title_icon_class = if let Some(title_icon_variant) = &self.props.title_icon_variant {
+            let modal_title_icon_class = if let Some(title_icon_variant) = &ctx.props().title_icon_variant {
                 match title_icon_variant
                 {
                     ModalTitleIconVariants::Success => MODAL_TITLE_ICON_CLASSES[MODAL_TITLE_ICON_CLASS_SUCCESS_IDX],
@@ -168,8 +143,8 @@ impl Component for ModalContent
             };
 
             // Set the style if width is set
-            let box_style = if self.props.width.len() > 0 {
-                Some(format!("width: {}", self.props.width))
+            let box_style = if ctx.props().width.len() > 0 {
+                Some(format!("width: {}", ctx.props().width))
             } else {
                 None
             };
@@ -179,22 +154,22 @@ impl Component for ModalContent
                     // TODO: Convert this to a FocusTrap
                     <div class="pf-l-bullseye">
                         <ModalBox
-                            id=self.props.box_id.clone()
-                            style=box_style
-                            class_name=format!("{} {}", self.props.class_name, modal_title_icon_class)
-                            variant=self.props.variant.clone()
-                            position_top=self.props.position_top
-                            position_offset=self.props.position_offset.clone()
+                            id={ctx.props().box_id.clone()}
+                            style={box_style}
+                            class_name={format!("{} {}", ctx.props().class_name, modal_title_icon_class)}
+                            variant={ctx.props().variant.clone()}
+                            position_top={ctx.props().position_top}
+                            position_offset={ctx.props().position_offset.clone()}
                             // aria-label={ariaLabel}
                             // aria-labelledby={ariaLabelledbyFormatted()}
                             // aria-describedby={ariaDescribedby || (hasNoBodyWrapper ? null : descriptorId)}
                             // {...getOUIAProps(ModalContent.displayName, ouiaId, ouiaSafe)}
                         >
                             {
-                                if self.props.show_close
+                                if ctx.props().show_close
                                 {
                                     html!{
-                                        <ModalBoxCloseButton onclose=self.props.onclose.clone() />
+                                        <ModalBoxCloseButton onclose={ctx.props().onclose.clone()} />
                                     }
                                 }
                                 else
@@ -202,9 +177,9 @@ impl Component for ModalContent
                                     html!{}
                                 }
                             }
-                            { self.render_box_header() }
-                            { self.render_box_body() }
-                            { self.render_box_footer() }
+                            { self.render_box_header(ctx) }
+                            { self.render_box_body(ctx) }
+                            { self.render_box_footer(ctx) }
                         </ModalBox>
                     </div>
                 </Backdrop>
@@ -215,33 +190,33 @@ impl Component for ModalContent
 
 impl ModalContent
 {
-    fn render_box_header(&self) -> Html
+    fn render_box_header(&self, ctx: &Context<Self>) -> Html
     {
-        if let Some(header) = &self.props.header
+        if let Some(header) = &ctx.props().header
         {
             html!{
-                <ModalBoxHeader help=self.props.help.clone() >
+                <ModalBoxHeader help={ctx.props().help.clone()} >
                     { header.clone() }
                 </ModalBoxHeader>
             }
         }
         else
         {
-            if self.props.title.len() > 0
+            if ctx.props().title.len() > 0
             {
                 html!{
-                    <ModalBoxHeader help=self.props.help.clone()>
+                    <ModalBoxHeader help={ctx.props().help.clone()}>
                         <ModalBoxTitle 
-                            title=self.props.title.clone()
-                            title_icon_variant=self.props.title_icon_variant.clone()
-                            title_label=self.props.title_label.clone()
-                            id=self.props.label_id.clone()
+                            title={ctx.props().title.clone()}
+                            title_icon_variant={ctx.props().title_icon_variant.clone()}
+                            title_label={ctx.props().title_label.clone()}
+                            id={ctx.props().label_id.clone()}
                         />
                         {
-                            if let Some(description) = &self.props.description
+                            if let Some(description) = &ctx.props().description
                             {
                                 html!{
-                                    <ModalBoxDescription id=self.props.descriptor_id.clone() >
+                                    <ModalBoxDescription id={ctx.props().descriptor_id.clone()} >
                                         {description.clone()}
                                     </ModalBoxDescription>
                                 }
@@ -261,11 +236,11 @@ impl ModalContent
         }
     }
 
-    fn render_box_body(&self) -> Html
+    fn render_box_body(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props.has_no_body_wrapper
+        if ctx.props().has_no_body_wrapper
         {
-            html!{ for self.props.children.iter() }
+            html!{ for ctx.props().children.iter() }
         }
         else
         {
@@ -274,21 +249,21 @@ impl ModalContent
                     //{...props} 
                     // {...(!description && !ariaDescribedby && { id: descriptorId })}
                 >
-                    { for self.props.children.iter() }
+                    { for ctx.props().children.iter() }
                 </ModalBoxBody>
             }
         }
     }
 
-    fn render_box_footer(&self) -> Html
+    fn render_box_footer(&self, ctx: &Context<Self>) -> Html
     {
-        if let Some(footer) = &self.props.footer
+        if let Some(footer) = &ctx.props().footer
         {
             html!{
                 <ModalBoxFooter>{ footer.clone() }</ModalBoxFooter>
             }
         }
-        else if let Some(actions) = &self.props.actions
+        else if let Some(actions) = &ctx.props().actions
         {
             html!{
                 <ModalBoxFooter>{ actions.clone() }</ModalBoxFooter>

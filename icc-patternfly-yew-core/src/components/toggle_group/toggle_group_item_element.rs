@@ -10,10 +10,7 @@ pub enum ToggleGroupItemVariant
     Text,
 }
 
-pub struct ToggleGroupItemElement
-{
-    props: ToggleGroupItemElementProps,
-}
+pub struct ToggleGroupItemElement;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct ToggleGroupItemElementProps
@@ -30,43 +27,21 @@ impl Component for ToggleGroupItemElement
     type Message = ();
     type Properties = ToggleGroupItemElementProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <span 
-                class=classes!(
-                    if self.props.variant == ToggleGroupItemVariant::Icon { "pf-c-toggle-group__icon" } else { "" },
-                    if self.props.variant == ToggleGroupItemVariant::Text { "pf-c-toggle-group__text" } else { "" },
-                )
+                class={classes!(
+                    if ctx.props().variant == ToggleGroupItemVariant::Icon { "pf-c-toggle-group__icon" } else { "" },
+                    if ctx.props().variant == ToggleGroupItemVariant::Text { "pf-c-toggle-group__text" } else { "" },
+                )}
             >
-                { for self.props.children.iter() }
+                { for ctx.props().children.iter() }
             </span>
         }
     }

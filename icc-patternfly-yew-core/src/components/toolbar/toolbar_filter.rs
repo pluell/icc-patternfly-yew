@@ -8,9 +8,8 @@ use super::*;
 
 pub struct ToolbarFilter
 {
-    link: ComponentLink<Self>,
-    props: ToolbarFilterProperties,
     filter_item_node: NodeRef,
+    num_chips: usize,
 }
 
 pub enum ToolbarFilterMsg
@@ -47,85 +46,77 @@ impl Component for ToolbarFilter
     type Message = ToolbarFilterMsg;
     type Properties = ToolbarFilterProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(ctx: &Context<Self>) -> Self
     {
         // Set the number of filters
-        props.update_number_filters.emit((props.category_name.clone(), props.chips.len() as i32));
+        ctx.props().update_number_filters.emit((ctx.props().category_name.clone(), ctx.props().chips.len() as i32));
 
         Self {
-            link,
-            props,
             filter_item_node: NodeRef::default(),
+            num_chips: ctx.props().chips.len(),
         }
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn changed(&mut self, ctx: &Context<Self>) -> bool
     {
-        if self.props != props
+        // Update the number of filters if the chips array has changed
+        if self.num_chips != ctx.props().chips.len()
         {
-            // Update the number of filters if the chips array has changed
-            if props.chips != self.props.chips
-            {
-                props.update_number_filters.emit((props.category_name.clone(), props.chips.len() as i32));
-            }
-
-            self.props = props;
+            self.num_chips = ctx.props().chips.len();
             
-            true
+            ctx.props().update_number_filters.emit((ctx.props().category_name.clone(), ctx.props().chips.len() as i32));
         }
-        else
-        {
-            false
-        }
+
+        true
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             ToolbarFilterMsg::DeleteChipGroup => {
-                self.props.delete_chip_group.emit(self.props.category_name.clone());
+                ctx.props().delete_chip_group.emit(ctx.props().category_name.clone());
 
                 false
             },
             ToolbarFilterMsg::DeleteChip(chip) => {
-                self.props.delete_chip.emit((self.props.category_name.clone(), chip));
+                ctx.props().delete_chip.emit((ctx.props().category_name.clone(), chip));
 
                 false
             },
         }
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <>
             <ToolbarItem>
-                { self.props.children.clone() }
+                { ctx.props().children.clone() }
             </ToolbarItem>
             {
-                if self.props.chips.len() > 0
+                if ctx.props().chips.len() > 0
                 {
                     html!{
                         <ToolbarItem
-                            ref=self.filter_item_node.clone()
-                            variant=ToolbarItemVariant::ChipGroup
+                            ref={self.filter_item_node.clone()}
+                            variant={ToolbarItemVariant::ChipGroup}
                         >
                             <ChipGroup
-                                category_name=self.props.category_name.clone()
-                                is_closable=true
-                                onclick=self.link.callback(|_| ToolbarFilterMsg::DeleteChipGroup)
+                                category_name={ctx.props().category_name.clone()}
+                                is_closable={true}
+                                onclick={ctx.link().callback(|_| ToolbarFilterMsg::DeleteChipGroup)}
                             >
                             {
-                                for self.props.chips.iter().map(|chip| {
+                                for ctx.props().chips.iter().map(|chip| {
                                     let chip_msg = chip.clone();
                                     
                                     html!{
                                         <Chip
-                                            onclick=self.link.callback(move |_| {
+                                            onclick={ctx.link().callback(move |_| {
                                                 ToolbarFilterMsg::DeleteChip(chip_msg.clone())
-                                            })
+                                            })}
                                         >
                                             { &chip }
                                         </Chip>
@@ -145,9 +136,9 @@ impl Component for ToolbarFilter
         }
     }
 
-    fn rendered(&mut self, _first_render: bool)
+    fn rendered(&mut self, ctx: &Context<Self>, _first_render: bool)
     {
-        if let Some(chip_group_content_node) = self.props.chip_group_content_ref.get()
+        if let Some(chip_group_content_node) = ctx.props().chip_group_content_ref.get()
         {
             // The filter toolbar group should be the first node of the chip content group
             if let Some(group_node) = chip_group_content_node.first_child()
@@ -168,7 +159,7 @@ impl Component for ToolbarFilter
                         {
                             if filter_item_node == chip_group_node
                             {
-                                if self.props.chips.len() == 0
+                                if ctx.props().chips.len() == 0
                                 {
                                     // Remove the filter item if there are no more filter chips to display
                                     group_node.remove_child(&filter_item_node)
@@ -189,7 +180,7 @@ impl Component for ToolbarFilter
 
                     // Add the filter item to the chip content chip group if the
                     // filter item is new and there are filter chips
-                    if !found_node && self.props.chips.len() > 0
+                    if !found_node && ctx.props().chips.len() > 0
                     {
                         group_node.append_child(&filter_item_node)
                             .expect("Unable to add filter toolbar item to chip group");

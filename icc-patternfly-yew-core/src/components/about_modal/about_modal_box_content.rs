@@ -3,10 +3,7 @@ use yew::{
 };
 
 
-pub struct AboutModalBoxContent
-{
-    props: AboutModalBoxContentProps,
-}
+pub struct AboutModalBoxContent;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct AboutModalBoxContentProps
@@ -31,57 +28,35 @@ impl Component for AboutModalBoxContent
     type Message = ();
     type Properties = AboutModalBoxContentProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
-            <div class=classes!("pf-c-about-modal-box__content", self.props.class_name.clone())
-                id=self.props.id.clone()
+            <div class={classes!("pf-c-about-modal-box__content", ctx.props().class_name.clone())}
+                id={ctx.props().id.clone()}
                 // {...props}
             >
-                <div class=classes!("pf-c-about-modal-box__body")>
+                <div class={classes!("pf-c-about-modal-box__body")}>
                 {
-                    if self.props.no_about_modal_box_content_container
+                    if ctx.props().no_about_modal_box_content_container
                     {
                         html!{
-                            for self.props.children.iter()
+                            for ctx.props().children.iter()
                         }
                     }
                     else
                     {
                         html!{
-                            <div class=classes!("pf-c-content")>{for self.props.children.iter()}</div>
+                            <div class={classes!("pf-c-content")}>{for ctx.props().children.iter()}</div>
                         }
                     }
                 }
                 </div>
-                <p class=classes!("pf-c-about-modal-box__strapline")>{self.props.trademark.clone()}</p>
+                <p class={classes!("pf-c-about-modal-box__strapline")}>{ctx.props().trademark.clone()}</p>
             </div>
         }
     }

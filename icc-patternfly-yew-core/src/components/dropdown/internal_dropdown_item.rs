@@ -4,11 +4,7 @@ use yew::{
 };
 
 
-pub struct InternalDropdownItem
-{
-    link: ComponentLink<Self>,
-    props: InternalDropdownItemProperties,
-}
+pub struct InternalDropdownItem;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct InternalDropdownItemProperties
@@ -100,39 +96,22 @@ impl Component for InternalDropdownItem
     type Message = InternalDropdownItemMsg;
     type Properties = InternalDropdownItemProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            link,
-            props,
-        }
-    }
-
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
+        Self
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             InternalDropdownItemMsg::OnClick => {
-                if !self.props.is_disabled
+                if !ctx.props().is_disabled
                 {
-                    self.props.onclick.emit(());
+                    ctx.props().onclick.emit(());
 
-                    self.props.onselect.emit(());
+                    ctx.props().onselect.emit(());
                 }
             }
         };
@@ -140,9 +119,9 @@ impl Component for InternalDropdownItem
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if let Some(custom_child) = &self.props.custom_child
+        if let Some(custom_child) = &ctx.props().custom_child
         {
             custom_child.clone()
         }
@@ -150,18 +129,18 @@ impl Component for InternalDropdownItem
         {
             html!{
                 <li
-                    class=self.props.list_item_class_name.clone()
-                    role=self.props.role.clone()
+                    class={ctx.props().list_item_class_name.clone()}
+                    role={ctx.props().role.clone()}
                     // onKeyDown={this.onKeyDown}   // TODO
-                    onclick=self.link.callback(|_| InternalDropdownItemMsg::OnClick)
-                    id=self.props.id.clone()
+                    onclick={ctx.link().callback(|_| InternalDropdownItemMsg::OnClick)}
+                    id={ctx.props().id.clone()}
                 >
                 {
-                    self.render_default_component()
+                    self.render_default_component(ctx)
                 }
                 {
                     // additionalChild && this.extendAdditionalChildRef()
-                    if let Some(additional_child) = &self.props.additional_child
+                    if let Some(additional_child) = &ctx.props().additional_child
                     {
                         html!{additional_child.clone()}
                     }
@@ -178,55 +157,55 @@ impl Component for InternalDropdownItem
 
 impl InternalDropdownItem
 {
-    fn render_default_component(&self) -> Html
+    fn render_default_component(&self, ctx: &Context<Self>) -> Html
     {
         // Build list of classes
         let mut classes = String::from("pf-c-dropdown__menu-item");
 
-        if self.props.icon.is_some() { classes += " pf-m-icon" }
-        if self.props.is_disabled { classes += " pf-m-disabled" }
-        if self.props.is_plain_text { classes += " pf-m-plain" }
-        if self.props.description.is_some() { classes += " pf-m-description" }
+        if ctx.props().icon.is_some() { classes += " pf-m-icon" }
+        if ctx.props().is_disabled { classes += " pf-m-disabled" }
+        if ctx.props().is_plain_text { classes += " pf-m-plain" }
+        if ctx.props().description.is_some() { classes += " pf-m-description" }
         
         // Add extra classes specified on the parent
-        if self.props.class_name.len() > 0
+        if ctx.props().class_name.len() > 0
         {
             classes += " ";
-            classes += &self.props.class_name;
+            classes += &ctx.props().class_name;
         }
 
         // Create the html element
-        let mut component_node = VTag::new(self.props.component.clone());
+        let mut component_node = VTag::new(ctx.props().component.clone());
 
         // Add properties
         component_node.add_attribute("class", classes);
-        component_node.add_attribute("aria-disabled", self.props.is_disabled.to_string());
+        component_node.add_attribute("aria-disabled", ctx.props().is_disabled.to_string());
 
-        if self.props.href.len() > 0
+        if ctx.props().href.len() > 0
         {
-            component_node.add_attribute("href", self.props.href.clone());
+            component_node.add_attribute("href", ctx.props().href.clone());
         }
 
-        if self.props.id.len() > 0
+        if ctx.props().id.len() > 0
         {
-            component_node.add_attribute("id", self.props.component_id.clone());
+            component_node.add_attribute("id", ctx.props().component_id.clone());
         }
         
-        component_node.add_child(self.render_default_component_content());
+        component_node.add_child(self.render_default_component_content(ctx));
 
         // Convert the VTag into Html
         component_node.into()
     }
 
-    fn render_default_component_content(&self) -> Html
+    fn render_default_component_content(&self, ctx: &Context<Self>) -> Html
     {
-        if let Some(description) = &self.props.description
+        if let Some(description) = &ctx.props().description
         {
             html!{
                 <>
                     <div class="pf-c-dropdown__menu-item-main">
                     {
-                        if let Some(icon) = &self.props.icon
+                        if let Some(icon) = &ctx.props().icon
                         {
                             html!{<span class="pf-c-dropdown__menu-item-icon">{icon.clone()}</span>}
                         }
@@ -235,7 +214,7 @@ impl InternalDropdownItem
                             html!{}
                         }
                     }
-                    { self.props.children.clone() }
+                    { ctx.props().children.clone() }
                     </div>
                     <div class="pf-c-dropdown__menu-item-description">{description.clone()}</div>
                 </>
@@ -246,7 +225,7 @@ impl InternalDropdownItem
             html!{
                 <>
                 {
-                    if let Some(icon) = &self.props.icon
+                    if let Some(icon) = &ctx.props().icon
                     {
                         html!{<span class="pf-c-dropdown__menu-item-icon">{icon.clone()}</span>}
                     }
@@ -255,7 +234,7 @@ impl InternalDropdownItem
                         html!{}
                     }
                 }
-                { self.props.children.clone() }
+                { ctx.props().children.clone() }
                 </>
             }
         }

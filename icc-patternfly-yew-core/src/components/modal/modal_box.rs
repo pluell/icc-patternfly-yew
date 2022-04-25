@@ -5,10 +5,7 @@ use yew::{
 use super::{ModalVariants};
 
 
-pub struct ModalBox
-{
-    props: ModalBoxProperties,
-}
+pub struct ModalBox;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct ModalBoxProperties
@@ -50,66 +47,44 @@ impl Component for ModalBox
     type Message = ();
     type Properties = ModalBoxProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
-    {
-        let mut style = if let Some(style) = &self.props.style {
+        let mut style = if let Some(style) = &ctx.props().style {
             style.clone()
         } else {
             String::new()
         };
 
-        if self.props.position_offset.len() > 0
+        if ctx.props().position_offset.len() > 0
         {
-            style += &format!(" --pf-c-modal-box--m-align-top--spacer: {};", self.props.position_offset);
+            style += &format!(" --pf-c-modal-box--m-align-top--spacer: {};", ctx.props().position_offset);
         }
 
         html!{
             <div
                 // {...props}
-                id=self.props.id.clone()
+                id={ctx.props().id.clone()}
                 role="dialog"
                 // aria-label={ariaLabel || null}
                 // aria-labelledby={ariaLabelledby || null}
                 // aria-describedby={ariaDescribedby}
                 aria-modal="true"
-                class=classes!(
+                class={classes!(
                     "pf-c-modal-box",
-                    self.props.class_name.clone(),
-                    if self.props.position_top { "pf-m-align-top" } else { "" },
-                    if self.props.variant == ModalVariants::Large { "pf-m-lg" } else { "" },
-                    if self.props.variant == ModalVariants::Small { "pf-m-sm" } else { "" },
-                    if self.props.variant == ModalVariants::Medium { "pf-m-md" } else { "" },
-                )
-                style=style
+                    ctx.props().class_name.clone(),
+                    if ctx.props().position_top { "pf-m-align-top" } else { "" },
+                    if ctx.props().variant == ModalVariants::Large { "pf-m-lg" } else { "" },
+                    if ctx.props().variant == ModalVariants::Small { "pf-m-sm" } else { "" },
+                    if ctx.props().variant == ModalVariants::Medium { "pf-m-md" } else { "" },
+                )}
+                style={style}
             >
-                { for self.props.children.iter() }
+                { for ctx.props().children.iter() }
             </div>
         }
     }

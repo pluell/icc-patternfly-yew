@@ -5,11 +5,7 @@ use yew::{
 use super::*;
 
 
-pub struct SelectMenu
-{
-    // link: ComponentLink<Self>,
-    props: SelectMenuProperties,
-}
+pub struct SelectMenu;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct SelectMenuProperties
@@ -23,34 +19,24 @@ impl Component for SelectMenu
     type Message = ();
     type Properties = SelectMenuProperties;
 
-    fn create(props: Self::Properties, _link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            // link,
-            props,
-        }
-    }
-
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        self.props = props;
-
-        true
+        Self
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, _msg: Self::Message) -> ShouldRender
+    fn update(&mut self, _: &Context<Self>, _: Self::Message) -> bool
     {
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props.variant != SelectVariant::Checkbox
+        if ctx.props().variant != SelectVariant::Checkbox
         {
             html!{
                 <ul class="pf-c-select__menu" aria-labelledby="select-single-label">
-                    { self.props.children.clone() }
+                    { ctx.props().children.clone() }
                 </ul>
             }
         }
@@ -59,7 +45,7 @@ impl Component for SelectMenu
             html!{
                 <div class="pf-c-select__menu">
                     <fieldset class="pf-c-select__menu-fieldset" aria-label="Select input">
-                        { self.props.children.clone() }
+                        { ctx.props().children.clone() }
                     </fieldset>
                 </div>
             }

@@ -10,13 +10,11 @@ use web_sys::{HtmlElement};
 
 use crate::{KeyCodes};
 
-use super::{ AboutModalContainer};
+use super::{AboutModalContainer};
 
 
 pub struct AboutModal
 {
-    props: AboutModalProps,
-    link: ComponentLink<AboutModal>,
     html_body: HtmlElement,
     container_node: NodeRef,
     key_listener_handle: Option<EventListener>,
@@ -71,7 +69,7 @@ impl Component for AboutModal
     type Message = AboutModalMsg;
     type Properties = AboutModalProps;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
         // Get the body component as a default target container
         let html_body = web_sys::window()
@@ -82,37 +80,21 @@ impl Component for AboutModal
             .expect("Unable to load the HTML body element!");
 
         Self {
-            props,
-            link,
             html_body,
             container_node: NodeRef::default(),
             key_listener_handle: None,
         }
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             AboutModalMsg::OnKeyDown(event) => {
-                if event.key_code() == KeyCodes::EscapeKey as u32 && self.props.is_open
+                if event.key_code() == KeyCodes::EscapeKey as u32 && ctx.props().is_open
                 {
-                    self.props.onclose.emit(());
+                    ctx.props().onclose.emit(());
                 }
             },
         }
@@ -120,35 +102,35 @@ impl Component for AboutModal
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         let id = 1;
         let aria_labelled_by = format!("pf-about-modal-title-{}", id);
         let aria_described_by = format!("pf-about-modal-content-{}", id);
 
         html!{
-            <div ref=self.container_node.clone()>
+            <div ref={self.container_node.clone()}>
                 <AboutModalContainer
-                    about_modal_box_header_id = aria_labelled_by
-                    about_modal_box_content_id = aria_described_by
+                    about_modal_box_header_id={aria_labelled_by}
+                    about_modal_box_content_id={aria_described_by}
                     // {...props}
-                    children=self.props.children.clone()
-                    class_name=self.props.class_name.clone()
-                    is_open=self.props.is_open
-                    onclose=self.props.onclose.clone()
-                    product_name=self.props.product_name.clone()
-                    trademark=self.props.trademark.clone()
-                    brand_image_src = self.props.brand_image_src.clone()
-                    brand_image_alt = self.props.brand_image_alt.clone()
+                    children={ctx.props().children.clone()}
+                    class_name={ctx.props().class_name.clone()}
+                    is_open={ctx.props().is_open}
+                    onclose={ctx.props().onclose.clone()}
+                    product_name={ctx.props().product_name.clone()}
+                    trademark={ctx.props().trademark.clone()}
+                    brand_image_src={ctx.props().brand_image_src.clone()}
+                    brand_image_alt={ctx.props().brand_image_alt.clone()}
                 />
             </div>
         }
     }
 
-    fn rendered(&mut self, _first_render: bool)
+    fn rendered(&mut self, ctx: &Context<Self>, _first_render: bool)
     {
         // Get target element to attach the AboutModal to
-        let target = if let Some(append_to) = &self.props.append_to {
+        let target = if let Some(append_to) = &ctx.props().append_to {
             append_to.clone()
         } else {
             self.html_body.clone()
@@ -159,7 +141,7 @@ impl Component for AboutModal
 
         if !target_classes.contains("pf-c-backdrop__open")
         {
-            if self.props.is_open
+            if ctx.props().is_open
             {
                 target_classes += " pf-c-backdrop__open";
             }
@@ -167,7 +149,7 @@ impl Component for AboutModal
         else
         {
             // Remove the backdrop open class if the AboutModal is closed now
-            if !self.props.is_open
+            if !ctx.props().is_open
             {
                 let class_len = " pf-c-backdrop__open".len();
                 let class_offset = target_classes.find(" pf-c-backdrop__open").unwrap_or(target_classes.len());
@@ -181,7 +163,7 @@ impl Component for AboutModal
         // Set up the key handler event on the target for the user hitting "esc"
         if self.key_listener_handle.is_none()
         {
-            let callback = self.link.callback(|event| AboutModalMsg::OnKeyDown(event));
+            let callback = ctx.link().callback(|event| AboutModalMsg::OnKeyDown(event));
 
             let listener = move |event: &Event| {
                 // Try to convert event to KeyboardEvent

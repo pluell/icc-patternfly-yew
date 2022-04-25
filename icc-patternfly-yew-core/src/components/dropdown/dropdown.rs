@@ -6,10 +6,7 @@ use yew::{
 use super::{DropdownDirection, DropdownPosition, DropdownWithContext, DropdownItem, DropdownToggleComponents};
 
 
-pub struct Dropdown
-{
-    props: DropdownProperties,
-}
+pub struct Dropdown;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct DropdownProperties
@@ -56,39 +53,17 @@ impl Component for Dropdown
     type Message = ();
     type Properties = DropdownProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
-    {
-        let props = self.props.clone();
+        let props = ctx.props().clone();
         
         html!{
-            <DropdownWithContext with props />
+            <DropdownWithContext ..props />
         }
     }
 }

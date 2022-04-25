@@ -9,8 +9,6 @@ use super::*;
 
 pub struct Toolbar
 {
-    props: ToolbarProperties,
-    link: ComponentLink<Toolbar>,
     chip_group_content_ref: NodeRef,
     filter_info: HashMap<String, i32>,
 }
@@ -54,32 +52,16 @@ impl Component for Toolbar
     type Message = ToolbarMsg;
     type Properties = ToolbarProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
         Self {
-            props,
-            link,
             chip_group_content_ref: NodeRef::default(),
             filter_info: HashMap::new(),
         }
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, _: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
@@ -91,32 +73,36 @@ impl Component for Toolbar
         true
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         // Calculate number of filters
         let number_of_filters = self.get_num_filters();
 
         html!{
             <div
-                id=self.props.id.clone()
+                id={ctx.props().id.clone()}
                 class="pf-c-toolbar"
             >
                 {
-                    for self.props.children.iter().map(|mut content_node| {
-                        content_node.props.chip_group_content_ref = self.chip_group_content_ref.clone();
-                        content_node.props.update_number_filters = self.link.callback(|(group_name, num_chips)| 
+                    for ctx.props().children.iter().map(|mut content_node| {
+                        let mut props = (&*content_node.props).clone();
+                        
+                        props.chip_group_content_ref = self.chip_group_content_ref.clone();
+                        props.update_number_filters = ctx.link().callback(|(group_name, num_chips)| 
                             ToolbarMsg::UpdateNumFilters((group_name, num_chips))
                         );
+
+                        content_node.props = std::rc::Rc::new(props);
 
                         content_node
                     })
                 }
                 <ToolbarChipGroupContent 
-                    ref=self.chip_group_content_ref.clone()
+                    ref={self.chip_group_content_ref.clone()}
                     show_clear_filters_button={number_of_filters > 0}
-                    clear_filters_button_text=self.props.clear_filters_button_text.clone()
-                    clear_all_filters=self.props.clear_all_filters.clone()
-                    number_of_filters=number_of_filters
+                    clear_filters_button_text={ctx.props().clear_filters_button_text.clone()}
+                    clear_all_filters={ctx.props().clear_all_filters.clone()}
+                    number_of_filters={number_of_filters}
                 />
             </div>
         }

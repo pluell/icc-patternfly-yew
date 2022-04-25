@@ -13,10 +13,7 @@ pub enum EmptyStateVariant
     Full,
 }
 
-pub struct EmptyState
-{
-    props: EmptyStateProps,
-}
+pub struct EmptyState;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct EmptyStateProps
@@ -40,36 +37,14 @@ impl Component for EmptyState
     type Message = ();
     type Properties = EmptyStateProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
-    {
-        let variant_cls = match self.props.variant {
+        let variant_cls = match ctx.props().variant {
             EmptyStateVariant::Xs => "pf-m-xs",
             EmptyStateVariant::Small => "pf-m-sm",
             EmptyStateVariant::Large => "pf-m-lg",
@@ -79,17 +54,17 @@ impl Component for EmptyState
 
         html!{
             <div
-                class=classes!(
+                class={classes!(
                     "pf-c-empty-state",
                     variant_cls,
-                    if self.props.is_full_height { "pf-m-full-height" } else { "" },
-                    self.props.class_name.clone()
-                )
+                    if ctx.props().is_full_height { "pf-m-full-height" } else { "" },
+                    ctx.props().class_name.clone()
+                )}
                 // {...props}
             >
                 <div class="pf-c-empty-state__content">
                 {
-                    for self.props.children.iter()
+                    for ctx.props().children.iter()
                 }
                 </div>
             </div>

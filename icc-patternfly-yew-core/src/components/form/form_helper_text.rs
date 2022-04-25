@@ -2,10 +2,7 @@ use yew::{
     prelude::*,
 };
 
-pub struct FormHelperText
-{
-    props: FormHelperTextProperties,
-}
+pub struct FormHelperText;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct FormHelperTextProperties
@@ -31,48 +28,25 @@ impl Component for FormHelperText
     type Message = ();
     type Properties = FormHelperTextProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            // link,
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <p
-                class=classes!(
+                class={classes!(
                     "pf-c-form__helper-text",
-                    if self.props.is_error {"pf-m-error"} else {""},
-                    if self.props.is_hidden {"pf-m-hidden"} else {""},
-                    self.props.class_name.to_string()
-                )
+                    if ctx.props().is_error {"pf-m-error"} else {""},
+                    if ctx.props().is_hidden {"pf-m-hidden"} else {""},
+                    ctx.props().class_name.to_string()
+                )}
                 // {...props}
             >
                 {
-                    if let Some(icon) = &self.props.icon
+                    if let Some(icon) = &ctx.props().icon
                     {
                         html!{
                             <span class="pf-c-form__helper-text-icon">{icon.clone()}</span>
@@ -83,7 +57,7 @@ impl Component for FormHelperText
                         html!{}
                     }
                 }
-                { self.props.children.clone() }
+                { ctx.props().children.clone() }
             </p>
         }
     }

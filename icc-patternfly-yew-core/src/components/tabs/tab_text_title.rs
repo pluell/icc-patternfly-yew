@@ -3,10 +3,7 @@ use yew::{
 };
 
 
-pub struct TabTextTitle
-{
-    props: TabTextTitleProperties,
-}
+pub struct TabTextTitle;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct TabTextTitleProperties
@@ -23,38 +20,16 @@ impl Component for TabTextTitle
     type Message = ();
     type Properties = TabTextTitleProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
-            <span class=classes!("pf-c-tabs__item-text", self.props.class_name.to_string())>
-                { self.props.children.clone() }
+            <span class={classes!("pf-c-tabs__item-text", ctx.props().class_name.to_string())}>
+                { ctx.props().children.clone() }
             </span>
         }
     }

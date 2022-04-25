@@ -3,10 +3,7 @@ use yew::{
 };
 
 
-pub struct EmptyStateBody
-{
-    props: EmptyStateBodyProps,
-}
+pub struct EmptyStateBody;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct EmptyStateBodyProps
@@ -24,45 +21,23 @@ impl Component for EmptyStateBody
     type Message = ();
     type Properties = EmptyStateBodyProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div 
-                class=classes!(
+                class={classes!(
                     "pf-c-empty-state__body",
-                    self.props.class_name.clone()
-                )
+                    ctx.props().class_name.clone()
+                )}
                 // {...props}
             >
             {
-                for self.props.children.iter()
+                for ctx.props().children.iter()
             }
             </div>
         }

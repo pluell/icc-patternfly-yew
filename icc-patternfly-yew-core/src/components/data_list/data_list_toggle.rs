@@ -10,11 +10,7 @@ pub enum DataListToggleMsg
     OnClick,
 }
 
-pub struct DataListToggle
-{
-    link: ComponentLink<Self>,
-    props: DataListToggleProps,
-}
+pub struct DataListToggle;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct DataListToggleProps
@@ -48,63 +44,46 @@ impl Component for DataListToggle
     type Message = DataListToggleMsg;
     type Properties = DataListToggleProps;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            link,
-            props,
-        }
-    }
-
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
+        Self
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             DataListToggleMsg::OnClick => {
-                self.props.onclick.emit(());
+                ctx.props().onclick.emit(());
             },
         }
 
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div 
-                class=classes!(
+                class={classes!(
                     "pf-c-data-list__item-control",
-                    self.props.class_name.clone()
-                )
+                    ctx.props().class_name.clone()
+                )}
                 // {...props}
             >
                 <div class="pf-c-data-list__toggle">
                     <Button
-                        id=self.props.id.clone()
-                        variant=ButtonVariant::Plain
-                        aria_controls=self.props.aria_controls.clone()
-                        aria_label=self.props.aria_label.to_string()
-                        aria_labelledby=if self.props.aria_label != "Details" { None } else { Some(format!("{}-{}", self.props.rowid, self.props.id)) }
-                        aria_expanded=self.props.is_expanded.to_string()
+                        id={ctx.props().id.clone()}
+                        variant={ButtonVariant::Plain}
+                        aria_controls={ctx.props().aria_controls.clone()}
+                        aria_label={ctx.props().aria_label.to_string()}
+                        aria_labelledby={if ctx.props().aria_label != "Details" { None } else { Some(format!("{}-{}", ctx.props().rowid, ctx.props().id)) }}
+                        aria_expanded={ctx.props().is_expanded.to_string()}
 
-                        onclick=self.link.callback(|_| DataListToggleMsg::OnClick)
+                        onclick={ctx.link().callback(|_| DataListToggleMsg::OnClick)}
                     >
-                        <div class="pf-c-data-list__toggle-icon">
+                        <div class={"pf-c-data-list__toggle-icon"}>
                             {icc_patternfly_yew_icons::angle_right_icon!{}}
                         </div>
                     </Button>

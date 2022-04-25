@@ -5,10 +5,7 @@ use yew::{
 use crate::styles::{WrapModifers};
 
 
-pub struct DataListItemRow
-{
-    props: DataListItemRowProps,
-}
+pub struct DataListItemRow;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct DataListItemRowProps
@@ -32,42 +29,20 @@ impl Component for DataListItemRow
     type Message = ();
     type Properties = DataListItemRowProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div 
-                class=classes!(
+                class={classes!(
                     "pf-c-data-list__item-row",
-                    self.props.class_name.clone(),
-                    if let Some(wrap_modifier) = &self.props.wrap_modifier { wrap_modifier.get_class() } else { "" },
-                )
+                    ctx.props().class_name.clone(),
+                    if let Some(wrap_modifier) = &ctx.props().wrap_modifier { wrap_modifier.get_class() } else { "" },
+                )}
                 //  {...props}
             >
                 // {React.Children.map(
@@ -78,7 +53,7 @@ impl Component for DataListItemRow
                 //     rowid
                 //     })
                 // )}
-                { for self.props.children.iter() }
+                { for ctx.props().children.iter() }
             </div>
         }
     }

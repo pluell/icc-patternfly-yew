@@ -8,10 +8,7 @@ use crate::{ButtonType};
 use super::{Toggle};
 
 
-pub struct KebabToggle
-{
-    props: KebabToggleProperties,
-}
+pub struct KebabToggle;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct KebabToggleProperties
@@ -67,49 +64,27 @@ impl Component for KebabToggle
     type Message = ();
     type Properties = KebabToggleProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <Toggle
                 // {...props}
-                id=self.props.id.clone()
-                class_name=self.props.class_name.clone()
-                is_open=self.props.is_open
-                aria_label=self.props.aria_label.clone()
-                menu_ref=self.props.menu_ref.clone()
-                is_active=self.props.is_active
-                is_disabled=self.props.is_disabled
-                is_plain=self.props.is_plain
-                is_primary=self.props.is_primary
-                ontoggle=self.props.ontoggle.clone()
-                bubble_event=self.props.bubble_event
+                id={ctx.props().id.clone()}
+                class_name={ctx.props().class_name.clone()}
+                is_open={ctx.props().is_open}
+                aria_label={ctx.props().aria_label.clone()}
+                menu_ref={ctx.props().menu_ref.clone()}
+                is_active={ctx.props().is_active}
+                is_disabled={ctx.props().is_disabled}
+                is_plain={ctx.props().is_plain}
+                is_primary={ctx.props().is_primary}
+                ontoggle={ctx.props().ontoggle.clone()}
+                bubble_event={ctx.props().bubble_event}
             >
                 <i class="fas fa-ellipsis-v" aria-hidden="true"></i>
             </Toggle>

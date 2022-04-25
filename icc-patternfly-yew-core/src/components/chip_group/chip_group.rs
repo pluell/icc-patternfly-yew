@@ -5,11 +5,7 @@ use yew::{
 use crate::components::{Button, ButtonVariant};
 
 
-pub struct ChipGroup
-{
-    _link: ComponentLink<Self>,
-    props: ChipGroupProperties,
-}
+pub struct ChipGroup;
 
 pub enum ChipGroupMsg
 {
@@ -36,52 +32,27 @@ impl Component for ChipGroup
     type Message = ChipGroupMsg;
     type Properties = ChipGroupProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            _link: link,
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
-    {
-        match msg
-        {
-        }
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div
-                class=classes!(
+                class={classes!(
                     "pf-c-chip-group",
-                    if self.props.category_name.is_empty() {""} else {"pf-m-category"},
-                )
+                    if ctx.props().category_name.is_empty() {""} else {"pf-m-category"},
+                )}
             >
-                <div class="pf-c-chip-group__main">
-                    { &self.props.category_name }
-                    <ul class="pf-c-chip-group__list" role="list">
+                <div class={"pf-c-chip-group__main"}>
+                    { &ctx.props().category_name }
+                    <ul class={"pf-c-chip-group__list"} role={"list"}>
                     {
-                        for self.props.children.iter().map(|child|
+                        for ctx.props().children.iter().map(|child|
                             html!{
-                                <li class="pf-c-chip-group__list-item">
+                                <li class={"pf-c-chip-group__list-item"}>
                                 {
                                     child.clone()
                                 }
@@ -92,15 +63,15 @@ impl Component for ChipGroup
                     </ul>
                 </div>
                 {
-                    if self.props.is_closable
+                    if ctx.props().is_closable
                     {
                         html!{
-                            <div class="pf-c-chip-group__close">
+                            <div class={"pf-c-chip-group__close"}>
                                 <Button
-                                    variant=ButtonVariant::Plain
-                                    onclick=self.props.onclick.clone()
+                                    variant={ButtonVariant::Plain}
+                                    onclick={ctx.props().onclick.clone()}
                                 >
-                                    <i class="fas fa-times"></i>
+                                    <i class={"fas fa-times"}></i>
                                 </Button>
                             </div>
                         }

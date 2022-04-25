@@ -5,10 +5,7 @@ use yew::{
 use super::{FormFieldGroupToggle};
 
 
-pub struct InternalFormFieldGroup
-{
-    props: InternalFormFieldGroupProps,
-}
+pub struct InternalFormFieldGroup;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct InternalFormFieldGroupProps
@@ -41,46 +38,24 @@ impl Component for InternalFormFieldGroup
     type Message = ();
     type Properties = InternalFormFieldGroupProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div
-                class=classes!(
+                class={classes!(
                     "pf-c-form__field-group", 
-                    if self.props.is_expanded && self.props.is_expandable {"pf-m-expanded"} else {""},
-                    self.props.class_name.clone(),
-                )
+                    if ctx.props().is_expanded && ctx.props().is_expandable {"pf-m-expanded"} else {""},
+                    ctx.props().class_name.clone(),
+                )}
                 // {...props}
             >
                 {
-                    if self.props.is_expandable
+                    if ctx.props().is_expandable
                     {
                         // <GenerateId prefix="form-field-group-toggle">
                         //     {id => (
@@ -95,9 +70,9 @@ impl Component for InternalFormFieldGroup
                         // </GenerateId>
                         html!{
                             <FormFieldGroupToggle
-                                ontoggle=self.props.ontoggle.clone()
-                                is_expanded=self.props.is_expanded
-                                aria_label=self.props.toggle_aria_label.clone()
+                                ontoggle={ctx.props().ontoggle.clone()}
+                                is_expanded={ctx.props().is_expanded}
+                                aria_label={ctx.props().toggle_aria_label.clone()}
                                 // toggle_id={id}
                                 // {...(headerTitleText && { 'aria-labelledby': `${header.props.titleText.id} ${id}` })}
                             />
@@ -109,7 +84,7 @@ impl Component for InternalFormFieldGroup
                     }
                 }
                 {
-                    if let Some(header) = &self.props.header
+                    if let Some(header) = &ctx.props().header
                     {
                         header.clone()
                     }
@@ -119,11 +94,11 @@ impl Component for InternalFormFieldGroup
                     }
                 }
                 {
-                    if !self.props.is_expandable || (self.props.is_expanded && self.props.is_expandable)
+                    if !ctx.props().is_expandable || (ctx.props().is_expanded && ctx.props().is_expandable)
                     {
                         html!{
                             <div class="pf-c-form__field-group-body">
-                                {for self.props.children.iter()}
+                                {for ctx.props().children.iter()}
                             </div>
                         }
                     }

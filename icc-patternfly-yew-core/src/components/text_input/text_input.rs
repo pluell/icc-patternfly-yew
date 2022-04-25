@@ -1,5 +1,9 @@
+use web_sys::HtmlInputElement;
 use yew::{
     prelude::*,
+    events::InputEvent,
+    html,
+    Component, Context, Html, TargetCast,
 };
 
 use crate::{ValidatedOptions};
@@ -35,11 +39,7 @@ const INPUT_TYPES: &'static [&'static str] = &[
     "url",
 ];
 
-pub struct TextInput
-{
-    link: ComponentLink<Self>,
-    props: TextInputProperties,
-}
+pub struct TextInput;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct TextInputProperties
@@ -101,7 +101,7 @@ pub struct TextInputProperties
 
 pub enum TextInputMsg
 {
-    OnInput(InputData),
+    OnInput(String),
 }
 
 impl Component for TextInput
@@ -109,64 +109,53 @@ impl Component for TextInput
     type Message = TextInputMsg;
     type Properties = TextInputProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            link,
-            props,
-        }
-    }
-
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
+        Self
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
-            TextInputMsg::OnInput(input_data) => {
-                self.props.onchange.emit(input_data.value);
-            }
+            TextInputMsg::OnInput(value) => {
+                ctx.props().onchange.emit(value);
+            },
         }
 
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
+        let oninput = ctx.link().batch_callback(|e: InputEvent| {
+            let input = e.target_dyn_into::<HtmlInputElement>();
+
+            input.map(|input| TextInputMsg::OnInput(input.value()))
+        });
+
         html!{
             <input
-                id=self.props.id.clone()
+                id={ctx.props().id.clone()}
                 // {...props}
                 // onFocus={this.onFocus}
                 // onBlur={this.onBlur}
-                class=classes!(
+                class={classes!(
                     "pf-c-form-control",
-                    if self.props.validated == ValidatedOptions::Success { "pf-m-success" } else { "" },
-                    if self.props.validated == ValidatedOptions::Warning { "pf-m-warning" } else { "" },
+                    if ctx.props().validated == ValidatedOptions::Success { "pf-m-success" } else { "" },
+                    if ctx.props().validated == ValidatedOptions::Warning { "pf-m-warning" } else { "" },
                     // ((iconVariant && iconVariant !== 'search') || customIconUrl) && styles.modifiers.icon,
                     // iconVariant && styles.modifiers[iconVariant],
-                    self.props.class_name.clone(),
-                )
-                oninput=self.link.callback(|input_data| TextInputMsg::OnInput(input_data))
-                type=INPUT_TYPES[self.props.input_type.clone() as usize]
-                value=self.props.value.clone()
-                aria-invalid=(self.props.validated == ValidatedOptions::Error).to_string()
-                required=self.props.is_required
-                disabled=self.props.is_disabled
-                read_only=self.props.is_read_only.to_string()
+                    ctx.props().class_name.clone(),
+                )}
+                {oninput}
+                type={INPUT_TYPES[ctx.props().input_type.clone() as usize]}
+                value={ctx.props().value.clone()}
+                aria-invalid={(ctx.props().validated == ValidatedOptions::Error).to_string()}
+                required={ctx.props().is_required}
+                disabled={ctx.props().is_disabled}
+                read_only={ctx.props().is_read_only.to_string()}
                 // ref={innerRef || this.inputRef}
                 // {...((customIconUrl || customIconDimensions) && { style: customIconStyle })}
             />

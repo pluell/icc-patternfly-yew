@@ -3,10 +3,7 @@ use yew::{
 };
 
 
-pub struct TextContent
-{
-    props: TextContentProperties,
-}
+pub struct TextContent;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct TextContentProperties
@@ -24,44 +21,22 @@ impl Component for TextContent
     type Message = ();
     type Properties = TextContentProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div 
                 // {...props}
-                class=classes!(
+                class={classes!(
                     "pf-c-content", 
-                    self.props.class_name.clone(),
-                )
+                    ctx.props().class_name.clone(),
+                )}
             >
-                { for self.props.children.iter() }
+                { for ctx.props().children.iter() }
             </div>
         }
     }

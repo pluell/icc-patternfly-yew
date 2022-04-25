@@ -5,11 +5,7 @@ use yew::{
 use crate::{Button, ButtonVariant};
 
 
-pub struct ModalBoxCloseButton
-{
-    props: ModalBoxCloseButtonProperties,
-    link: ComponentLink<ModalBoxCloseButton>,
-}
+pub struct ModalBoxCloseButton;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct ModalBoxCloseButtonProperties
@@ -32,49 +28,32 @@ impl Component for ModalBoxCloseButton
     type Message = ModalBoxCloseButtonMsg;
     type Properties = ModalBoxCloseButtonProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-            link,
-        }
-    }
-
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
+        Self
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             ModalBoxCloseButtonMsg::OnButtonClick => {
-                self.props.onclose.emit(());
+                ctx.props().onclose.emit(());
             }
         }
 
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <Button 
-                class_name=self.props.class_name.clone() 
-                variant=ButtonVariant::Plain
-                onclick=self.link.callback(|_| ModalBoxCloseButtonMsg::OnButtonClick)
-                aria_label="Close".to_string()
+                class_name={ctx.props().class_name.clone()} 
+                variant={ButtonVariant::Plain}
+                onclick={ctx.link().callback(|_| ModalBoxCloseButtonMsg::OnButtonClick)}
+                aria_label="Close"
                 // {...props}
             >
                 <i class="fas fa-times" aria-hidden="true"></i>

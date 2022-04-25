@@ -3,10 +3,7 @@ use yew::{
 };
 
 
-pub struct ToggleGroup
-{
-    props: ToggleGroupProps,
-}
+pub struct ToggleGroup;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct ToggleGroupProps
@@ -30,47 +27,25 @@ impl Component for ToggleGroup
     type Message = ();
     type Properties = ToggleGroupProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div
-                class=classes!(
+                class={classes!(
                     "pf-c-toggle-group", 
-                    if self.props.is_compact { "pf-m-compact" } else { "" },
-                    self.props.class_name.clone()
-                )
+                    if ctx.props().is_compact { "pf-m-compact" } else { "" },
+                    ctx.props().class_name.clone()
+                )}
                 role="group"
-                aria-label=self.props.aria_label.clone()
+                aria-label={ctx.props().aria_label.clone()}
                 // {...props}
             >
-                { for self.props.children.iter() }
+                { for ctx.props().children.iter() }
             </div>
         }
     }

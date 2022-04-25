@@ -33,10 +33,7 @@ impl From<TitleElements> for VTag
 }
 
 
-pub struct FormSection
-{
-    props: FormSectionProperties,
-}
+pub struct FormSection;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct FormSectionProperties
@@ -59,51 +56,28 @@ impl Component for FormSection
     type Message = ();
     type Properties = FormSectionProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            // link,
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <section
                 // {...props} 
-                class=classes!("pf-c-form__section", self.props.class_name.to_string())
+                class={classes!("pf-c-form__section", ctx.props().class_name.to_string())}
             >
                 {
-                    if let Some(title) = &self.props.title
+                    if let Some(title) = &ctx.props().title
                     {
-                        let mut title_element: VTag = self.props.title_element.clone().into();
+                        let mut title_element: VTag = ctx.props().title_element.clone().into();
 
                         title_element.add_attribute(
                             "class",
                             classes!(
                                 "pf-c-form__section-title",
-                                self.props.class_name.to_string()
+                                ctx.props().class_name.to_string()
                             ).to_string()
                         );
 
@@ -116,7 +90,7 @@ impl Component for FormSection
                         html!{}
                     }
                 }
-                { self.props.children.clone() }
+                { ctx.props().children.clone() }
             </section>
         }
     }

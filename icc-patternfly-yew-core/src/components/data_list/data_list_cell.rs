@@ -5,10 +5,7 @@ use yew::{
 use crate::styles::{WrapModifers};
 
 
-pub struct DataListCell
-{
-    props: DataListCellProps,
-}
+pub struct DataListCell;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct DataListCellProps
@@ -49,49 +46,27 @@ impl Component for DataListCell
     type Message = ();
     type Properties = DataListCellProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div
-                class=classes!(
+                class={classes!(
                     "pf-c-data-list__cell",
-                    if self.props.width > 1 && self.props.width < 6 {format!{"pf-m-flex-{}", self.props.width}} else {String::new()},
-                    if !self.props.is_filled { "pf-m-no-fill" } else { "" },
-                    if self.props.align_right { "pf-m-align-right" } else { "" },
-                    if self.props.is_icon { "pf-m-icon" } else { "" },
-                    self.props.class_name.clone(),
-                    if let Some(wrap_modifier) = &self.props.wrap_modifier { wrap_modifier.get_class() } else { "" },
-                )
+                    if ctx.props().width > 1 && ctx.props().width < 6 {format!{"pf-m-flex-{}", ctx.props().width}} else {String::new()},
+                    if !ctx.props().is_filled { "pf-m-no-fill" } else { "" },
+                    if ctx.props().align_right { "pf-m-align-right" } else { "" },
+                    if ctx.props().is_icon { "pf-m-icon" } else { "" },
+                    ctx.props().class_name.clone(),
+                    if let Some(wrap_modifier) = &ctx.props().wrap_modifier { wrap_modifier.get_class() } else { "" },
+                )}
                 // {...props}
             >
-                { for self.props.children.iter() }
+                { for ctx.props().children.iter() }
             </div>
         }
     }

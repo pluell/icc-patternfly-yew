@@ -7,8 +7,6 @@ use super::{InternalFormFieldGroup};
 
 pub struct FormFieldGroupExpandable
 {
-    link: ComponentLink<Self>,
-    props: FormFieldGroupExpandableProps,
     is_expanded: bool,
 }
 
@@ -42,33 +40,17 @@ impl Component for FormFieldGroupExpandable
     type Message = FormFieldGroupExpandableMsg;
     type Properties = FormFieldGroupExpandableProps;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(ctx: &Context<Self>) -> Self
     {
-        let is_expanded = props.is_expanded.clone();
+        let is_expanded = ctx.props().is_expanded.clone();
 
         Self {
-            link,
-            props,
             is_expanded,
         }
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, _: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
@@ -80,19 +62,19 @@ impl Component for FormFieldGroupExpandable
         }
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <InternalFormFieldGroup 
-                class_name=self.props.class_name.clone()
-                header=self.props.header.clone()
-                is_expandable=true
-                is_expanded=self.is_expanded
-                toggle_aria_label=self.props.toggle_aria_label.clone()
-                ontoggle=self.link.callback(|_| FormFieldGroupExpandableMsg::OnToggle)
+                class_name={ctx.props().class_name.clone()}
+                header={ctx.props().header.clone()}
+                is_expandable={true}
+                is_expanded={self.is_expanded}
+                toggle_aria_label={ctx.props().toggle_aria_label.clone()}
+                ontoggle={ctx.link().callback(|_| FormFieldGroupExpandableMsg::OnToggle)}
                 // {...props}
             >
-                {for self.props.children.iter()}
+                {for ctx.props().children.iter()}
             </InternalFormFieldGroup>
         }
     }

@@ -4,10 +4,7 @@ use yew::{
     virtual_dom::{VTag},
 };
 
-pub struct ProgressBar
-{
-    props: ProgressBarProps,
-}
+pub struct ProgressBar;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct ProgressBarProps
@@ -34,54 +31,32 @@ impl Component for ProgressBar
     type Message = ();
     type Properties = ProgressBarProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         let mut div_container = VTag::new("div");
 
-        div_container.add_attribute("role", self.props.role.clone());
+        div_container.add_attribute("role", ctx.props().role.clone());
 
-        let classes = format!("pf-c-progress__bar {}", &self.props.class_name);
+        let classes = format!("pf-c-progress__bar {}", &ctx.props().class_name);
 
         div_container.add_attribute("class", classes);
 
         // Add the aria props
-        for (key, value) in self.props.progress_bar_aria_props.iter()
+        for (key, value) in ctx.props().progress_bar_aria_props.iter()
         {
             div_container.add_attribute(key, value.to_string());
         }
 
         div_container.add_child(html!{
-            <div class="pf-c-progress__indicator" style=format!("width: {}%", self.props.value)>
+            <div class="pf-c-progress__indicator" style={format!("width: {}%", ctx.props().value)}>
                 <span class="pf-c-progress__measure">
                 {
-                    for self.props.children.iter()
+                    for ctx.props().children.iter()
                 }
                 </span>
             </div>

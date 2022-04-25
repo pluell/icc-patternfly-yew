@@ -2,10 +2,7 @@ use yew::{
     prelude::*,
 };
 
-pub struct AboutModalBoxBrand
-{
-    props: AboutModalBoxBrandProps,
-}
+pub struct AboutModalBoxBrand;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct AboutModalBoxBrandProps
@@ -25,40 +22,19 @@ impl Component for AboutModalBoxBrand
     type Message = ();
     type Properties = AboutModalBoxBrandProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
 
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
-            <div class=classes!("pf-c-about-modal-box__brand", self.props.class_name.clone())
+            <div class={classes!("pf-c-about-modal-box__brand", ctx.props().class_name.clone())}
                 // {...props}
             >
-                <img class=classes!("pf-c-about-modal-box__brand-image") src=self.props.src.clone() alt=self.props.alt.clone() />
+                <img class={classes!("pf-c-about-modal-box__brand-image")} src={ctx.props().src.clone()} alt={ctx.props().alt.clone()} />
             </div>
         }
     }

@@ -3,10 +3,7 @@ use yew::{
 };
 
 
-pub struct ModalBoxHeader
-{
-    props: ModalBoxHeaderProperties,
-}
+pub struct ModalBoxHeader;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct ModalBoxHeaderProperties
@@ -27,51 +24,29 @@ impl Component for ModalBoxHeader
     type Message = ();
     type Properties = ModalBoxHeaderProperties;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        false
-    }
-
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <header 
-                class=classes!(
+                class={classes!(
                     "pf-c-modal-box__header", 
-                    if self.props.help.is_some() { "pf-m-help" } else { "" },
-                    self.props.class_name.clone(),
-                )
+                    if ctx.props().help.is_some() { "pf-m-help" } else { "" },
+                    ctx.props().class_name.clone(),
+                )}
                 // {...props}
             >
             {
-                if let Some(help) = &self.props.help
+                if let Some(help) = &ctx.props().help
                 {
                     html!{
                         <>
                             <div class="pf-c-modal-box__header-main">
-                                { for self.props.children.iter() }
+                                { for ctx.props().children.iter() }
                             </div>
                             <div class="pf-c-modal-box__header-help">
                                 { help.clone() }
@@ -82,7 +57,7 @@ impl Component for ModalBoxHeader
                 else
                 {
                     html!{
-                        for self.props.children.iter()
+                        for ctx.props().children.iter()
                     }
                 }
             }

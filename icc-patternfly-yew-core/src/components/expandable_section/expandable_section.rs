@@ -4,8 +4,6 @@ use yew::{
 
 pub struct ExpandableSection
 {
-    link: ComponentLink<Self>,
-    props: ExpandableSectionProperties,
     is_expanded: bool,
 }
 
@@ -47,38 +45,22 @@ impl Component for ExpandableSection
     type Message = ExpandableSectionMsg;
     type Properties = ExpandableSectionProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
         Self {
-            link,
-            props,
             is_expanded: false,
         }
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             ExpandableSectionMsg::OnClick => {
-                if let Some(is_expanded) = self.props.is_expanded
+                if let Some(is_expanded) = ctx.props().is_expanded
                 {
-                    self.props.ontoggle.emit(is_expanded);
+                    ctx.props().ontoggle.emit(is_expanded);
 
                     false
                 }
@@ -92,9 +74,9 @@ impl Component for ExpandableSection
         }
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        let prop_or_state_is_expanded = match self.props.is_expanded {
+        let prop_or_state_is_expanded = match ctx.props().is_expanded {
             Some(is_expanded) => is_expanded,
             None => self.is_expanded,
         };
@@ -102,28 +84,28 @@ impl Component for ExpandableSection
         html!{
             <div
                 // {...props}
-                class=classes!(
+                class={classes!(
                     "pf-c-expandable-section",
                     if prop_or_state_is_expanded { "pf-m-expanded" } else { "" },
-                    if self.props.is_active { "pf-m-active" } else { "" },
-                    self.props.class_name.to_string(),
-                )
+                    if ctx.props().is_active { "pf-m-active" } else { "" },
+                    ctx.props().class_name.to_string(),
+                )}
             >
                 <button
                     class="pf-c-expandable-section__toggle"
                     type="button"
-                    aria-expanded=prop_or_state_is_expanded.to_string()
-                    onclick=self.link.callback(|_| ExpandableSectionMsg::OnClick)
+                    aria-expanded={prop_or_state_is_expanded.to_string()}
+                    onclick={ctx.link().callback(|_| ExpandableSectionMsg::OnClick)}
                 >
                     <span class="pf-c-expandable-section__toggle-icon">
                         <i class="fas fa-angle-right"></i>
                     </span>
                     <span class="pf-c-expandable-section__toggle-text">
-                        { self.get_toggle_text(prop_or_state_is_expanded) }
+                        { self.get_toggle_text(prop_or_state_is_expanded, ctx) }
                     </span>
                 </button>
-                <div class="pf-c-expandable-section__content" hidden=!prop_or_state_is_expanded>
-                    { self.props.children.clone() }
+                <div class="pf-c-expandable-section__content" hidden={!prop_or_state_is_expanded}>
+                    { ctx.props().children.clone() }
                 </div>
             </div>
         }
@@ -132,18 +114,18 @@ impl Component for ExpandableSection
 
 impl ExpandableSection
 {
-    fn get_toggle_text(&self, is_expanded: bool) -> &str
+    fn get_toggle_text(&self, is_expanded: bool, ctx: &Context<Self>) -> String
     {
-        if is_expanded && !self.props.toggle_text_expanded.is_empty()
+        if is_expanded && !ctx.props().toggle_text_expanded.is_empty()
         {
-            return &self.props.toggle_text_expanded
+            return ctx.props().toggle_text_expanded.to_string()
         }
 
-        if !is_expanded && !self.props.toggle_text_collapsed.is_empty()
+        if !is_expanded && !ctx.props().toggle_text_collapsed.is_empty()
         {
-            return &self.props.toggle_text_collapsed
+            return ctx.props().toggle_text_collapsed.to_string()
         }
 
-        &self.props.toggle_text
+        ctx.props().toggle_text.to_string()
     }
 }

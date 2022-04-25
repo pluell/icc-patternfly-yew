@@ -5,11 +5,7 @@ use yew::{
 use crate::{Button, ButtonVariant};
 
 
-pub struct CardHeader
-{
-    props: CardHeaderProperties,
-    link: ComponentLink<CardHeader>,
-}
+pub struct CardHeader;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct CardHeaderProperties
@@ -43,37 +39,20 @@ impl Component for CardHeader
     type Message = CardHeaderMsg;
     type Properties = CardHeaderProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-            link,
-        }
-    }
-
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
+        Self
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             CardHeaderMsg::OnClickToggle => {
-                if let Some(onexpand) = &self.props.onexpand
+                if let Some(onexpand) = &ctx.props().onexpand
                 {
-                    onexpand.emit(self.props.card_id.clone());
+                    onexpand.emit(ctx.props().card_id.clone());
                 }
                 
             },
@@ -82,26 +61,26 @@ impl Component for CardHeader
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
             <div 
-                class=classes!(
+                class={classes!(
                     "pf-c-card__header", 
-                    self.props.class_name.clone(),
-                )
-                id=self.props.id.clone()
+                    ctx.props().class_name.clone(),
+                )}
+                id={ctx.props().id.clone()}
                 // {...props}
             >
             {
-                if let Some(_onexpand) = &self.props.onexpand
+                if let Some(_onexpand) = &ctx.props().onexpand
                 {
                     html!{
                         <div class="pf-c-card__header-toggle">
                             <Button
-                                variant=ButtonVariant::Plain
+                                variant={ButtonVariant::Plain}
                                 // type="button"
-                                onclick=self.link.callback(|_| CardHeaderMsg::OnClickToggle)
+                                onclick={ctx.link().callback(|_| CardHeaderMsg::OnClickToggle)}
                                 // {...toggleButtonProps}
                             >
                                 <span class="pf-c-card__header-toggle-icon">
@@ -117,7 +96,7 @@ impl Component for CardHeader
                 }
             }
             {
-                for self.props.children.iter()
+                for ctx.props().children.iter()
             }
           </div>
         }

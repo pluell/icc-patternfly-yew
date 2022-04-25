@@ -7,11 +7,7 @@ use crate::components::{Button, ButtonVariant, ToolbarItem, ToolbarGroup};
 use super::{ToolbarBreakpoint, get_toolbar_breakpoint};
 
 
-pub struct ToolbarChipGroupContent
-{
-    link: ComponentLink<Self>,
-    props: ToolbarChipGroupContentProperties,
-}
+pub struct ToolbarChipGroupContent;
 
 pub enum ToolbarChipGroupContentMsg
 {
@@ -49,45 +45,28 @@ impl Component for ToolbarChipGroupContent
     type Message = ToolbarChipGroupContentMsg;
     type Properties = ToolbarChipGroupContentProperties;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            link,
-            props,
-        }
-    }
-
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
+        Self
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             ToolbarChipGroupContentMsg::ClearChipGroups => {
-                self.props.clear_all_filters.emit(());
+                ctx.props().clear_all_filters.emit(());
 
                 false
             }
         }
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         let mut collapse_filters = false;
-        if self.props.collapse_listed_filters_breakpoint == ToolbarBreakpoint::All
+        if ctx.props().collapse_listed_filters_breakpoint == ToolbarBreakpoint::All
         {
             collapse_filters = true;
         }
@@ -97,33 +76,33 @@ impl Component for ToolbarChipGroupContent
         {
             if let Some(inner_width) = inner_width_js.as_f64()
             {
-                if let Some(breakpoint_width) = get_toolbar_breakpoint(&self.props.collapse_listed_filters_breakpoint)
+                if let Some(breakpoint_width) = get_toolbar_breakpoint(&ctx.props().collapse_listed_filters_breakpoint)
                 {
                     collapse_filters = (inner_width as i32) < breakpoint_width;
                 }
             }
         }
 
-        let is_hidden = self.props.number_of_filters == 0 || self.props.is_expanded;
+        let is_hidden = ctx.props().number_of_filters == 0 || ctx.props().is_expanded;
 
         html!{
-            <div class=classes!(
+            <div class={classes!(
                     "pf-c-toolbar__content",
                     if is_hidden { "pf-m-hidden" } else { "" },
-                    self.props.class_name.clone(),
-                )
-                hidden=is_hidden
+                    ctx.props().class_name.clone(),
+                )}
+                hidden={is_hidden}
             >
                 <ToolbarGroup 
                     class_name={if collapse_filters {"pf-m-hidden"} else {""}}
-                    hidden=collapse_filters
+                    hidden={collapse_filters}
                 />
                 {
-                    if collapse_filters && (self.props.number_of_filters > 0) && !self.props.is_expanded
+                    if collapse_filters && (ctx.props().number_of_filters > 0) && !ctx.props().is_expanded
                     {
                         html!{
                             <ToolbarGroup>
-                                <ToolbarItem>{self.props.number_of_filters}{" filters applied"}</ToolbarItem>
+                                <ToolbarItem>{ctx.props().number_of_filters}{" filters applied"}</ToolbarItem>
                             </ToolbarGroup>
                         }
                     }
@@ -133,19 +112,19 @@ impl Component for ToolbarChipGroupContent
                     }
                 }
                 {
-                    if self.props.show_clear_filters_button && !self.props.is_expanded
+                    if ctx.props().show_clear_filters_button && !ctx.props().is_expanded
                     {
                         html!{
                             <ToolbarItem>
                                 <Button 
-                                    variant=ButtonVariant::Link
-                                    is_inline=true
-                                    onclick=self.link.callback(|_| ToolbarChipGroupContentMsg::ClearChipGroups)
+                                    variant={ButtonVariant::Link}
+                                    is_inline={true}
+                                    onclick={ctx.link().callback(|_| ToolbarChipGroupContentMsg::ClearChipGroups)}
                                 >
                                 {
-                                    if self.props.clear_filters_button_text.len() > 0
+                                    if ctx.props().clear_filters_button_text.len() > 0
                                     {
-                                        &self.props.clear_filters_button_text
+                                        &ctx.props().clear_filters_button_text
                                     }
                                     else
                                     {

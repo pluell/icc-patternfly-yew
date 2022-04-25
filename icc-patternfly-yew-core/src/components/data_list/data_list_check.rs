@@ -8,11 +8,7 @@ pub enum DataListCheckMsg
     OnClick,
 }
 
-pub struct DataListCheck
-{
-    link: ComponentLink<Self>,
-    props: DataListCheckProps,
-}
+pub struct DataListCheck;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct DataListCheckProps
@@ -47,37 +43,20 @@ impl Component for DataListCheck
     type Message = DataListCheckMsg;
     type Properties = DataListCheckProps;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            link,
-            props,
-        }
-    }
-
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
+        Self
     }
 
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             DataListCheckMsg::OnClick => {
-                if let Some(onchange) = &self.props.onchange
+                if let Some(onchange) = &ctx.props().onchange
                 {
-                    onchange.emit(self.props.is_checked);
+                    onchange.emit(ctx.props().is_checked);
                 }
             },
         }
@@ -85,29 +64,29 @@ impl Component for DataListCheck
         false
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         let check = html!{
-            <div class="pf-c-data-list__check">
+            <div class={"pf-c-data-list__check"}>
                 <input
                     // {...props}
-                    type="checkbox"
-                    onclick=self.link.callback(|_| DataListCheckMsg::OnClick)
-                    aria-invalid=(!self.props.is_valid).to_string()
-                    disabled=self.props.is_disabled
-                    checked=self.props.is_checked
+                    type={"checkbox"}
+                    onclick={ctx.link().callback(|_| DataListCheckMsg::OnClick)}
+                    aria-invalid={(!ctx.props().is_valid).to_string()}
+                    disabled={ctx.props().is_disabled}
+                    checked={ctx.props().is_checked}
                 />
             </div>
         };
 
-        if !self.props.other_controls
+        if !ctx.props().other_controls
         {
             html!{
                 <div
-                    class=classes!(
+                    class={classes!(
                         "pf-c-data-list__item-control",
-                        self.props.class_name.clone()
-                    )
+                        ctx.props().class_name.clone()
+                    )}
                 >
                     {check}
                 </div>

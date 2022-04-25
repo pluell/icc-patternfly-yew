@@ -3,14 +3,14 @@ use yew::{
 };
 use std::cell::RefCell;
 use std::rc::Rc;
+use std::marker::PhantomData;
 
 use super::*;
 
 
 pub struct SelectOption<V: ToString + PartialEq + Clone + 'static>
 {
-    link: ComponentLink<Self>,
-    props: SelectOptionProperties<V>,
+    _phantom: PhantomData<V>,
 }
 
 pub enum SelectOptionMsg
@@ -45,35 +45,27 @@ impl<V: ToString + PartialEq + Clone + 'static> Component for SelectOption<V>
     type Message = SelectOptionMsg;
     type Properties = SelectOptionProperties<V>;
 
-    fn create(props: Self::Properties, link: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            link,
-            props,
+        Self{
+            _phantom: PhantomData,
         }
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
-    {
-        self.props = props;
-
-        true
-    }
-
     /// Called everytime when messages are received
-    fn update(&mut self, msg: Self::Message) -> ShouldRender
+    fn update(&mut self, ctx: &Context<Self>, msg: Self::Message) -> bool
     {
         match msg
         {
             SelectOptionMsg::OnClick => {
-                self.props.onclick.emit(self.props.opt_val.clone());
+                ctx.props().onclick.emit(ctx.props().opt_val.clone());
                 
                 false
             },
         }
     }
 
-    fn view(&self) -> Html
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
         let cls_description = |has_desc| {
             match has_desc
@@ -83,18 +75,18 @@ impl<V: ToString + PartialEq + Clone + 'static> Component for SelectOption<V>
             }
         };
 
-        let has_desc = !self.props.description.is_empty();
+        let has_desc = !ctx.props().description.is_empty();
 
-        match self.props.variant
+        match ctx.props().variant
         {
             SelectVariant::Single => {
                 html!{
                     <li>
                         <button 
                             type="button"
-                            class=classes!("pf-c-select__menu-item", cls_description(has_desc))
+                            class={classes!("pf-c-select__menu-item", cls_description(has_desc))}
                             aria-selected="false"
-                            onclick=self.link.callback(|_| SelectOptionMsg::OnClick)
+                            onclick={ctx.link().callback(|_| SelectOptionMsg::OnClick)}
                         >
                         {
                             if has_desc
@@ -102,12 +94,12 @@ impl<V: ToString + PartialEq + Clone + 'static> Component for SelectOption<V>
                                 html!{
                                     <>
                                     <span class="pf-c-select__menu-item-main">
-                                        {&self.get_display_string()}
-                                        <span class="pf-c-select__menu-item-icon" hidden=!self.props.is_selected>
+                                        {&self.get_display_string(ctx)}
+                                        <span class="pf-c-select__menu-item-icon" hidden={!ctx.props().is_selected}>
                                             <i class="fas fa-check" aria-hidden="true"></i>
                                         </span>
                                     </span>
-                                    <span class="pf-c-select__menu-item-description">{&self.props.description}</span>
+                                    <span class="pf-c-select__menu-item-description">{&ctx.props().description}</span>
                                     </>
                                 }
                             }
@@ -115,8 +107,8 @@ impl<V: ToString + PartialEq + Clone + 'static> Component for SelectOption<V>
                             {
                                 html!{
                                     <>
-                                    {&self.get_display_string()}
-                                    <span class="pf-c-select__menu-item-icon" hidden=!self.props.is_selected>
+                                    {&self.get_display_string(ctx)}
+                                    <span class="pf-c-select__menu-item-icon" hidden={!ctx.props().is_selected}>
                                         <i class="fas fa-check" aria-hidden="true"></i>
                                     </span>
                                     </>
@@ -134,15 +126,15 @@ impl<V: ToString + PartialEq + Clone + 'static> Component for SelectOption<V>
                         <input 
                             class="pf-c-check__input" 
                             type="checkbox" 
-                            checked=self.props.is_selected 
-                            onclick=self.link.callback(|_| SelectOptionMsg::OnClick)
+                            checked={ctx.props().is_selected} 
+                            onclick={ctx.link().callback(|_| SelectOptionMsg::OnClick)}
                         />
-                        <span class="pf-c-check__label">{&self.get_display_string()}</span>
+                        <span class="pf-c-check__label">{&self.get_display_string(ctx)}</span>
                         {
                             if has_desc
                             {
                                 html!{
-                                    <div class="pf-c-check__description">{&self.props.description}</div>
+                                    <div class="pf-c-check__description">{&ctx.props().description}</div>
                                 }
                             }
                             else
@@ -163,9 +155,9 @@ impl<V: ToString + PartialEq + Clone + 'static> Component for SelectOption<V>
 
 impl<V: ToString + PartialEq + Clone + 'static> SelectOption<V>
 {
-    fn get_display_string(&self) -> String
+    fn get_display_string(&self, ctx: &Context<Self>) -> String
     {
-        match &self.props.opt_val
+        match &ctx.props().opt_val
         {
             SelectOptionValue::String(value) => {
                 return value.to_string()

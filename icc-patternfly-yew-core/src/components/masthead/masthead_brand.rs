@@ -4,10 +4,7 @@ use yew::{
 };
 
 
-pub struct MastheadBrand
-{
-    props: MastheadBrandProps,
-}
+pub struct MastheadBrand;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct MastheadBrandProps
@@ -28,45 +25,23 @@ impl Component for MastheadBrand
     type Message = ();
     type Properties = MastheadBrandProps;
 
-    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self
+    fn create(_: &Context<Self>) -> Self
     {
-        Self {
-            props,
-        }
+        Self
     }
 
-    fn change(&mut self, props: Self::Properties) -> ShouldRender
+    fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if self.props != props
-        {
-            self.props = props;
-            
-            true
-        }
-        else
-        {
-            false
-        }
-    }
-
-    /// Called everytime when messages are received
-    fn update(&mut self, _: Self::Message) -> ShouldRender
-    {
-        true
-    }
-
-    fn view(&self) -> Html
-    {
-        let mut component = VTag::new(self.props.component.clone());
+        let mut component = VTag::new(ctx.props().component.clone());
 
         // Build list of classes
         let mut classes = String::from("pf-c-masthead__brand");
         
         // Add extra classes specified on the parent
-        if self.props.class_name.len() > 0
+        if ctx.props().class_name.len() > 0
         {
             classes += " ";
-            classes += &self.props.class_name;
+            classes += &ctx.props().class_name;
         }
 
         component.add_attribute("class", classes);
@@ -75,7 +50,7 @@ impl Component for MastheadBrand
 
         //     {...props}
 
-        component.add_children(self.props.children.iter());
+        component.add_children(ctx.props().children.iter());
 
         component.into()
     }
