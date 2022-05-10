@@ -2,7 +2,7 @@ use yew::{
     prelude::*,
 };
 
-use super::{InternalDropdownItem};
+use super::{DropdownItemComponentTypes, InternalDropdownItem};
 
 
 pub struct DropdownItem;
@@ -25,8 +25,8 @@ pub struct DropdownItemProperties
     //  * Example: component="button"
     //  * If React.isValidElement(component) the className prop will be injected unless styleChildren="false"
     //  */
-    #[prop_or(String::from("a"))]
-    pub component: String,
+    #[prop_or(DropdownItemComponentTypes::Default("a"))]
+    pub component: DropdownItemComponentTypes,
     /** Whether to set className on component when React.isValidElement(component) */
     #[prop_or_default]
     pub style_children: bool,

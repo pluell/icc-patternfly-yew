@@ -1,8 +1,9 @@
 use yew::{
     prelude::*,
+    html::{ChildrenRenderer},
 };
 
-use super::{DropdownItem, DropdownPosition};
+use super::{DropdownItemTypes, DropdownPosition};
 
 
 pub struct DropdownMenu;
@@ -12,7 +13,7 @@ pub struct DropdownMenuProperties
 {
     /** Anything which can be rendered as dropdown items */
     #[prop_or_default]
-    pub children: ChildrenWithProps<DropdownItem>,
+    pub children: ChildrenRenderer<DropdownItemTypes>,
     /** Classess applied to root element of dropdown menu */
     #[prop_or_default]
     pub class_name: String,
@@ -93,8 +94,6 @@ impl Component for DropdownMenu
             }
             else
             {
-
-
                 html!{
                     <@{ctx.props().component.clone()}
                         class={classes!(
@@ -106,14 +105,22 @@ impl Component for DropdownMenu
                         role={"menu"}
                     >
                     {
-                        for ctx.props().children.iter().map(|mut child| {
-                            let mut props = (&*child.props).clone();
+                        for ctx.props().children.iter().map(|child| {
+                            match child
+                            {
+                                DropdownItemTypes::DropdownItem(mut item) => {
+                                    let mut props = (&*item.props).clone();
                             
-                            props.onselect = ctx.props().onselect.clone();
-
-                            child.props = std::rc::Rc::new(props);
-
-                            child
+                                    props.onselect = ctx.props().onselect.clone();
+        
+                                    item.props = std::rc::Rc::new(props);
+        
+                                    html!{item}
+                                },
+                                DropdownItemTypes::Separator(separator) => {
+                                    html!{separator.clone()}
+                                }
+                            }
                         })
                     }
                     </@>

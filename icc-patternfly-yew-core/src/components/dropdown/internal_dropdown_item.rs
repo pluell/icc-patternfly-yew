@@ -3,6 +3,8 @@ use yew::{
     virtual_dom::{VTag},
 };
 
+use super::{DropdownItemComponentTypes};
+
 
 pub struct InternalDropdownItem;
 
@@ -13,6 +15,7 @@ pub struct InternalDropdownItemProperties
     #[prop_or_default]
     pub children: Children,
     /** Whether to set className on component when React.isValidElement(component) */
+    #[prop_or(true)]
     pub style_children: bool,
     /** Classes applied to root element of dropdown item */
     #[prop_or_default]
@@ -21,8 +24,8 @@ pub struct InternalDropdownItemProperties
     #[prop_or_default]
     pub list_item_class_name: String,
     // /** Indicates which component will be used as dropdown item. Will have className injected if React.isValidElement(component) */
-    #[prop_or(String::from("a"))]
-    pub component: String,
+    #[prop_or(DropdownItemComponentTypes::Default("a"))]
+    pub component: DropdownItemComponentTypes,
     /** Role for the item */
     #[prop_or_default]
     pub role: String,
@@ -136,7 +139,15 @@ impl Component for InternalDropdownItem
                     id={ctx.props().id.clone()}
                 >
                 {
-                    self.render_default_component(ctx)
+                    match &ctx.props().component
+                    {
+                        DropdownItemComponentTypes::Custom(component) => {
+                            component.clone()
+                        },
+                        DropdownItemComponentTypes::Default(tag) => {
+                            self.view_default_component(ctx, tag.to_string())
+                        },
+                    }
                 }
                 {
                     // additionalChild && this.extendAdditionalChildRef()
@@ -157,7 +168,7 @@ impl Component for InternalDropdownItem
 
 impl InternalDropdownItem
 {
-    fn render_default_component(&self, ctx: &Context<Self>) -> Html
+    fn view_default_component(&self, ctx: &Context<Self>, tag: String) -> Html
     {
         // Build list of classes
         let mut classes = String::from("pf-c-dropdown__menu-item");
@@ -175,7 +186,7 @@ impl InternalDropdownItem
         }
 
         // Create the html element
-        let mut component_node = VTag::new(ctx.props().component.clone());
+        let mut component_node = VTag::new(tag);
 
         // Add properties
         component_node.add_attribute("class", classes);
@@ -191,13 +202,13 @@ impl InternalDropdownItem
             component_node.add_attribute("id", ctx.props().component_id.clone());
         }
         
-        component_node.add_child(self.render_default_component_content(ctx));
+        component_node.add_child(self.view_default_component_content(ctx));
 
         // Convert the VTag into Html
         component_node.into()
     }
 
-    fn render_default_component_content(&self, ctx: &Context<Self>) -> Html
+    fn view_default_component_content(&self, ctx: &Context<Self>) -> Html
     {
         if let Some(description) = &ctx.props().description
         {

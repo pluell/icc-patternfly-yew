@@ -1,9 +1,8 @@
 use yew::{
     prelude::*,
-    virtual_dom::{VChild},
 };
 
-use super::{DropdownDirection, DropdownPosition, DropdownWithContext, DropdownItem, DropdownToggleComponents};
+use super::{DropdownDirection, DropdownPosition, DropdownWithContext, DropdownItemTypes, DropdownToggleComponents};
 
 
 pub struct Dropdown;
@@ -19,7 +18,7 @@ pub struct DropdownProperties
     pub class_name: String,
     /** Array of DropdownItem nodes that will be rendered in the dropdown Menu list */
     #[prop_or_default]
-    pub dropdown_items: Vec<VChild<DropdownItem>>,
+    pub dropdown_items: Vec<DropdownItemTypes>,
     /** Flag to indicate if menu is opened */
     #[prop_or_default]
     pub is_open: bool,
