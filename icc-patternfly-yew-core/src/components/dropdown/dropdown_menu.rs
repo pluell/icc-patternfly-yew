@@ -37,6 +37,9 @@ pub struct DropdownMenuProperties
     /** Function callback called when user selects item */
     #[prop_or_default]
     pub onselect: Callback<()>,
+
+    // Extra properties
+    pub menu_ref: NodeRef,
 }
 
 pub enum DropdownMenuMsg
@@ -73,6 +76,7 @@ impl Component for DropdownMenu
         {
             html!{
                 <div
+                    ref={&ctx.props().menu_ref}
                     class={classes!(
                         "pf-c-dropdown__menu",
                         if ctx.props().position == DropdownPosition::Right { "pf-m-align-right" } else { "" },
@@ -96,6 +100,7 @@ impl Component for DropdownMenu
             {
                 html!{
                     <@{ctx.props().component.clone()}
+                        ref={&ctx.props().menu_ref}
                         class={classes!(
                             "pf-c-dropdown__menu",
                             if ctx.props().position == DropdownPosition::Right { "pf-m-align-right" } else { "" },

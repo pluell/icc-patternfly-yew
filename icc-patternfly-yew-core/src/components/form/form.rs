@@ -18,6 +18,10 @@ pub struct FormProperties
     /** Flag to limit the max-width to 500px. */
     #[prop_or_default]
     pub is_width_limited: bool,
+
+    // Additional properties
+    #[prop_or_default]
+    pub r#ref: NodeRef,
 }
 
 impl Component for Form
@@ -34,6 +38,7 @@ impl Component for Form
     {
         html!{
             <form
+                ref={&ctx.props().r#ref}
                 no_validate={true.to_string()}
                 class={classes!(
                     "pf-c-form",

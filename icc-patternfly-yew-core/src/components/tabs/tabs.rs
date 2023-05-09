@@ -150,7 +150,7 @@ impl Component for Tabs
         }
     }
 
-    fn changed(&mut self, ctx: &Context<Self>) -> bool
+    fn changed(&mut self, ctx: &Context<Self>, _old_props: &Self::Properties) -> bool
     {
         // Recalculate scrollbars
         ctx.link().send_message(TabsMsg::HandleScrollButtons);

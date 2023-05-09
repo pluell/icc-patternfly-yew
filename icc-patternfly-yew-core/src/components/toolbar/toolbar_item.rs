@@ -49,6 +49,10 @@ pub struct ToolbarItemProperties
     /** Content to be rendered inside the data toolbar item */
     #[prop_or_default]
     pub children: Children,
+
+    // Extra properties
+    #[prop_or_default]
+    pub filter_item_node: NodeRef,
 }
 
 impl Component for ToolbarItem
@@ -72,6 +76,7 @@ impl Component for ToolbarItem
         {
             html!{
                 <div 
+                    ref={&ctx.props().filter_item_node}
                     id={ctx.props().id.clone()}
                     class={classes!(
                         "pf-c-toolbar__item",

@@ -8,6 +8,5 @@ edition = "2018"
 
 [dependencies]
 log = "0.4"
-yew = "0.19.3"
-yew-router = "0.16.0"
+yew = "0.20"
 yewtil = "0.4.0"

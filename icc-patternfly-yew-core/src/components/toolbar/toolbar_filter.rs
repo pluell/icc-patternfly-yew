@@ -57,7 +57,7 @@ impl Component for ToolbarFilter
         }
     }
 
-    fn changed(&mut self, ctx: &Context<Self>) -> bool
+    fn changed(&mut self, ctx: &Context<Self>, _old_props: &Self::Properties) -> bool
     {
         // Update the number of filters if the chips array has changed
         if self.num_chips != ctx.props().chips.len()
@@ -100,7 +100,7 @@ impl Component for ToolbarFilter
                 {
                     html!{
                         <ToolbarItem
-                            ref={self.filter_item_node.clone()}
+                            filter_item_node={&self.filter_item_node}
                             variant={ToolbarItemVariant::ChipGroup}
                         >
                             <ChipGroup

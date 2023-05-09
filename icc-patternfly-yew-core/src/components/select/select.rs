@@ -234,7 +234,7 @@ impl<V: ToString + PartialEq + Clone + 'static> Component for Select<V>
                     {
                         html!{
                             <SelectMenu
-                                ref={self.menu_ref.clone()}
+                                menu_ref={&self.menu_ref}
                                 variant={ctx.props().variant.clone()}
                             >
                                 { self.render_select_list(ctx) }

@@ -98,7 +98,7 @@ impl Component for Toolbar
                     })
                 }
                 <ToolbarChipGroupContent 
-                    ref={self.chip_group_content_ref.clone()}
+                    chip_group_content_ref={&self.chip_group_content_ref}
                     show_clear_filters_button={number_of_filters > 0}
                     clear_filters_button_text={ctx.props().clear_filters_button_text.clone()}
                     clear_all_filters={ctx.props().clear_all_filters.clone()}

@@ -12,6 +12,7 @@ pub struct SelectMenuProperties
 {
     pub variant: SelectVariant,
     pub children: Children,
+    pub menu_ref: NodeRef,
 }
 
 impl Component for SelectMenu
@@ -35,7 +36,7 @@ impl Component for SelectMenu
         if ctx.props().variant != SelectVariant::Checkbox
         {
             html!{
-                <ul class="pf-c-select__menu" aria-labelledby="select-single-label">
+                <ul ref={&ctx.props().menu_ref} class="pf-c-select__menu" aria-labelledby="select-single-label">
                     { ctx.props().children.clone() }
                 </ul>
             }
@@ -43,7 +44,7 @@ impl Component for SelectMenu
         else
         {
             html!{
-                <div class="pf-c-select__menu">
+                <div ref={&ctx.props().menu_ref} class="pf-c-select__menu">
                     <fieldset class="pf-c-select__menu-fieldset" aria-label="Select input">
                         { ctx.props().children.clone() }
                     </fieldset>

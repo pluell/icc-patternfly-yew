@@ -38,6 +38,9 @@ pub struct ToolbarChipGroupContentProperties
     /** The breakpoint at which the listed filters in chip groups are collapsed down to a summary */
     #[prop_or(ToolbarBreakpoint::None)]
     pub collapse_listed_filters_breakpoint: ToolbarBreakpoint,
+
+    // Extra properties
+    pub chip_group_content_ref: NodeRef,
 }
 
 impl Component for ToolbarChipGroupContent
@@ -91,6 +94,7 @@ impl Component for ToolbarChipGroupContent
                     if is_hidden { "pf-m-hidden" } else { "" },
                     ctx.props().class_name.clone(),
                 )}
+                ref={&ctx.props().chip_group_content_ref}
                 hidden={is_hidden}
             >
                 <ToolbarGroup 

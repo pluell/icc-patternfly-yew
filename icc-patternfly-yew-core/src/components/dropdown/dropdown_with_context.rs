@@ -78,7 +78,7 @@ impl Component for DropdownWithContext
                 {
                     html!{
                         <DropdownMenu
-                            ref={self.menu_ref.clone()}
+                            menu_ref={&self.menu_ref}
                             // component={component}
                             is_open={ctx.props().is_open}
                             position={ctx.props().position.clone()}
