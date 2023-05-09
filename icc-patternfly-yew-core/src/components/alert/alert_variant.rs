@@ -1,4 +1,4 @@
-pub use yew::prelude::*;
+use yew::prelude::*;
 
 #[derive(Clone, PartialEq)]
 pub enum AlertVariant
