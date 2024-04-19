@@ -67,11 +67,11 @@ pub struct FileUploadFieldProperties
     #[prop_or_default]
     pub filename_aria_label: String,
     /** Text for the Browse button */
-    #[prop_or(String::from("Browse..."))]
-    pub browse_button_text: String,
+    #[prop_or(AttrValue::from("Browse..."))]
+    pub browse_button_text: AttrValue,
     /** Text for the Clear button */
-    #[prop_or(String::from("Clear"))]
-    pub clear_button_text: String,
+    #[prop_or(AttrValue::from("Clear"))]
+    pub clear_button_text: AttrValue,
     /** Flag to disable the Clear button */
     #[prop_or_default]
     pub is_clear_button_disabled: bool,
@@ -164,14 +164,14 @@ impl Component for FileUploadField
                             onclick={ctx.link().callback(|_| FileUploadFieldMsg::OnBrowseButtonClick)}
                             is_disabled={ctx.props().is_disabled}
                         >
-                            {&ctx.props().browse_button_text}
+                            {ctx.props().browse_button_text.clone()}
                         </Button>
                         <Button
                             variant={ButtonVariant::Control}
                             is_disabled={ctx.props().is_disabled || ctx.props().is_clear_button_disabled}
                             onclick={ctx.link().callback(|_| FileUploadFieldMsg::OnClearButtonClick)}
                         >
-                            {&ctx.props().clear_button_text}
+                            {ctx.props().clear_button_text.clone()}
                         </Button>
                     </InputGroup>
                 </div>

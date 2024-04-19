@@ -118,7 +118,7 @@ impl Component for ToolbarFilter
                                                 ToolbarFilterMsg::DeleteChip(chip_msg.clone())
                                             })}
                                         >
-                                            { &chip }
+                                            { chip.to_string() }
                                         </Chip>
                                     }
                                 })

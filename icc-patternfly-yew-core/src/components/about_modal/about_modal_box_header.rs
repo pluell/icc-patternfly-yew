@@ -14,7 +14,7 @@ pub struct AboutModalBoxHeaderProps
     pub class_name: String,
     /** Name of the Product  */
     #[prop_or_default]
-    pub product_name: String,
+    pub product_name: AttrValue,
     /** id to used for Modal Box header  */
     pub id: String,
 }
@@ -36,7 +36,7 @@ impl Component for AboutModalBoxHeader
                 //{...props}
             >
                 <Title heading_level={TitleHeadingLevels::H1} size={TitleSizes::X4l} id={ctx.props().id.clone()}>
-                    {&ctx.props().product_name}
+                    {ctx.props().product_name.clone()}
                 </Title>
             </div>
         }
