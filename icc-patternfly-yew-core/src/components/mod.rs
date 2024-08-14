@@ -1,6 +1,7 @@
 mod about_modal;
 mod alert;
 mod backdrop;
+mod badge;
 mod brand;
 mod breadcrumb;
 mod button;
@@ -33,6 +34,7 @@ mod toolbar;
 pub use about_modal::*;
 pub use alert::*;
 pub use backdrop::*;
+pub use badge::*;
 pub use brand::*;
 pub use breadcrumb::*;
 pub use button::*;
