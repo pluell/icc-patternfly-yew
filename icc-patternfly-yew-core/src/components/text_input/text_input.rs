@@ -6,38 +6,9 @@ use yew::{
     Component, Context, Html, TargetCast,
 };
 
-use crate::{ValidatedOptions};
+use super::TextInputType;
+use crate::ValidatedOptions;
 
-
-#[derive(Clone, PartialEq)]
-pub enum TextInputType
-{
-    Text,
-    Date,
-    DatetimeLocal,
-    Email,
-    Month,
-    Number,
-    Password,
-    Search,
-    Tel,
-    Time,
-    Url,
-}
-
-const INPUT_TYPES: &'static [&'static str] = &[
-    "text",
-    "date",
-    "datetime-local",
-    "email",
-    "month",
-    "number",
-    "password",
-    "search",
-    "tel",
-    "time",
-    "url",
-];
 
 pub struct TextInput;
 
@@ -150,7 +121,7 @@ impl Component for TextInput
                     ctx.props().class_name.clone(),
                 )}
                 {oninput}
-                type={INPUT_TYPES[ctx.props().input_type.clone() as usize]}
+                type={ctx.props().input_type.to_string()}
                 value={ctx.props().value.clone()}
                 aria-invalid={(ctx.props().validated == ValidatedOptions::Error).to_string()}
                 required={ctx.props().is_required}
