@@ -1,12 +1,9 @@
-use yew::{
-    prelude::*,
-    virtual_dom::{VTag},
-};
+use yew::{prelude::*, virtual_dom::VTag};
 
+use super::InputGroupItem;
 
 #[derive(Clone, PartialEq)]
-pub enum InputGroupTextVariant
-{
+pub enum InputGroupTextVariant {
     Default,
     Plain,
 }
@@ -14,53 +11,50 @@ pub enum InputGroupTextVariant
 pub struct InputGroupText;
 
 #[derive(Clone, PartialEq, Properties)]
-pub struct InputGroupTextProperties
-{
+pub struct InputGroupTextProperties {
     /** Additional classes added to the input group text. */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** Content rendered inside the input group text. */
     #[prop_or_default]
     pub children: Children,
     /** Component that wraps the input group text. */
     #[prop_or(String::from("span"))]
     pub component: String,
-    /** Input group text variant */
-    #[prop_or(InputGroupTextVariant::Default)]
-    pub variant: InputGroupTextVariant,
+    /** Flag to to indicate if the input group item is plain. */
+    #[prop_or_default]
+    pub is_plain: bool,
+    /** Flag to indicate if the input group text is disabled. */
+    #[prop_or_default]
+    pub is_disabled: bool,
 }
 
-impl Component for InputGroupText
-{
+impl Component for InputGroupText {
     type Message = ();
     type Properties = InputGroupTextProperties;
 
-    fn create(_: &Context<Self>) -> Self
-    {
+    fn create(_: &Context<Self>) -> Self {
         Self
     }
 
-    fn view(&self, ctx: &Context<Self>) -> Html
-    {
+    fn view(&self, ctx: &Context<Self>) -> Html {
+        html! {
+            <InputGroupItem
+                is_plain={ctx.props().is_plain} is_box={true} is_disabled={ctx.props().is_disabled}
+            >
+                {self.view_component(ctx)}
+            </InputGroupItem>
+        }
+    }
+}
+
+impl InputGroupText
+{
+    fn view_component(&self, ctx: &Context<Self>) -> Html {
         let mut component = VTag::new(ctx.props().component.clone());
 
-        // Build list of classes
-        let mut classes = String::from("pf-c-input-group__text");
-
-        if ctx.props().variant == InputGroupTextVariant::Plain
-        {
-            classes += " pf-m-plain";
-        }
+        component.add_attribute("class", classes!("pf-v5-c-input-group__text", ctx.props().classes.clone()).to_string());
         
-        // Add extra classes specified on the parent
-        if ctx.props().class_name.len() > 0
-        {
-            classes += " ";
-            classes += &ctx.props().class_name;
-        }
-
-        component.add_attribute("class", classes);
-
         //     {...props}
 
         component.add_children(ctx.props().children.iter());
