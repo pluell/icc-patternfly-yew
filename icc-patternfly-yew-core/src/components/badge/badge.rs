@@ -37,11 +37,11 @@ impl Component for Badge
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html         
-    {           
+    {
         html!{
             <span
                 // {...props}
-                class={classes!(        
+                class={classes!(
                     "pf-v5-c-badge",
                     if ctx.props().is_read {"pf-m-read"} else {"pf-m-unread"},
                     ctx.props().classes.clone(),
