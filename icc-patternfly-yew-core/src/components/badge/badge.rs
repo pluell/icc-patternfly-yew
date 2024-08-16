@@ -8,6 +8,7 @@ pub struct Badge;
 pub struct BadgeProperties
 {
     /** Text announced by screen readers to indicate the current content/status of the badge. */
+    #[prop_or_default]
     pub screen_reader_text: Option<String>,
     /**  Adds styling to the badge to indicate it has been read */
     #[prop_or_default]
@@ -17,7 +18,7 @@ pub struct BadgeProperties
     pub children: Children,
     /** additional classes added to the Badge */
     #[prop_or_default]
-    pub classes: Classes,
+    pub classes: Option<Classes>,
 }
 
 impl Component for Badge
