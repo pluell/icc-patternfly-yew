@@ -25,7 +25,7 @@ impl Component for InputGroup {
             <div
                 class={classes!(
                     "pf-v5-c-input-group",
-                    &ctx.props().classes.clone(),
+                    ctx.props().classes.clone(),
                 )}
                 // {...props}
             >
