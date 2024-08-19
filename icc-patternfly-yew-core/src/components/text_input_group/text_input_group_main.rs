@@ -31,7 +31,7 @@ pub struct TextInputGroupMainProperties
     pub hint: Option<String>,
     /** Callback for when there is a change in the input field*/
     #[prop_or_default]
-    pub onchange: Callback<String>, // onChange?: (event: React.FormEvent<HTMLInputElement>, value: string) => void;
+    pub onchange: Option<Callback<String>>, // onChange?: (event: React.FormEvent<HTMLInputElement>, value: string) => void;
     /** Callback for when the input field is focused*/
     #[prop_or_default]
     pub onfocus: Callback<FocusEvent>, // onFocus?: (event?: any) => void;
@@ -43,7 +43,7 @@ pub struct TextInputGroupMainProperties
     pub aria_label: Option<String>,
     /** Value for the input */
     #[prop_or_default]
-    pub value: String,
+    pub value: Option<String>,
     /** Placeholder value for the input */
     #[prop_or_default]
     pub placeholder: Option<String>,
@@ -51,7 +51,7 @@ pub struct TextInputGroupMainProperties
     // innerRef?: React.RefObject<any>;
     /** Name for the input */
     #[prop_or_default]
-    pub name: String,
+    pub name: Option<String>,
     // /** @beta The id of the active element. Required if role has a value of "combobox", and focus
     //  * should remain on the input.
     //  */
@@ -66,7 +66,7 @@ pub struct TextInputGroupMainProperties
     // 'aria-controls'?: string;
     /** The id of the input element */
     #[prop_or_default]
-    pub input_id: String,       
+    pub input_id: Option<String>,       
 }
 
 pub enum TextInputGroupMainMessage
@@ -105,8 +105,12 @@ impl Component for TextInputGroupMain
                 true
             }
             TextInputGroupMainMessage::OnChange(value) => {
-                ctx.props().onchange.emit(value);
-                true
+                if let Some(onchange) = &ctx.props().onchange {
+                    onchange.emit(value);
+                    true
+                } else {
+                    false
+                }
             }
             TextInputGroupMainMessage::OnBlur(event) => {
                 ctx.props().onblur.emit(event);
