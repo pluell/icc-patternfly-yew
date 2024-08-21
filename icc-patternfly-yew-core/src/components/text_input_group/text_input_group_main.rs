@@ -125,7 +125,7 @@ impl Component for TextInputGroupMain
 
     fn view(&self, ctx: &Context<Self>) -> Html         
     {
-        let onchange = ctx.link().batch_callback(|e: Event| {
+        let oninput = ctx.link().batch_callback(|e: InputEvent| {
             let input = e.target_dyn_into::<HtmlInputElement>();
 
             input.map(|input| TextInputGroupMainMessage::OnChange(input.value()))
@@ -184,10 +184,10 @@ impl Component for TextInputGroupMain
                         class="pf-v5-c-text-input-group__text-input"
                         aria_label={ctx.props().aria_label.clone()}
                         disabled={self.context.is_disabled}
-                        {onchange}
+                        {oninput}
                         {onfocus}
                         {onblur}
-                        value={ctx.props().value.clone()}
+                        value={ctx.props().value.clone().unwrap_or(String::new())}
                         placeholder={ctx.props().placeholder.clone()}
                         name={ctx.props().name.clone()} 
                         // aria-activedescendant={ariaActivedescendant}
