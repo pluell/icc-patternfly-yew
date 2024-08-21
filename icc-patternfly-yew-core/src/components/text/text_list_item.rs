@@ -1,6 +1,6 @@
 use yew::{
     prelude::*,
-    virtual_dom::{VTag},
+    virtual_dom::VTag,
 };
 
 

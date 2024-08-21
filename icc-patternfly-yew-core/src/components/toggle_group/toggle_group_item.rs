@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use super::*;
 
@@ -69,7 +67,7 @@ impl Component for ToggleGroupItem
         html!{
             <div 
                 class={classes!(
-                    "pf-c-toggle-group__item", 
+                    "pf-v5-c-toggle-group__item", 
                     ctx.props().class_name.clone()
                 )}
                 // {...props}
@@ -77,7 +75,7 @@ impl Component for ToggleGroupItem
                 <button
                     type="button"
                     class={classes!(
-                        "pf-c-toggle-group__button", 
+                        "pf-v5-c-toggle-group__button", 
                         if ctx.props().is_selected { "pf-m-selected" } else { "" },
                     )}
                     aria-pressed={ctx.props().is_selected.to_string()}

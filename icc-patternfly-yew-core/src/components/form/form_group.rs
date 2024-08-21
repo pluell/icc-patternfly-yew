@@ -1,11 +1,11 @@
 use yew::{
     prelude::*,
-    virtual_dom::{VChild},
+    virtual_dom::VChild,
 };
 
 use crate::{ASTERISK, ValidatedOptions};
 
-use super::{FormHelperText};
+use super::FormHelperText;
 
 
 #[derive(Clone, PartialEq)]
@@ -88,7 +88,7 @@ impl Component for FormGroup
         html!{
             <div 
                 //{...props} 
-                class={classes!("pf-c-form__group", ctx.props().class_name.clone())}
+                class={classes!("pf-v5-c-form__group", ctx.props().class_name.clone())}
             >
             {
                 if !ctx.props().label.is_empty()
@@ -97,8 +97,8 @@ impl Component for FormGroup
                     {
                         html!{
                             <>
-                                <div class="pf-c-form__group-label-main">{self.get_label_content(ctx)}</div>
-                                <div class="pf-c-form__group-label-info">{label_info.clone()}</div>
+                                <div class="pf-v5-c-form__group-label-main">{self.get_label_content(ctx)}</div>
+                                <div class="pf-v5-c-form__group-label-info">{label_info.clone()}</div>
                             </>
                         }
                     }
@@ -114,7 +114,7 @@ impl Component for FormGroup
             }
                 <div 
                     class={classes!(
-                        "pf-c-form__group-control", 
+                        "pf-v5-c-form__group-control", 
                         if ctx.props().is_inline {"pf-m-inline"} else {""},
                         if ctx.props().is_stack {"pf-m-stack"} else {""},
                     )}
@@ -155,18 +155,18 @@ impl FormGroup
         html!{
             <div
                 class={classes!(
-                    "pf-c-form__group-label",
+                    "pf-v5-c-form__group-label",
                     if ctx.props().label_info.is_some() {"pf-m-info"} else {""},
                     if ctx.props().has_no_padding_top {"pf-m-no-padding-top"} else {""},
                 )}
             >
-                <label class="pf-c-form__label" for={ctx.props().field_id.clone()}>
-                    <span class="pf-c-form__label-text">{&ctx.props().label}</span>
+                <label class="pf-v5-c-form__label" for={ctx.props().field_id.clone()}>
+                    <span class="pf-v5-c-form__label-text">{&ctx.props().label}</span>
                     {
                         if ctx.props().is_required
                         {
                             html!{
-                                <span class="pf-c-form__label-required" aria-hidden="true">
+                                <span class="pf-v5-c-form__label-required" aria-hidden="true">
                                     {' '}
                                     {ASTERISK}
                                 </span>
@@ -204,7 +204,7 @@ impl FormGroup
                         html!{
                             <div
                                 class={classes!(
-                                    "pf-c-form__helper-text",
+                                    "pf-v5-c-form__helper-text",
                                     if ctx.props().validated == ValidatedOptions::Success { "pf-m-success" } else { "" },
                                     if ctx.props().validated == ValidatedOptions::Warning { "pf-m-warning" } else { "" },
                                 )}
@@ -215,7 +215,7 @@ impl FormGroup
                                     if let Some(helper_text_icon) = &ctx.props().helper_text_icon
                                     {
                                         html!{
-                                            <span class="pf-c-form__helper-text-icon">
+                                            <span class="pf-v5-c-form__helper-text-icon">
                                                 {helper_text_icon.clone()}
                                             </span>
                                         }
@@ -249,7 +249,7 @@ impl FormGroup
                         html!{
                             <div 
                                 class={classes!(
-                                    "pf-c-form__helper-text",
+                                    "pf-v5-c-form__helper-text",
                                     "pf-m-error"
                                 )}
                                 id={format!("{}-helper", ctx.props().field_id)}
@@ -259,7 +259,7 @@ impl FormGroup
                                     if let Some(helper_text_invalid_icon) = &ctx.props().helper_text_invalid_icon
                                     {
                                         html!{
-                                            <span class="pf-c-form__helper-text-icon">
+                                            <span class="pf-v5-c-form__helper-text-icon">
                                                 {helper_text_invalid_icon.clone()}
                                             </span>
                                         }

@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct Td;
@@ -39,7 +37,7 @@ pub struct TdProps
     /** True to remove padding */
     #[prop_or_default]
     pub no_padding: bool,
-    /** Applies pf-c-table__action to td */
+    /** Applies pf-v5-c-table__action to td */
     #[prop_or_default]
     pub is_action_cell: bool,
     /**
@@ -107,14 +105,14 @@ impl Component for Td
 
             if let Some(sticky_min_width) = &ctx.props().sticky_min_width
             {
-                style_builder = format!("--pf-c-table__sticky-column--MinWidth: {}", sticky_min_width);
+                style_builder = format!("--pf-v5-c-table__sticky-column--MinWidth: {}", sticky_min_width);
             }
 
             if style_builder.len() > 0 { style_builder.push(';')};
 
             if let Some(sticky_left_offset) = &ctx.props().sticky_left_offset
             {
-                style_builder.push_str(&format!("--pf-c-table__sticky-column--Left: {}", sticky_left_offset));
+                style_builder.push_str(&format!("--pf-v5-c-table__sticky-column--Left: {}", sticky_left_offset));
             }
 
             Some(style_builder)
@@ -129,10 +127,10 @@ impl Component for Td
                 // onMouseEnter={tooltip !== null ? onMouseEnter : onMouseEnterProp}
                 class={classes!(
                     &ctx.props().class_name,
-                    if ctx.props().is_action_cell {"pf-c-table__action"} else {""},
+                    if ctx.props().is_action_cell {"pf-v5-c-table__action"} else {""},
                     if ctx.props().text_center {"pf-m-center"} else {""},
                     if ctx.props().no_padding {"pf-m-no-padding"} else {""},
-                    if ctx.props().is_sticky_column {"pf-c-table__sticky-column"} else {""},
+                    if ctx.props().is_sticky_column {"pf-v5-c-table__sticky-column"} else {""},
                     if ctx.props().has_right_border {"pf-m-border-right"} else {""},
                     // styles.modifiers[modifier as 'breakWord' | 'fitContent' | 'nowrap' | 'truncate' | 'wrap' | undefined],
                     // draggableParams && styles.tableDraggable,

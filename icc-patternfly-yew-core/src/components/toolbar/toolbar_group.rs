@@ -1,6 +1,6 @@
 use yew::{
     prelude::*,
-    html::{ChildrenRenderer},
+    html::ChildrenRenderer,
 };
 
 use super::*;
@@ -81,7 +81,7 @@ impl Component for ToolbarGroup
         html!{
             <div
                 class={classes!(
-                    "pf-c-toolbar__group",
+                    "pf-v5-c-toolbar__group",
                     TOOLBAR_GROUP_STYLE[ctx.props().variant.clone() as usize],
                     &ctx.props().class_name,
                 )}

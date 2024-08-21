@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct ToggleGroup;
@@ -37,7 +35,7 @@ impl Component for ToggleGroup
         html!{
             <div
                 class={classes!(
-                    "pf-c-toggle-group", 
+                    "pf-v5-c-toggle-group", 
                     if ctx.props().is_compact { "pf-m-compact" } else { "" },
                     ctx.props().class_name.clone()
                 )}

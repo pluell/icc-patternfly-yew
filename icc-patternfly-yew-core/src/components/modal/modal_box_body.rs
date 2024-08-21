@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct ModalBoxBody;
@@ -32,7 +30,7 @@ impl Component for ModalBoxBody
             <div 
                 //{...props} 
                 class={classes!(
-                    "pf-c-modal-box__body",
+                    "pf-v5-c-modal-box__body",
                     ctx.props().class_name.clone(),
                 )}
             >

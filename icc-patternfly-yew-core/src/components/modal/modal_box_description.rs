@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct ModalBoxDescription;
@@ -36,7 +34,7 @@ impl Component for ModalBoxDescription
                 // {...props} 
                 id={ctx.props().id.clone()}
                 class={classes!(
-                    "pf-c-modal-box__description",
+                    "pf-v5-c-modal-box__description",
                     ctx.props().class_name.clone()
                 )}
             >

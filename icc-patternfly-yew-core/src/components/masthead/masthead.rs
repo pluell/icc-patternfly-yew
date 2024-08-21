@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use crate::{Breakpoints, InsetModifer};
 
@@ -80,7 +78,7 @@ impl Component for Masthead
         html!{
             <header
                 class={classes!(
-                    "pf-c-masthead",
+                    "pf-v5-c-masthead",
                     ctx.props().display.iter().map(|disp_mod| disp_mod.get_class()).collect::<Vec<String>>(),
                     ctx.props().inset.iter().map(|inset_mod| inset_mod.get_class()).collect::<Vec<String>>(),
                     if ctx.props().background_color == MastheadBackgroundColor::Light {"pf-m-light"} else {""},

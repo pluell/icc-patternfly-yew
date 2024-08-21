@@ -1,6 +1,6 @@
 use yew::{
     prelude::*,
-    virtual_dom::{VTag},
+    virtual_dom::VTag,
 };
 
 
@@ -38,7 +38,7 @@ impl Component for CardBody
         let mut component = VTag::new(ctx.props().component.clone());
 
         // Build list of classes
-        let mut classes = String::from("pf-c-card__body");
+        let mut classes = String::from("pf-v5-c-card__body");
 
         if !ctx.props().is_filled { classes += " pf-m-no-fill" }
         

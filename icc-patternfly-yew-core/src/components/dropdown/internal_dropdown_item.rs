@@ -1,9 +1,9 @@
 use yew::{
     prelude::*,
-    virtual_dom::{VTag},
+    virtual_dom::VTag,
 };
 
-use super::{DropdownItemComponentTypes};
+use super::DropdownItemComponentTypes;
 
 
 pub struct InternalDropdownItem;
@@ -171,7 +171,7 @@ impl InternalDropdownItem
     fn view_default_component(&self, ctx: &Context<Self>, tag: String) -> Html
     {
         // Build list of classes
-        let mut classes = String::from("pf-c-dropdown__menu-item");
+        let mut classes = String::from("pf-v5-c-dropdown__menu-item");
 
         if ctx.props().icon.is_some() { classes += " pf-m-icon" }
         if ctx.props().is_disabled { classes += " pf-m-disabled" }
@@ -214,11 +214,11 @@ impl InternalDropdownItem
         {
             html!{
                 <>
-                    <div class="pf-c-dropdown__menu-item-main">
+                    <div class="pf-v5-c-dropdown__menu-item-main">
                     {
                         if let Some(icon) = &ctx.props().icon
                         {
-                            html!{<span class="pf-c-dropdown__menu-item-icon">{icon.clone()}</span>}
+                            html!{<span class="pf-v5-c-dropdown__menu-item-icon">{icon.clone()}</span>}
                         }
                         else
                         {
@@ -227,7 +227,7 @@ impl InternalDropdownItem
                     }
                     { ctx.props().children.clone() }
                     </div>
-                    <div class="pf-c-dropdown__menu-item-description">{description.clone()}</div>
+                    <div class="pf-v5-c-dropdown__menu-item-description">{description.clone()}</div>
                 </>
             }
         }
@@ -238,7 +238,7 @@ impl InternalDropdownItem
                 {
                     if let Some(icon) = &ctx.props().icon
                     {
-                        html!{<span class="pf-c-dropdown__menu-item-icon">{icon.clone()}</span>}
+                        html!{<span class="pf-v5-c-dropdown__menu-item-icon">{icon.clone()}</span>}
                     }
                     else
                     {

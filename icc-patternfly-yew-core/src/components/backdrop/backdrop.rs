@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct Backdrop;
@@ -31,7 +29,7 @@ impl Component for Backdrop
         html!{
             <div 
                 class={classes!(
-                    "pf-c-backdrop",
+                    "pf-v5-c-backdrop",
                     ctx.props().class_name.clone()
                 )}
             >

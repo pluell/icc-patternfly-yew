@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 pub struct Switch;
 
@@ -63,13 +61,13 @@ impl Component for Switch
     {
         html!{
             <label
-                class={classes!("pf-c-switch", ctx.props().class_name.to_string())}
+                class={classes!("pf-v5-c-switch", ctx.props().class_name.to_string())}
                 for={ctx.props().id.clone()}
                 // {...getOUIAProps(Switch.displayName, ouiaId !== undefined ? ouiaId : this.state.ouiaStateId, ouiaSafe)}
             >
                 <input
                     id={ctx.props().id.clone()}
-                    class="pf-c-switch__input"
+                    class="pf-v5-c-switch__input"
                     type="checkbox"
                     onclick={ctx.link().callback(|_| SwitchMsg::OnClick)}
                     checked={ctx.props().is_checked}
@@ -82,16 +80,16 @@ impl Component for Switch
                     {
                         html!{
                             <>
-                                <span class="pf-c-switch__toggle" />
+                                <span class="pf-v5-c-switch__toggle" />
                                 <span
-                                    class="pf-c-switch__label pf-m-on"
+                                    class="pf-v5-c-switch__label pf-m-on"
                                     // id={isAriaLabelledBy ? `${this.id}-on` : null}
                                     aria-hidden="true"
                                 >
                                     {&ctx.props().label}
                                 </span>
                                 <span
-                                    class="pf-c-switch__label pf-m-off"
+                                    class="pf-v5-c-switch__label pf-m-off"
                                     // id={isAriaLabelledBy ? `${this.id}-off` : null}
                                     aria-hidden="true"
                                 >
@@ -103,8 +101,8 @@ impl Component for Switch
                     else
                     {
                         html!{
-                            <span class="pf-c-switch__toggle">
-                                <div class="pf-c-switch__toggle-icon" aria-hidden="true">
+                            <span class="pf-v5-c-switch__toggle">
+                                <div class="pf-v5-c-switch__toggle-icon" aria-hidden="true">
                                     // <CheckIcon noVerticalAlign />
                                 </div>
                             </span>

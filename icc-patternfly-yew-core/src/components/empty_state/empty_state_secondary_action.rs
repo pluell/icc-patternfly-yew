@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct EmptyStateSecondaryAction;
@@ -31,7 +29,7 @@ impl Component for EmptyStateSecondaryAction
         html!{
             <div 
                 class={classes!(
-                    "pf-c-empty-state__secondary",
+                    "pf-v5-c-empty-state__secondary",
                     ctx.props().class_name.clone()
                 )}
                 // {...props}

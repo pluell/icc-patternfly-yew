@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use crate::components::{Button, ButtonVariant, ToolbarItem, ToolbarGroup};
 
@@ -90,7 +88,7 @@ impl Component for ToolbarChipGroupContent
 
         html!{
             <div class={classes!(
-                    "pf-c-toolbar__content",
+                    "pf-v5-c-toolbar__content",
                     if is_hidden { "pf-m-hidden" } else { "" },
                     ctx.props().class_name.clone(),
                 )}

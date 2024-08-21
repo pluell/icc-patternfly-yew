@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub enum DataListCheckMsg
@@ -67,7 +65,7 @@ impl Component for DataListCheck
     fn view(&self, ctx: &Context<Self>) -> Html
     {
         let check = html!{
-            <div class={"pf-c-data-list__check"}>
+            <div class={"pf-v5-c-data-list__check"}>
                 <input
                     // {...props}
                     type={"checkbox"}
@@ -84,7 +82,7 @@ impl Component for DataListCheck
             html!{
                 <div
                     class={classes!(
-                        "pf-c-data-list__item-control",
+                        "pf-v5-c-data-list__item-control",
                         ctx.props().class_name.clone()
                     )}
                 >

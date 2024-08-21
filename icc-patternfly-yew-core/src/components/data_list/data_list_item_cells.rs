@@ -1,9 +1,9 @@
 use yew::{
     prelude::*,
-    virtual_dom::{VChild},
+    virtual_dom::VChild,
 };
 
-use super::{DataListCell};
+use super::DataListCell;
 
 
 
@@ -38,7 +38,7 @@ impl Component for DataListItemCells
         html!{
             <div 
                 class={classes!(
-                    "pf-c-data-list__item-content",
+                    "pf-v5-c-data-list__item-content",
                     ctx.props().class_name.clone(),
                 )}
                 // {...props}

@@ -1,7 +1,5 @@
 
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use wasm_bindgen::JsCast;
 use web_sys::{Event, MouseEvent};
@@ -176,7 +174,7 @@ impl Component for Toggle
                 // {...props}
                 id={ctx.props().id.clone()}
                 class={classes!(
-                    if ctx.props().is_split_button { "pf-c-dropdown__toggle-button" } else { "pf-c-dropdown__toggle" },
+                    if ctx.props().is_split_button { "pf-v5-c-dropdown__toggle-button" } else { "pf-v5-c-dropdown__toggle" },
                     if ctx.props().is_active { "pf-m-active" } else { "" },
                     if ctx.props().is_plain { "pf-m-plain" } else { "" },
                     if ctx.props().is_primary { "pf-m-primary" } else { "" },

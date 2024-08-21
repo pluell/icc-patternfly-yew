@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use crate::components::{Button, ButtonVariant};
 
@@ -42,17 +40,17 @@ impl Component for ChipGroup
         html!{
             <div
                 class={classes!(
-                    "pf-c-chip-group",
+                    "pf-v5-c-chip-group",
                     if ctx.props().category_name.is_empty() {""} else {"pf-m-category"},
                 )}
             >
-                <div class={"pf-c-chip-group__main"}>
+                <div class={"pf-v5-c-chip-group__main"}>
                     { &ctx.props().category_name }
-                    <ul class={"pf-c-chip-group__list"} role={"list"}>
+                    <ul class={"pf-v5-c-chip-group__list"} role={"list"}>
                     {
                         for ctx.props().children.iter().map(|child|
                             html!{
-                                <li class={"pf-c-chip-group__list-item"}>
+                                <li class={"pf-v5-c-chip-group__list-item"}>
                                 {
                                     child.clone()
                                 }
@@ -66,7 +64,7 @@ impl Component for ChipGroup
                     if ctx.props().is_closable
                     {
                         html!{
-                            <div class={"pf-c-chip-group__close"}>
+                            <div class={"pf-v5-c-chip-group__close"}>
                                 <Button
                                     variant={ButtonVariant::Plain}
                                     onclick={ctx.props().onclick.clone()}

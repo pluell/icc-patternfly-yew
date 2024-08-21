@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 #[derive(Clone, PartialEq)]
@@ -46,18 +44,18 @@ impl Component for FormFieldGroupHeader
         html!{
             <div 
                 class={classes!(
-                    "pf-c-form__field-group-header",
+                    "pf-v5-c-form__field-group-header",
                     ctx.props().class_name.clone(),
                 )}
                 // {...props}
             >
-                <div class="pf-c-form__field-group-header-main">
+                <div class="pf-v5-c-form__field-group-header-main">
                 {
                     if let Some(title_text) = &ctx.props().title_text
                     {
                         html!{
-                            <div class="pf-c-form__field-group-header-title">
-                                <div class="pf-c-form__field-group-header-title-text" id={title_text.id.clone()}>
+                            <div class="pf-v5-c-form__field-group-header-title">
+                                <div class="pf-v5-c-form__field-group-header-title-text" id={title_text.id.clone()}>
                                     {title_text.text.clone()}
                                 </div>
                             </div>
@@ -72,7 +70,7 @@ impl Component for FormFieldGroupHeader
                     if let Some(title_description) = &ctx.props().title_description
                     {
                         html!{
-                            <div class="pf-c-form__field-group-header-description">{title_description.clone()}</div>
+                            <div class="pf-v5-c-form__field-group-header-description">{title_description.clone()}</div>
                         }
                     }
                     else
@@ -81,7 +79,7 @@ impl Component for FormFieldGroupHeader
                     }
                 }
                 </div>
-                <div class="pf-c-form__field-group-header-actions">
+                <div class="pf-v5-c-form__field-group-header-actions">
                 {
                     if let Some(actions) = &ctx.props().actions
                     {

@@ -1,10 +1,8 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 use web_sys::{Element, Event};
 use gloo::events::{EventListener, EventListenerOptions};
 
-use crate::helpers::{is_element_in_view};
+use crate::helpers::is_element_in_view;
 
 use super::*;
 
@@ -267,7 +265,7 @@ impl Component for Tabs
                     <div
                         aria-label={ctx.props().aria_label.clone()}
                         class={classes!(
-                            "pf-c-tabs",
+                            "pf-v5-c-tabs",
                             if ctx.props().is_filled { "pf-m-fill" } else { "" },
                             if ctx.props().is_secondary { "pf-m-secondary" } else { "" },
                             if ctx.props().is_vertical { "pf-m-vertical" } else { "" },
@@ -305,7 +303,7 @@ impl Tabs
             <>
             <button
                 class={classes!(
-                    "pf-c-tabs__scroll-button", 
+                    "pf-v5-c-tabs__scroll-button", 
                     if ctx.props().is_secondary { "pf-m-secondary" } else { "" }
                 )}
                 aria-label={ctx.props().left_scroll_aria_label.clone()}
@@ -317,7 +315,7 @@ impl Tabs
                 icc_patternfly_yew_icons::angle_left_icon!{}
             }
             </button>
-            <ul class="pf-c-tabs__list"
+            <ul class="pf-v5-c-tabs__list"
                 ref={self.tab_list_ref.clone()}
                 onscroll={ctx.link().callback(|_| TabsMsg::HandleScrollButtons)}
             >
@@ -327,13 +325,13 @@ impl Tabs
                             <li
                                 key={index}
                                 class={classes!(
-                                    "pf-c-tabs__item", 
+                                    "pf-v5-c-tabs__item", 
                                     if child.props.event_key == ctx.props().active_key { "pf-m-current" } else { "" },
                                     child.props.class_name.to_string(),
                                 )}
                             >
                                 <TabButton
-                                    class_name="pf-c-tabs__link"
+                                    class_name="pf-v5-c-tabs__link"
                                     onclick={ctx.link().callback(|event_key| TabsMsg::OnClickTab(event_key))}
                                     id={format!("pf-tab-{}-{}", child.props.event_key, ctx.props().id)}   // {`pf-tab-${eventKey}-${childId || uniqueId}`}
                     //               aria-controls={ariaControls}
@@ -351,7 +349,7 @@ impl Tabs
             </ul>
             <button
                 class={classes!(
-                    "pf-c-tabs__scroll-button", 
+                    "pf-v5-c-tabs__scroll-button", 
                     if ctx.props().is_secondary { "pf-m-secondary" } else { "" }
                 )}
                 aria-label={ctx.props().right_scroll_aria_label.clone()}

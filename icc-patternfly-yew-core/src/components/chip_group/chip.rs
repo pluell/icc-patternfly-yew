@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use crate::components::{Button, ButtonVariant};
 
@@ -31,9 +29,9 @@ impl Component for Chip
     {
         html!{
             <div
-                class={"pf-c-chip"}
+                class={"pf-v5-c-chip"}
             >
-                <span class={"pf-c-chip__text"}>
+                <span class={"pf-v5-c-chip__text"}>
                     {ctx.props().children.clone()}
                 </span>
                 {

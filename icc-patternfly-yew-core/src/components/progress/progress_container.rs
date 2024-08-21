@@ -1,7 +1,5 @@
-use std::collections::{HashMap};
-use yew::{
-    prelude::*,
-};
+use std::collections::HashMap;
+use yew::prelude::*;
 
 use super::*;
 
@@ -61,7 +59,7 @@ impl Component for ProgressContainer
                 // )}
                 <div
                     class={classes!(
-                        "pf-c-progress__description", 
+                        "pf-v5-c-progress__description", 
                         if ctx.props().is_title_truncated { "pf-m-truncate" } else { "" },
                     )}
                     id={format!("{}-description", ctx.props().parent_id)}
@@ -79,13 +77,13 @@ impl Component for ProgressContainer
                     }
                 }
                 </div>
-                <div class="pf-c-progress__status" aria-hidden="true">
+                <div class="pf-v5-c-progress__status" aria-hidden="true">
                 {
                     if ctx.props().measure_location == ProgressMeasureLocations::Top
                         || ctx.props().measure_location == ProgressMeasureLocations::Outside
                     {
                         html!{
-                            <span class="pf-c-progress__measure">
+                            <span class="pf-v5-c-progress__measure">
                             {
                                 if let Some(label) = &ctx.props().label
                                 {
@@ -111,21 +109,21 @@ impl Component for ProgressContainer
                         {
                             ProgressVariants::Danger => {
                                 html!{
-                                    <span class="pf-c-progress__status-icon">
+                                    <span class="pf-v5-c-progress__status-icon">
                                         <i class="fas fa-fw fa-times-circle" aria-hidden="true"></i>
                                     </span>
                                 }
                             },
                             ProgressVariants::Warning => {
                                 html!{
-                                    <span class="pf-c-progress__status-icon">
+                                    <span class="pf-v5-c-progress__status-icon">
                                         <i class="fas fa-fw fa-exclamation-triangle" aria-hidden="true"></i>
                                     </span>
                                 }
                             },
                             ProgressVariants::Success => {
                                 html!{
-                                    <span class="pf-c-progress__status-icon">
+                                    <span class="pf-v5-c-progress__status-icon">
                                         <i class="fas fa-fw fa-check-circle" aria-hidden="true"></i>
                                     </span>
                                 }

@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use crate::styles::{WrapModifers};
 
@@ -39,7 +37,7 @@ impl Component for DataListItemRow
         html!{
             <div 
                 class={classes!(
-                    "pf-c-data-list__item-row",
+                    "pf-v5-c-data-list__item-row",
                     ctx.props().class_name.clone(),
                     if let Some(wrap_modifier) = &ctx.props().wrap_modifier { wrap_modifier.get_class() } else { "" },
                 )}

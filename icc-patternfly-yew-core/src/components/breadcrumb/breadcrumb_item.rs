@@ -1,6 +1,6 @@
 use yew::{
     prelude::*,
-    virtual_dom::{VTag},
+    virtual_dom::VTag,
 };
 
 
@@ -59,7 +59,7 @@ impl Component for BreadcrumbItem
     {
         let aria_current = if ctx.props().is_active { Some("page") } else {None};
         let classes = classes!(
-                        "pf-c-breadcrumb__link",
+                        "pf-v5-c-breadcrumb__link",
                         if ctx.props().is_active {"pf-m-current"} else {""}
                     );
 
@@ -67,7 +67,7 @@ impl Component for BreadcrumbItem
             <li
                 //{...props}
                 class={classes!(
-                    "pf-c-breadcrumb__item",
+                    "pf-v5-c-breadcrumb__item",
                     ctx.props().class_name.clone(),
                 )}
             >
@@ -75,7 +75,7 @@ impl Component for BreadcrumbItem
                 if ctx.props().show_divider
                 {
                     html!{
-                        <span class="pf-c-breadcrumb__item-divider">
+                        <span class="pf-v5-c-breadcrumb__item-divider">
                             {icc_patternfly_yew_icons::angle_right_icon!{}}
                         </span>
                     }
@@ -101,7 +101,7 @@ impl Component for BreadcrumbItem
                 else if ctx.props().is_dropdown
                 {
                     html!{
-                        <span class="pf-c-breadcrumb__dropdown">
+                        <span class="pf-v5-c-breadcrumb__dropdown">
                             {for ctx.props().children.iter()}
                         </span>
                     }

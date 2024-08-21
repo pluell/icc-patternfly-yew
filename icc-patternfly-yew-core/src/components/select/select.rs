@@ -1,6 +1,6 @@
 
 use yew::{
-    html::{ChildrenWithProps},
+    html::ChildrenWithProps,
     prelude::*,
 };
 use std::marker::PhantomData;
@@ -177,7 +177,7 @@ impl<V: ToString + PartialEq + Clone + 'static> Component for Select<V>
     fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
-            <div class="pf-c-select">
+            <div class="pf-v5-c-select">
                 <SelectToggle
                     id={ctx.props().toggle_id.clone()}
                     menu_ref={self.menu_ref.clone()}
@@ -194,21 +194,21 @@ impl<V: ToString + PartialEq + Clone + 'static> Component for Select<V>
                     {
                         SelectVariant::Single => {
                             html!{
-                                <div class="pf-c-select__toggle-wrapper">
-                                    <span class="pf-c-select__toggle-text">{ self.get_display_string(ctx) }</span>
+                                <div class="pf-v5-c-select__toggle-wrapper">
+                                    <span class="pf-v5-c-select__toggle-text">{ self.get_display_string(ctx) }</span>
                                 </div>
                             }
                         },
                         SelectVariant::Checkbox => {
                             html!{
-                                <div class="pf-c-select__toggle-wrapper">
-                                    <span class="pf-c-select__toggle-text">{ ctx.props().placeholder_text.clone() }</span>
+                                <div class="pf-v5-c-select__toggle-wrapper">
+                                    <span class="pf-v5-c-select__toggle-text">{ ctx.props().placeholder_text.clone() }</span>
                                     {
                                         if ctx.props().selections.len() > 0
                                         {
                                             html!{
-                                                <div class="pf-c-select__toggle-badge">
-                                                    <span class="pf-c-badge pf-m-read">{ctx.props().selections.len()}</span>
+                                                <div class="pf-v5-c-select__toggle-badge">
+                                                    <span class="pf-v5-c-badge pf-m-read">{ctx.props().selections.len()}</span>
                                                 </div>
                                             }
                                         }

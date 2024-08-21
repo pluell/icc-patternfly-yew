@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 pub struct FormHelperText;
 
@@ -38,7 +36,7 @@ impl Component for FormHelperText
         html!{
             <p
                 class={classes!(
-                    "pf-c-form__helper-text",
+                    "pf-v5-c-form__helper-text",
                     if ctx.props().is_error {"pf-m-error"} else {""},
                     if ctx.props().is_hidden {"pf-m-hidden"} else {""},
                     ctx.props().class_name.to_string()
@@ -49,7 +47,7 @@ impl Component for FormHelperText
                     if let Some(icon) = &ctx.props().icon
                     {
                         html!{
-                            <span class="pf-c-form__helper-text-icon">{icon.clone()}</span>
+                            <span class="pf-v5-c-form__helper-text-icon">{icon.clone()}</span>
                         }
                     }
                     else

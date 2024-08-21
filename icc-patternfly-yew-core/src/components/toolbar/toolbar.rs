@@ -1,8 +1,6 @@
-use std::collections::{HashMap};
+use std::collections::HashMap;
 
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use super::*;
 
@@ -81,7 +79,7 @@ impl Component for Toolbar
         html!{
             <div
                 id={ctx.props().id.clone()}
-                class="pf-c-toolbar"
+                class="pf-v5-c-toolbar"
             >
                 {
                     for ctx.props().children.iter().map(|mut content_node| {

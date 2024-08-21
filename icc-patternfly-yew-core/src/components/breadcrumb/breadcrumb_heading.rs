@@ -1,6 +1,6 @@
 use yew::{
     prelude::*,
-    virtual_dom::{VTag},
+    virtual_dom::VTag,
 };
 
 
@@ -45,7 +45,7 @@ impl Component for BreadcrumbHeading
             <li
                 //{...props}
                 class={classes!(
-                    "pf-c-breadcrumb__item",
+                    "pf-v5-c-breadcrumb__item",
                     ctx.props().class_name.clone(),
                 )}
             >
@@ -53,7 +53,7 @@ impl Component for BreadcrumbHeading
                     if ctx.props().show_divider
                     {
                         html!{
-                            <span class="pf-c-breadcrumb__item-divider">
+                            <span class="pf-v5-c-breadcrumb__item-divider">
                                 {icc_patternfly_yew_icons::angle_right_icon!{}}
                             </span>
                         }
@@ -64,14 +64,14 @@ impl Component for BreadcrumbHeading
                     }
                 }
                 
-                <h1 class="pf-c-breadcrumb__heading">
+                <h1 class="pf-v5-c-breadcrumb__heading">
                 {
                     if ctx.props().to.is_none() && ctx.props().component == "button"
                     {
                         html!{
                             <button 
                                 class={classes!(
-                                    "pf-c-breadcrumb__link",
+                                    "pf-v5-c-breadcrumb__link",
                                     "pf-m-current",
                                 )}
                                 aria-current={true.to_string()}
@@ -92,7 +92,7 @@ impl Component for BreadcrumbHeading
                             component.add_attribute("target", target.to_string());
                         }
                 
-                        component.add_attribute("class", "pf-c-breadcrumb__link pf-m-current");
+                        component.add_attribute("class", "pf-v5-c-breadcrumb__link pf-m-current");
                         component.add_attribute("aria-current", "page");
                                 
                         component.add_children(ctx.props().children.iter());

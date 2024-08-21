@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use crate::{
     Button, ButtonVariant, 
@@ -138,7 +136,7 @@ impl Component for FileUploadField
         html!{
             <div
                 class={classes!(
-                    "pf-c-file-upload",
+                    "pf-v5-c-file-upload",
                     // isDragActive && styles.modifiers.dragHover,
                     // isLoading && styles.modifiers.loading,
                     &ctx.props().class_name
@@ -146,7 +144,7 @@ impl Component for FileUploadField
                 // ref={containerRef}
                 // {...props}
             >
-                <div class="pf-c-file-upload__file-select">
+                <div class="pf-v5-c-file-upload__file-select">
                     <InputGroup>
                         <TextInput
                             is_read_only={true} // Always read-only regardless of isReadOnly prop (which is just for the TextArea)
@@ -175,7 +173,7 @@ impl Component for FileUploadField
                         </Button>
                     </InputGroup>
                 </div>
-                <div class="pf-c-file-upload__file-details">
+                <div class="pf-v5-c-file-upload__file-details">
                 {
                     if !ctx.props().hide_default_preview // && type is text
                     {
@@ -203,7 +201,7 @@ impl Component for FileUploadField
                     if ctx.props().is_loading
                     {
                         html!{
-                            <div class="pf-c-file-upload__file-details-spinner">
+                            <div class="pf-v5-c-file-upload__file-details-spinner">
                                 <Spinner
                                     size={SpinnerSize::Lg} 
                                     aria_valuetext={ctx.props().spinner_aria_value_text.clone()}

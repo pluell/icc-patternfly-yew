@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use super::{InternalDropdownItem, DropdownItemComponentTypes};
 use crate::{Divider, DividerVariant};

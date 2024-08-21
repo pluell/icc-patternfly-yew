@@ -1,9 +1,7 @@
-use std::collections::{HashMap};
-use yew::{
-    prelude::*,
-};
+use std::collections::HashMap;
+use yew::prelude::*;
 
-use crate::{utils_get_unique_id};
+use crate::utils_get_unique_id;
 
 use super::*;
 
@@ -154,7 +152,7 @@ impl Component for Progress
             <div
                 // {...props}
                 class={classes!(
-                    "pf-c-progress",
+                    "pf-v5-c-progress",
                     variant_cls,
                     measure_location_cls,
                     progress_size_cls,

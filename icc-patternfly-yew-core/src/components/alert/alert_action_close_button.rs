@@ -1,8 +1,6 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
-use icc_patternfly_yew_icons::{times_icon};
+use icc_patternfly_yew_icons::times_icon;
 
 use crate::{Button, ButtonVariant};
 

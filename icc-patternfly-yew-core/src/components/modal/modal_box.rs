@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use super::{ModalVariants};
 
@@ -62,7 +60,7 @@ impl Component for ModalBox
 
         if ctx.props().position_offset.len() > 0
         {
-            style += &format!(" --pf-c-modal-box--m-align-top--spacer: {};", ctx.props().position_offset);
+            style += &format!(" --pf-v5-c-modal-box--m-align-top--spacer: {};", ctx.props().position_offset);
         }
 
         html!{
@@ -75,7 +73,7 @@ impl Component for ModalBox
                 // aria-describedby={ariaDescribedby}
                 aria-modal="true"
                 class={classes!(
-                    "pf-c-modal-box",
+                    "pf-v5-c-modal-box",
                     ctx.props().class_name.clone(),
                     if ctx.props().position_top { "pf-m-align-top" } else { "" },
                     if ctx.props().variant == ModalVariants::Large { "pf-m-lg" } else { "" },

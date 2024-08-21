@@ -1,6 +1,6 @@
 use yew::{
     prelude::*,
-    virtual_dom::{VTag},
+    virtual_dom::VTag,
 };
 
 #[derive(Clone, PartialEq)]
@@ -66,7 +66,7 @@ impl Component for FormSection
         html!{
             <section
                 // {...props} 
-                class={classes!("pf-c-form__section", ctx.props().class_name.to_string())}
+                class={classes!("pf-v5-c-form__section", ctx.props().class_name.to_string())}
             >
                 {
                     if let Some(title) = &ctx.props().title
@@ -76,7 +76,7 @@ impl Component for FormSection
                         title_element.add_attribute(
                             "class",
                             classes!(
-                                "pf-c-form__section-title",
+                                "pf-v5-c-form__section-title",
                                 ctx.props().class_name.to_string()
                             ).to_string()
                         );

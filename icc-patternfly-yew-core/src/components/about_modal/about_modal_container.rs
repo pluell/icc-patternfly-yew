@@ -1,8 +1,6 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
-use crate::{Backdrop};
+use crate::Backdrop;
 
 use super::*;
 
@@ -67,7 +65,7 @@ impl Component for AboutModalContainer
             html!{
                 <Backdrop>
                     // TODO: Convert this to a FocusTrap
-                    <div class="pf-l-bullseye">
+                    <div class="pf-v5-l-bullseye">
                         <AboutModalBox
                             class_name={ctx.props().class_name.clone()}
                             aria_labelledby={ctx.props().about_modal_box_header_id.clone()}

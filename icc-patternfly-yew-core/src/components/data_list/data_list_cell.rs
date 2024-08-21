@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use crate::styles::{WrapModifers};
 
@@ -56,7 +54,7 @@ impl Component for DataListCell
         html!{
             <div
                 class={classes!(
-                    "pf-c-data-list__cell",
+                    "pf-v5-c-data-list__cell",
                     if ctx.props().width > 1 && ctx.props().width < 6 {format!{"pf-m-flex-{}", ctx.props().width}} else {String::new()},
                     if !ctx.props().is_filled { "pf-m-no-fill" } else { "" },
                     if ctx.props().align_right { "pf-m-align-right" } else { "" },

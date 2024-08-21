@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use crate::{VisibilityModifer};
 
@@ -44,7 +42,7 @@ impl Component for DataListAction
         html!{
             <div 
                 class={classes!(
-                    "pf-c-data-list__item-action",
+                    "pf-v5-c-data-list__item-action",
                     ctx.props().visibility.iter().map(|vis_mod| vis_mod.get_class()).collect::<Vec<String>>(),
                     ctx.props().class_name.clone()
                 )}
@@ -54,7 +52,7 @@ impl Component for DataListAction
                 if ctx.props().is_plain_button_action
                 {
                     html!{
-                        <div class={"pf-c-data-list__action"}>
+                        <div class={"pf-v5-c-data-list__action"}>
                             { for ctx.props().children.iter() }
                         </div>
                     }

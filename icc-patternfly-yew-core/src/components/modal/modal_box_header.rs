@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct ModalBoxHeader;
@@ -34,7 +32,7 @@ impl Component for ModalBoxHeader
         html!{
             <header 
                 class={classes!(
-                    "pf-c-modal-box__header", 
+                    "pf-v5-c-modal-box__header", 
                     if ctx.props().help.is_some() { "pf-m-help" } else { "" },
                     ctx.props().class_name.clone(),
                 )}
@@ -45,10 +43,10 @@ impl Component for ModalBoxHeader
                 {
                     html!{
                         <>
-                            <div class="pf-c-modal-box__header-main">
+                            <div class="pf-v5-c-modal-box__header-main">
                                 { for ctx.props().children.iter() }
                             </div>
-                            <div class="pf-c-modal-box__header-help">
+                            <div class="pf-v5-c-modal-box__header-help">
                                 { help.clone() }
                             </div>
                         </>

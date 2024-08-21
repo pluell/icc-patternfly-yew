@@ -1,6 +1,6 @@
 use yew::{
     prelude::*,
-    html::{ChildrenRenderer},
+    html::ChildrenRenderer,
 };
 
 use super::{DropdownItemTypes, DropdownPosition};
@@ -78,7 +78,7 @@ impl Component for DropdownMenu
                 <div
                     ref={&ctx.props().menu_ref}
                     class={classes!(
-                        "pf-c-dropdown__menu",
+                        "pf-v5-c-dropdown__menu",
                         if ctx.props().position == DropdownPosition::Right { "pf-m-align-right" } else { "" },
                         ctx.props().class_name.clone()
                     )}
@@ -102,7 +102,7 @@ impl Component for DropdownMenu
                     <@{ctx.props().component.clone()}
                         ref={&ctx.props().menu_ref}
                         class={classes!(
-                            "pf-c-dropdown__menu",
+                            "pf-v5-c-dropdown__menu",
                             if ctx.props().position == DropdownPosition::Right { "pf-m-align-right" } else { "" },
                             ctx.props().class_name.clone(),
                         )}

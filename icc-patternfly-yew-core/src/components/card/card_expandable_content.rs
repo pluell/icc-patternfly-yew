@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct CardExpandableContent;
@@ -36,7 +34,7 @@ impl Component for CardExpandableContent
             html!{
                 <div
                     class={classes!(
-                        "pf-c-card__expandable-content", 
+                        "pf-v5-c-card__expandable-content", 
                         ctx.props().class_name.clone()
                     )}
                     // {...props}

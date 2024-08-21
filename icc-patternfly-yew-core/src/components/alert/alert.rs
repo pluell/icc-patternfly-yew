@@ -71,7 +71,7 @@ impl Component for Alert
             <div
                 // ref={divRef}
                 class={classes!(
-                    "pf-c-alert",
+                    "pf-v5-c-alert",
                     if ctx.props().is_inline { "pf-m-inline" } else { "" },
                     ctx.props().variant.class(),
                     &ctx.props().class_name
@@ -109,7 +109,7 @@ impl Component for Alert
                         action_button.props = std::rc::Rc::new(props);
 
                         html!{
-                            <div class="pf-c-alert__action">
+                            <div class="pf-v5-c-alert__action">
                             {
                                 action_button
                             }
@@ -123,7 +123,7 @@ impl Component for Alert
                 }
                 {
                     html!{
-                        <div class="pf-c-alert__description">
+                        <div class="pf-v5-c-alert__description">
                         {
                             for ctx.props().children.iter()
                         }
@@ -135,7 +135,7 @@ impl Component for Alert
                     if let Some(action_links) = &ctx.props().action_links
                     {
                         html!{
-                            <div class="pf-c-alert__action-group">
+                            <div class="pf-v5-c-alert__action-group">
                             {
                                 action_links.clone()
                             }
@@ -167,7 +167,7 @@ impl Alert
                 // {...(isTooltipVisible && { tabIndex: 0 })}
                 // ref={titleRef}
                 class={classes!(
-                    "pf-c-alert__title", 
+                    "pf-v5-c-alert__title", 
                     if ctx.props().truncate_title > 0 { "pf-m-truncate" } else { "" },
                 )}
             >

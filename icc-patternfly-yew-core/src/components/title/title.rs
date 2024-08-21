@@ -1,6 +1,6 @@
 use yew::{
     prelude::*,
-    virtual_dom::{VTag},
+    virtual_dom::VTag,
 };
 
 use super::{TitleHeadingLevels, TitleSizes};
@@ -43,7 +43,7 @@ impl Component for Title
         let mut component: VTag = ctx.props().heading_level.clone().into();
 
         // Build list of classes
-        let mut classes = String::from("pf-c-title");
+        let mut classes = String::from("pf-v5-c-title");
 
         // Get the size class or default size
         if let Some(size) = &ctx.props().size

@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 pub struct ExpandableSection
 {
@@ -85,26 +83,26 @@ impl Component for ExpandableSection
             <div
                 // {...props}
                 class={classes!(
-                    "pf-c-expandable-section",
+                    "pf-v5-c-expandable-section",
                     if prop_or_state_is_expanded { "pf-m-expanded" } else { "" },
                     if ctx.props().is_active { "pf-m-active" } else { "" },
                     ctx.props().class_name.to_string(),
                 )}
             >
                 <button
-                    class="pf-c-expandable-section__toggle"
+                    class="pf-v5-c-expandable-section__toggle"
                     type="button"
                     aria-expanded={prop_or_state_is_expanded.to_string()}
                     onclick={ctx.link().callback(|_| ExpandableSectionMsg::OnClick)}
                 >
-                    <span class="pf-c-expandable-section__toggle-icon">
+                    <span class="pf-v5-c-expandable-section__toggle-icon">
                         <i class="fas fa-angle-right"></i>
                     </span>
-                    <span class="pf-c-expandable-section__toggle-text">
+                    <span class="pf-v5-c-expandable-section__toggle-text">
                         { self.get_toggle_text(prop_or_state_is_expanded, ctx) }
                     </span>
                 </button>
-                <div class="pf-c-expandable-section__content" hidden={!prop_or_state_is_expanded}>
+                <div class="pf-v5-c-expandable-section__content" hidden={!prop_or_state_is_expanded}>
                     { ctx.props().children.clone() }
                 </div>
             </div>

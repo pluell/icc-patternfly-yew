@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct AboutModalBox;
@@ -37,7 +35,7 @@ impl Component for AboutModalBox
         html!{
             <div 
                 role="dialog" aria-modal="true" 
-                class={classes!("pf-c-about-modal-box",ctx.props().class_name.clone())}
+                class={classes!("pf-v5-c-about-modal-box",ctx.props().class_name.clone())}
                 // {...props}
                 aria-labelledby={ctx.props().aria_labelledby.clone()}
                 aria-describedby={ctx.props().aria_describedby.clone()}

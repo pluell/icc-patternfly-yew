@@ -1,8 +1,6 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
-use super::{AlertVariant};
+use super::AlertVariant;
 
 
 pub struct AlertIcon;
@@ -37,7 +35,7 @@ impl Component for AlertIcon
             <div
                 // {...props}
                 class={classes!(
-                    "pf-c-alert__icon", 
+                    "pf-v5-c-alert__icon", 
                     &ctx.props().class_name
                 )}
             >

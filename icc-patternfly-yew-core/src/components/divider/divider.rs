@@ -1,9 +1,9 @@
 use yew::{
     prelude::*,
-    virtual_dom::{VTag},
+    virtual_dom::VTag,
 };
 
-use crate::{InsetModifer};
+use crate::InsetModifer;
 
 
 #[derive(Clone, PartialEq)]
@@ -71,7 +71,7 @@ impl Component for Divider
         let mut component: VTag = ctx.props().component.clone().into();
 
         let classes = classes!(
-            "pf-c-divider",
+            "pf-v5-c-divider",
             if ctx.props().is_vertical {"pf-m-vertical"} else {""},
             ctx.props().inset.iter().map(|inset_mod| inset_mod.get_class()).collect::<Vec<String>>(),
             ctx.props().class_name.clone()

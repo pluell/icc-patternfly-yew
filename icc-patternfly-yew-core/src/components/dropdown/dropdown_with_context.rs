@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use super::{DropdownDirection, DropdownMenu, DropdownPosition, DropdownProperties, DropdownToggleComponents};
 
@@ -30,7 +28,7 @@ impl Component for DropdownWithContext
             <div
                 // {...props}
                 class={classes!(
-                    "pf-c-dropdown",
+                    "pf-v5-c-dropdown",
                     if ctx.props().direction == DropdownDirection::Up { "pf-m-top" } else { "" },
                     if ctx.props().position == DropdownPosition::Right { "pf-m-align-right" } else { "" },
                     if ctx.props().is_open { "pf-m-expanded" } else { "" },

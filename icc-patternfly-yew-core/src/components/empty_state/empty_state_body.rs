@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct EmptyStateBody;
@@ -31,7 +29,7 @@ impl Component for EmptyStateBody
         html!{
             <div 
                 class={classes!(
-                    "pf-c-empty-state__body",
+                    "pf-v5-c-empty-state__body",
                     ctx.props().class_name.clone()
                 )}
                 // {...props}

@@ -1,9 +1,9 @@
 use yew::{
     prelude::*,
-    virtual_dom::{VTag},
+    virtual_dom::VTag,
 };
 
-use super::{SpinnerSize};
+use super::SpinnerSize;
 
 
 const SPINNER_SIZE_CLASSES: &'static [&'static str] = &[
@@ -53,7 +53,7 @@ impl Component for Spinner
         component.add_attribute("role", "progressbar".to_string());
 
         component.add_attribute("class", 
-            format!("pf-c-spinner {} {}",
+            format!("pf-v5-c-spinner {} {}",
                 SPINNER_SIZE_CLASSES[ctx.props().size.clone() as usize],
                 &ctx.props().class_name
         ));
@@ -65,7 +65,7 @@ impl Component for Spinner
 
         if ctx.props().diameter.len() > 0
         {
-            component.add_attribute("style", format!("--pf-c-spinner--diameter: {}", ctx.props().diameter));
+            component.add_attribute("style", format!("--pf-v5-c-spinner--diameter: {}", ctx.props().diameter));
         }
 
         if ctx.props().is_svg
@@ -73,16 +73,16 @@ impl Component for Spinner
             component.add_attribute("viewBox", "0 0 100 100".to_string());
 
             component.add_child(html!{
-                <circle class="pf-c-spinner__path" cx="50" cy="50" r="45" fill="none" />
+                <circle class="pf-v5-c-spinner__path" cx="50" cy="50" r="45" fill="none" />
             });
         }
         else
         {
             component.add_child(html!{
                 <>
-                    <span class="pf-c-spinner__clipper"></span>
-                    <span class="pf-c-spinner__lead-ball"></span>
-                    <span class="pf-c-spinner__tail-ball"></span>
+                    <span class="pf-v5-c-spinner__clipper"></span>
+                    <span class="pf-v5-c-spinner__lead-ball"></span>
+                    <span class="pf-v5-c-spinner__tail-ball"></span>
                 </>
             });
         }

@@ -7,7 +7,7 @@ use yew::{
     Component, Context, Html, TargetCast,
 };
 
-use crate::{ValidatedOptions};
+use crate::ValidatedOptions;
 
 
 #[derive(Clone, PartialEq)]
@@ -119,7 +119,7 @@ impl Component for TextArea
             <textarea
                 ref={self.text_area_ref.clone()}
                 class={classes!(
-                    "pf-c-form-control",
+                    "pf-v5-c-form-control",
                     &ctx.props().class_name,
                     RESIZE_ORIENTATION_STYLES[ctx.props().resize_orientation.clone() as usize],
                     if ctx.props().validated == ValidatedOptions::Success { "pf-m-success" } else { "" },

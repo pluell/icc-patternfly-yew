@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 #[derive(Clone, PartialEq)]
@@ -55,14 +53,14 @@ impl Component for EmptyState
         html!{
             <div
                 class={classes!(
-                    "pf-c-empty-state",
+                    "pf-v5-c-empty-state",
                     variant_cls,
                     if ctx.props().is_full_height { "pf-m-full-height" } else { "" },
                     ctx.props().class_name.clone()
                 )}
                 // {...props}
             >
-                <div class="pf-c-empty-state__content">
+                <div class="pf-v5-c-empty-state__content">
                 {
                     for ctx.props().children.iter()
                 }

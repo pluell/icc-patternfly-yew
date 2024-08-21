@@ -1,8 +1,6 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
-use super::{FormFieldGroupToggle};
+use super::FormFieldGroupToggle;
 
 
 pub struct InternalFormFieldGroup;
@@ -48,7 +46,7 @@ impl Component for InternalFormFieldGroup
         html!{
             <div
                 class={classes!(
-                    "pf-c-form__field-group", 
+                    "pf-v5-c-form__field-group", 
                     if ctx.props().is_expanded && ctx.props().is_expandable {"pf-m-expanded"} else {""},
                     ctx.props().class_name.clone(),
                 )}
@@ -97,7 +95,7 @@ impl Component for InternalFormFieldGroup
                     if !ctx.props().is_expandable || (ctx.props().is_expanded && ctx.props().is_expandable)
                     {
                         html!{
-                            <div class="pf-c-form__field-group-body">
+                            <div class="pf-v5-c-form__field-group-body">
                                 {for ctx.props().children.iter()}
                             </div>
                         }

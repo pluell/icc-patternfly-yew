@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 #[derive(Clone, PartialEq)]
@@ -79,7 +77,7 @@ impl Component for ToolbarItem
                     ref={&ctx.props().filter_item_node}
                     id={ctx.props().id.clone()}
                     class={classes!(
-                        "pf-c-toolbar__item",
+                        "pf-v5-c-toolbar__item",
                         TOOLBAR_ITEM_VARIANT_STYLES[ctx.props().variant.clone() as usize],
                         &ctx.props().class_name,
                     )}

@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use crate::{Button, ButtonVariant};
 
@@ -67,12 +65,12 @@ impl Component for DataListToggle
         html!{
             <div 
                 class={classes!(
-                    "pf-c-data-list__item-control",
+                    "pf-v5-c-data-list__item-control",
                     ctx.props().class_name.clone()
                 )}
                 // {...props}
             >
-                <div class="pf-c-data-list__toggle">
+                <div class="pf-v5-c-data-list__toggle">
                     <Button
                         id={ctx.props().id.clone()}
                         variant={ButtonVariant::Plain}
@@ -83,7 +81,7 @@ impl Component for DataListToggle
 
                         onclick={ctx.link().callback(|_| DataListToggleMsg::OnClick)}
                     >
-                        <div class={"pf-c-data-list__toggle-icon"}>
+                        <div class={"pf-v5-c-data-list__toggle-icon"}>
                             {icc_patternfly_yew_icons::angle_right_icon!{}}
                         </div>
                     </Button>

@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct CardActions;
@@ -32,7 +30,7 @@ impl Component for CardActions
             <div 
             
                 class={classes!(
-                    "pf-c-card__actions",
+                    "pf-v5-c-card__actions",
                     ctx.props().class_name.clone()
                 )}
             >

@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct Th;
@@ -97,14 +95,14 @@ impl Component for Th
 
             if let Some(sticky_min_width) = &ctx.props().sticky_min_width
             {
-                style_builder = format!("--pf-c-table__sticky-column--MinWidth: {}", sticky_min_width);
+                style_builder = format!("--pf-v5-c-table__sticky-column--MinWidth: {}", sticky_min_width);
             }
 
             if style_builder.len() > 0 { style_builder.push(';')};
 
             if let Some(sticky_left_offset) = &ctx.props().sticky_left_offset
             {
-                style_builder.push_str(&format!("--pf-c-table__sticky-column--Left: {}", sticky_left_offset));
+                style_builder.push_str(&format!("--pf-v5-c-table__sticky-column--Left: {}", sticky_left_offset));
             }
 
             Some(style_builder)
@@ -128,8 +126,8 @@ impl Component for Th
                 class={classes!(
                     &ctx.props().class_name,
                     // if ctx.props().textCenter && styles.modifiers.center,
-                    if ctx.props().is_subheader {"pf-c-table__subhead"} else {""},
-                    if ctx.props().is_sticky_column {"pf-c-table__sticky-column"} else {""},
+                    if ctx.props().is_subheader {"pf-v5-c-table__subhead"} else {""},
+                    if ctx.props().is_sticky_column {"pf-v5-c-table__sticky-column"} else {""},
                     if ctx.props().has_right_border {"pf-m-border-right"} else {""},
                     // modifier && styles.modifiers[modifier as 'breakWord' | 'fitContent' | 'nowrap' | 'truncate' | 'wrap'],
                     // mergedClassName

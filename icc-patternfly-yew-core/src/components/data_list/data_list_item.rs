@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct DataListItem;
@@ -41,7 +39,7 @@ impl Component for DataListItem
             <li
                 id={ctx.props().id.clone()}
                 class={classes!(
-                    "pf-c-data-list__item",
+                    "pf-v5-c-data-list__item",
                     if ctx.props().is_expanded { "pf-m-expanded" } else { "" },
                     // isSelectable && styles.modifiers.selectable,
                     // selectedDataListItemId && selectedDataListItemId === id && styles.modifiers.selected,

@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use wasm_bindgen::JsCast;
 use web_sys::{Event};
@@ -198,11 +196,11 @@ impl Component for Modal
         // Handle backdrop class for target element
         let mut target_classes = target.class_name();
 
-        if !target_classes.contains("pf-c-backdrop__open")
+        if !target_classes.contains("pf-v5-c-backdrop__open")
         {
             if ctx.props().is_open
             {
-                target_classes += " pf-c-backdrop__open";
+                target_classes += " pf-v5-c-backdrop__open";
             }
         }
         else
@@ -210,8 +208,8 @@ impl Component for Modal
             // Remove the backdrop open class if the modal is closed now
             if !ctx.props().is_open
             {
-                let class_len = " pf-c-backdrop__open".len();
-                let class_offset = target_classes.find(" pf-c-backdrop__open").unwrap_or(target_classes.len());
+                let class_len = " pf-v5-c-backdrop__open".len();
+                let class_offset = target_classes.find(" pf-v5-c-backdrop__open").unwrap_or(target_classes.len());
 
                 target_classes.replace_range(class_offset..class_len, "");
             }

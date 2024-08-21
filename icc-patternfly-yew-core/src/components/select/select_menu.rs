@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use super::*;
 
@@ -36,7 +34,7 @@ impl Component for SelectMenu
         if ctx.props().variant != SelectVariant::Checkbox
         {
             html!{
-                <ul ref={&ctx.props().menu_ref} class="pf-c-select__menu" aria-labelledby="select-single-label">
+                <ul ref={&ctx.props().menu_ref} class="pf-v5-c-select__menu" aria-labelledby="select-single-label">
                     { ctx.props().children.clone() }
                 </ul>
             }
@@ -44,8 +42,8 @@ impl Component for SelectMenu
         else
         {
             html!{
-                <div ref={&ctx.props().menu_ref} class="pf-c-select__menu">
-                    <fieldset class="pf-c-select__menu-fieldset" aria-label="Select input">
+                <div ref={&ctx.props().menu_ref} class="pf-v5-c-select__menu">
+                    <fieldset class="pf-v5-c-select__menu-fieldset" aria-label="Select input">
                         { ctx.props().children.clone() }
                     </fieldset>
                 </div>

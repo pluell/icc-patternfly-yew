@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use super::{DropdownDirection, DropdownPosition, DropdownWithContext, DropdownItemTypes, DropdownToggleComponents};
 

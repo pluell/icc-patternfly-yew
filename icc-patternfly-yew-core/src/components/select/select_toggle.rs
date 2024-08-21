@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use wasm_bindgen::JsCast;
 use web_sys::{Event, MouseEvent};
@@ -8,7 +6,7 @@ use gloo::events::{EventListener, EventListenerOptions};
 
 use crate::{ButtonType, BTN_TYPES};
 
-use super::{SelectVariant};
+use super::SelectVariant;
 
 
 pub struct SelectToggle
@@ -174,7 +172,7 @@ impl Component for SelectToggle
                     // aria-haspopup: (variant !== SelectVariant.checkbox && 'listbox') || null
                     type={BTN_TYPES[ctx.props().toggle_type.clone() as usize]}
                     class={classes!(
-                        "pf-c-select__toggle",
+                        "pf-v5-c-select__toggle",
                         if ctx.props().is_disabled { "pf-m-disabled" } else { "" },
                         if ctx.props().is_plain { "pf-m-plain" } else { "" },
                         if ctx.props().is_active { "pf-m-active" } else { "" },
@@ -185,7 +183,7 @@ impl Component for SelectToggle
                     onkeydown={ctx.link().callback(|event| SelectToggleMsg::OnKeyDown(event))}
                 >
                     { ctx.props().children.clone() }
-                    <span class="pf-c-select__toggle-arrow">
+                    <span class="pf-v5-c-select__toggle-arrow">
                         <i class="fas fa-caret-down" aria-hidden="true"></i>
                     </span>
                 </button>

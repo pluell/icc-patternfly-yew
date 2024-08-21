@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct MastheadContent;
@@ -31,7 +29,7 @@ impl Component for MastheadContent
         html!{
             <div 
                 class={classes!(
-                    "pf-c-masthead__content",
+                    "pf-v5-c-masthead__content",
                     ctx.props().class_name.clone(),
                 )}
                 // {...props}

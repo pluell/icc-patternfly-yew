@@ -1,6 +1,6 @@
 use yew::{
     prelude::*,
-    virtual_dom::{VChild},
+    virtual_dom::VChild,
 };
 
 use super::*;

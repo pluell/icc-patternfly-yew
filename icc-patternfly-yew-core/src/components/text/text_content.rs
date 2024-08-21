@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct TextContent;
@@ -32,7 +30,7 @@ impl Component for TextContent
             <div 
                 // {...props}
                 class={classes!(
-                    "pf-c-content", 
+                    "pf-v5-c-content", 
                     ctx.props().class_name.clone(),
                 )}
             >

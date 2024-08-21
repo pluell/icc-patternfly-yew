@@ -1,6 +1,6 @@
 use yew::{
     prelude::*,
-    virtual_dom::{VTag},
+    virtual_dom::VTag,
 };
 
 
@@ -44,7 +44,7 @@ impl Component for EmptyStateIcon
 
     fn view(&self, ctx: &Context<Self>) -> Html
     {
-        let mut classes = classes!("pf-c-empty-state__icon", ctx.props().class_name.clone());
+        let mut classes = classes!("pf-v5-c-empty-state__icon", ctx.props().class_name.clone());
 
         match ctx.props().variant
         {

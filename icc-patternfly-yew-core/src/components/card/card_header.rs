@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use crate::{Button, ButtonVariant};
 
@@ -66,7 +64,7 @@ impl Component for CardHeader
         html!{
             <div 
                 class={classes!(
-                    "pf-c-card__header", 
+                    "pf-v5-c-card__header", 
                     ctx.props().class_name.clone(),
                 )}
                 id={ctx.props().id.clone()}
@@ -76,14 +74,14 @@ impl Component for CardHeader
                 if let Some(_onexpand) = &ctx.props().onexpand
                 {
                     html!{
-                        <div class="pf-c-card__header-toggle">
+                        <div class="pf-v5-c-card__header-toggle">
                             <Button
                                 variant={ButtonVariant::Plain}
                                 // type="button"
                                 onclick={ctx.link().callback(|_| CardHeaderMsg::OnClickToggle)}
                                 // {...toggleButtonProps}
                             >
-                                <span class="pf-c-card__header-toggle-icon">
+                                <span class="pf-v5-c-card__header-toggle-icon">
                                     <i class="fas fa-angle-right" aria-hidden="true"></i>
                                 </span>
                             </Button>

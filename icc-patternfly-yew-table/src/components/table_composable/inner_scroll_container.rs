@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct InnerScrollContainer;
@@ -32,7 +30,7 @@ impl Component for InnerScrollContainer
             <div 
                 class={classes!(
                     &ctx.props().class_name,
-                    "pf-c-scroll-inner-wrapper"
+                    "pf-v5-c-scroll-inner-wrapper"
                 )} 
                 // {...props}
             >

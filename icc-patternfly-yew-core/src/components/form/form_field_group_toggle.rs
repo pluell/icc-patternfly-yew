@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use crate::{Button, ButtonVariant};
 
@@ -47,12 +45,12 @@ impl Component for FormFieldGroupToggle
         html!{
             <div 
                 class={classes!(
-                    "pf-c-form__field-group-toggle",
+                    "pf-v5-c-form__field-group-toggle",
                     ctx.props().class_name.clone(),
                 )}
                 // {...props}
             >
-                <div class="pf-c-form__field-group-toggle-button">
+                <div class="pf-v5-c-form__field-group-toggle-button">
                     <Button
                         variant={ButtonVariant::Plain}
                         aria_label={ctx.props().aria_label.clone()}
@@ -61,7 +59,7 @@ impl Component for FormFieldGroupToggle
                         aria_labelledby={ctx.props().aria_labelledby.clone()}
                         id={ctx.props().toggle_id.clone()}
                     >
-                        <span class="pf-c-form__field-group-toggle-icon">
+                        <span class="pf-v5-c-form__field-group-toggle-icon">
                             {icc_patternfly_yew_icons::angle_right_icon!{}}
                         </span>
                     </Button>

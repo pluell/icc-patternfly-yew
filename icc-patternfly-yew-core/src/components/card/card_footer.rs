@@ -1,6 +1,6 @@
 use yew::{
     prelude::*,
-    virtual_dom::{VTag},
+    virtual_dom::VTag,
 };
 
 
@@ -35,7 +35,7 @@ impl Component for CardFooter
         let mut component = VTag::new(ctx.props().component.clone());
 
         // Build list of classes
-        let mut classes = String::from("pf-c-card__footer");
+        let mut classes = String::from("pf-v5-c-card__footer");
         
         // Add extra classes specified on the parent
         if ctx.props().class_name.len() > 0

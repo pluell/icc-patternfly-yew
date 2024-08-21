@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use crate::{TableGridBreakpoint, TableVariant};
 
@@ -134,7 +132,7 @@ impl Component for TableComposable
                     role={ctx.props().role.clone()}
                     class={classes!(
                         &ctx.props().class_name,
-                        "pf-c-table",
+                        "pf-v5-c-table",
                         if ctx.props().is_tree_table {"treeGrid"} else {ctx.props().grid_break_point.get_class()},
                         if let Some(variant) = &ctx.props().variant {variant.get_class()} else {""},
                         if !ctx.props().borders {"pf-m-no-border-rows"} else {""},

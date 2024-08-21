@@ -113,7 +113,7 @@ impl Component for TextInput
                 // onFocus={this.onFocus}
                 // onBlur={this.onBlur}
                 class={classes!(
-                    "pf-c-form-control",
+                    "pf-v5-c-form-control",
                     if ctx.props().validated == ValidatedOptions::Success { "pf-m-success" } else { "" },
                     if ctx.props().validated == ValidatedOptions::Warning { "pf-m-warning" } else { "" },
                     // ((iconVariant && iconVariant !== 'search') || customIconUrl) && styles.modifiers.icon,

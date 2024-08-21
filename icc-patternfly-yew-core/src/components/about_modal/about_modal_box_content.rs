@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct AboutModalBoxContent;
@@ -36,11 +34,11 @@ impl Component for AboutModalBoxContent
     fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
-            <div class={classes!("pf-c-about-modal-box__content", ctx.props().class_name.clone())}
+            <div class={classes!("pf-v5-c-about-modal-box__content", ctx.props().class_name.clone())}
                 id={ctx.props().id.clone()}
                 // {...props}
             >
-                <div class={classes!("pf-c-about-modal-box__body")}>
+                <div class={classes!("pf-v5-c-about-modal-box__body")}>
                 {
                     if ctx.props().no_about_modal_box_content_container
                     {
@@ -51,12 +49,12 @@ impl Component for AboutModalBoxContent
                     else
                     {
                         html!{
-                            <div class={classes!("pf-c-content")}>{for ctx.props().children.iter()}</div>
+                            <div class={classes!("pf-v5-c-content")}>{for ctx.props().children.iter()}</div>
                         }
                     }
                 }
                 </div>
-                <p class={classes!("pf-c-about-modal-box__strapline")}>{ctx.props().trademark.clone()}</p>
+                <p class={classes!("pf-v5-c-about-modal-box__strapline")}>{ctx.props().trademark.clone()}</p>
             </div>
         }
     }

@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 pub struct FormAlert;
 
@@ -29,7 +27,7 @@ impl Component for FormAlert
         html!{
             <div 
                 // {...props} 
-                class={classes!("pf-c-form__alert", ctx.props().class_name.to_string())}
+                class={classes!("pf-v5-c-form__alert", ctx.props().class_name.to_string())}
             >
             { ctx.props().children.clone() }
             </div>

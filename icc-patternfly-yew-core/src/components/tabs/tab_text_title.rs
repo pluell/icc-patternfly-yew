@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct TabTextTitle;
@@ -28,7 +26,7 @@ impl Component for TabTextTitle
     fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
-            <span class={classes!("pf-c-tabs__item-text", ctx.props().class_name.to_string())}>
+            <span class={classes!("pf-v5-c-tabs__item-text", ctx.props().class_name.to_string())}>
                 { ctx.props().children.clone() }
             </span>
         }

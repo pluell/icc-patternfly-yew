@@ -1,8 +1,6 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
-use icc_patternfly_yew_icons::{times_icon};
+use icc_patternfly_yew_icons::times_icon;
 
 use crate::{Button, ButtonVariant};
 
@@ -55,7 +53,7 @@ impl Component for AboutModalBoxCloseButton
     {
         html!{
             <div 
-                class={classes!("pf-c-about-modal-box__close", ctx.props().class_name.clone())}
+                class={classes!("pf-v5-c-about-modal-box__close", ctx.props().class_name.clone())}
                 // {...props}
             >
                 <Button 

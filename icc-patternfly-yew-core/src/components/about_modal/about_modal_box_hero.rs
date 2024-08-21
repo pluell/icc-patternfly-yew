@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 pub struct AboutModalBoxHero;
 
@@ -31,12 +29,12 @@ impl Component for AboutModalBoxHero
             <div
                 style={
                     if let Some(background_image_src) = &ctx.props().background_image_src {
-                        Some(format!("--pf-c-about-modal-box__hero--sm--BackgroundImage: {}", background_image_src))
+                        Some(format!("--pf-v5-c-about-modal-box__hero--sm--BackgroundImage: {}", background_image_src))
                     } else {
                         None
                     }
                 }
-                class={classes!("pf-c-about-modal-box__hero", ctx.props().class_name.clone())}
+                class={classes!("pf-v5-c-about-modal-box__hero", ctx.props().class_name.clone())}
                 // {...props}
             />
         }

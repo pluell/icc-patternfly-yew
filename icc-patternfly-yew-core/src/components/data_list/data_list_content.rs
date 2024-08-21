@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct DataListContent;
@@ -46,7 +44,7 @@ impl Component for DataListContent
             <section
                 id={ctx.props().id.clone()}
                 class={classes!(
-                    "pf-c-data-list__expandable-content",
+                    "pf-v5-c-data-list__expandable-content",
                     ctx.props().class_name.clone()
                 )}
                 hidden={ctx.props().is_hidden}
@@ -55,7 +53,7 @@ impl Component for DataListContent
             >
                 <div 
                     class={classes!(
-                        "pf-c-data-list__expandable-content-body", 
+                        "pf-v5-c-data-list__expandable-content-body", 
                         if ctx.props().has_no_padding { "pf-m-no-padding" } else { "" }
                     )}
                 >

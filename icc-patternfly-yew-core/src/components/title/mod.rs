@@ -30,7 +30,7 @@ impl TitleSizes
     }
 }
 
-use yew::virtual_dom::{VTag};
+use yew::virtual_dom::VTag;
 
 #[derive(Clone, PartialEq)]
 pub enum TitleHeadingLevels

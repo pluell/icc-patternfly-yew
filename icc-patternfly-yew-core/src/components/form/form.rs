@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 pub struct Form;
 
@@ -41,7 +39,7 @@ impl Component for Form
                 ref={&ctx.props().r#ref}
                 no_validate={true.to_string()}
                 class={classes!(
-                    "pf-c-form",
+                    "pf-v5-c-form",
                     if ctx.props().is_horizontal {"pf-m-horizontal"} else {""},
                     if ctx.props().is_width_limited {"pf-m-limit-width"} else {""},
                     ctx.props().class_name.to_string(),

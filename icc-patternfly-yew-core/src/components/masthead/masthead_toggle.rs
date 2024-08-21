@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct MastheadToggle;
@@ -31,7 +29,7 @@ impl Component for MastheadToggle
         html!{
             <div 
                 class={classes!(
-                    "pf-c-masthead__toggle",
+                    "pf-v5-c-masthead__toggle",
                     ctx.props().class_name.clone(),
                 )}
                 // {...props}

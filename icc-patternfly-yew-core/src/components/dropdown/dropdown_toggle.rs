@@ -1,7 +1,5 @@
 
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use crate::{ButtonType};
 
@@ -101,7 +99,7 @@ impl Component for DropdownToggle
                     if let Some(icon) = &ctx.props().icon
                     {
                         html!{
-                            <span class="pf-c-dropdown__toggle-icon">{ icon.clone() }</span>
+                            <span class="pf-v5-c-dropdown__toggle-icon">{ icon.clone() }</span>
                         }
                     }
                     else
@@ -117,7 +115,7 @@ impl Component for DropdownToggle
                     else
                     {
                         html!{
-                            <span class={if ctx.props().toggle_indicator.is_some() { "pf-c-dropdown__toggle-text" } else { "" }}>
+                            <span class={if ctx.props().toggle_indicator.is_some() { "pf-v5-c-dropdown__toggle-text" } else { "" }}>
                                 { ctx.props().children.clone() }
                             </span>
                         }
@@ -128,7 +126,7 @@ impl Component for DropdownToggle
                     {
                         html!{
                             <span
-                                class={if ctx.props().split_button_items.len() == 0 { "pf-c-dropdown__toggle-icon" } else { "" }}
+                                class={if ctx.props().split_button_items.len() == 0 { "pf-v5-c-dropdown__toggle-icon" } else { "" }}
                             >
                                 { toggle_indicator.clone() }
                             </span>

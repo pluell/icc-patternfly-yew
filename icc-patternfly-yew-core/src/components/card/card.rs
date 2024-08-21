@@ -1,10 +1,10 @@
 use yew::{
     prelude::*,
-    html::{ChildrenRenderer},
-    virtual_dom::{VTag},
+    html::ChildrenRenderer,
+    virtual_dom::VTag,
 };
 
-use super::{CardChildVariant};
+use super::CardChildVariant;
 
 
 pub struct Card;
@@ -77,7 +77,7 @@ impl Component for Card
         if ctx.props().id.len() > 0 { component.add_attribute("id", ctx.props().id.clone()); }
 
         // Build list of classes
-        let mut classes = String::from("pf-c-card");
+        let mut classes = String::from("pf-v5-c-card");
 
         if ctx.props().is_hoverable { classes += " pf-m-hoverable" }
         if ctx.props().is_compact { classes += " pf-m-compact" }

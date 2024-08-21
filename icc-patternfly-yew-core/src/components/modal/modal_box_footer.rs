@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct ModalBoxFooter;
@@ -32,7 +30,7 @@ impl Component for ModalBoxFooter
             <footer
                 //{...props} 
                 class={classes!(
-                    "pf-c-modal-box__footer",
+                    "pf-v5-c-modal-box__footer",
                     ctx.props().class_name.clone(),
                 )}
             >

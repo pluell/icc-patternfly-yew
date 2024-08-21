@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use super::*;
 use crate::{Spinner, SpinnerSize};
@@ -133,7 +131,7 @@ impl Component for Button
                 aria-disabled={(ctx.props().is_disabled || ctx.props().is_aria_disabled).to_string()}
                 aria-label={ctx.props().aria_label.clone()}
                 class={classes!(
-                    "pf-c-button",
+                    "pf-v5-c-button",
                     BTN_VARIANT_STYLES[ctx.props().variant.clone() as usize],
                     if ctx.props().is_block {"pf-m-block"} else {""},
                     if ctx.props().is_disabled {"pf-m-disabled"} else {""},
@@ -163,7 +161,7 @@ impl Component for Button
                     {
                         true => {
                             html!{
-                                <span class="pf-c-button__progress">
+                                <span class="pf-v5-c-button__progress">
                                     <Spinner size={SpinnerSize::Md} aria_valuetext={ctx.props().spinner_aria_value_text.clone()} />
                                 </span>
                             }
@@ -184,7 +182,7 @@ impl Component for Button
                         html!{
                             <span 
                                 class={classes!(
-                                    "pf-c-button__icon",
+                                    "pf-v5-c-button__icon",
                                     "pf-m-start"
                                 )}
                             >
@@ -212,7 +210,7 @@ impl Component for Button
                         html!{
                             <span 
                                 class={classes!(
-                                    "pf-c-button__icon",
+                                    "pf-v5-c-button__icon",
                                     "pf-m-end"
                                 )}
                             >

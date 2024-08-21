@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use super::{ModalTitleIconVariants};
 
@@ -56,7 +54,7 @@ impl Component for ModalBoxTitle
                 id={ctx.props().id.clone()}
                 // ref={h1}
                 class={classes!(
-                    "pf-c-modal-box__title", 
+                    "pf-v5-c-modal-box__title", 
                     if ctx.props().title_icon_variant.is_some() { "pf-m-icon" } else { "" },
                     ctx.props().class_name.clone()
                 )}
@@ -66,7 +64,7 @@ impl Component for ModalBoxTitle
                     if let Some(title_icon) = &ctx.props().title_icon_variant
                     {
                         html!{
-                            <span class="pf-c-modal-box__title-icon">
+                            <span class="pf-v5-c-modal-box__title-icon">
                             {
                                 match title_icon
                                 {
@@ -110,7 +108,7 @@ impl Component for ModalBoxTitle
                         html!{}
                     }
                 }
-                <span class="pf-c-modal-box__title">{&ctx.props().title}</span>
+                <span class="pf-v5-c-modal-box__title">{&ctx.props().title}</span>
             </h1>
         }
     }

@@ -1,6 +1,6 @@
 use yew::{
     prelude::*,
-    html::{ChildrenRenderer},
+    html::ChildrenRenderer,
 };
 
 use super::*;
@@ -86,11 +86,11 @@ impl Component for ToolbarContent
         html!{
             <div
                 class={classes!(
-                    "pf-c-toolbar__content",
+                    "pf-v5-c-toolbar__content",
                     &ctx.props().class_name,
                 )}
             >
-                <div class="pf-c-toolbar__content-section">
+                <div class="pf-v5-c-toolbar__content-section">
                 {
                     for ctx.props().children.iter()
                 }

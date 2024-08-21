@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use crate::{Title, TitleHeadingLevels, TitleSizes};
 
@@ -32,7 +30,7 @@ impl Component for AboutModalBoxHeader
     fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
-            <div class={classes!("pf-c-about-modal-box__header", ctx.props().class_name.clone())}
+            <div class={classes!("pf-v5-c-about-modal-box__header", ctx.props().class_name.clone())}
                 //{...props}
             >
                 <Title heading_level={TitleHeadingLevels::H1} size={TitleSizes::X4l} id={ctx.props().id.clone()}>

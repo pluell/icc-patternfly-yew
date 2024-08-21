@@ -1,7 +1,7 @@
-use std::collections::{HashMap};
+use std::collections::HashMap;
 use yew::{
     prelude::*,
-    virtual_dom::{VTag},
+    virtual_dom::VTag,
 };
 
 pub struct ProgressBar;
@@ -42,7 +42,7 @@ impl Component for ProgressBar
 
         div_container.add_attribute("role", ctx.props().role.clone());
 
-        let classes = format!("pf-c-progress__bar {}", &ctx.props().class_name);
+        let classes = format!("pf-v5-c-progress__bar {}", &ctx.props().class_name);
 
         div_container.add_attribute("class", classes);
 
@@ -53,8 +53,8 @@ impl Component for ProgressBar
         }
 
         div_container.add_child(html!{
-            <div class="pf-c-progress__indicator" style={format!("width: {}%", ctx.props().value)}>
-                <span class="pf-c-progress__measure">
+            <div class="pf-v5-c-progress__indicator" style={format!("width: {}%", ctx.props().value)}>
+                <span class="pf-v5-c-progress__measure">
                 {
                     for ctx.props().children.iter()
                 }

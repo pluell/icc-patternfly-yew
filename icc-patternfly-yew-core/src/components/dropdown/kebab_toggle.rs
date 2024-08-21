@@ -1,7 +1,5 @@
 
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use crate::{ButtonType};
 

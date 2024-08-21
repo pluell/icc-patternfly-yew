@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 #[derive(Clone, PartialEq)]
@@ -37,8 +35,8 @@ impl Component for ToggleGroupItemElement
         html!{
             <span 
                 class={classes!(
-                    if ctx.props().variant == ToggleGroupItemVariant::Icon { "pf-c-toggle-group__icon" } else { "" },
-                    if ctx.props().variant == ToggleGroupItemVariant::Text { "pf-c-toggle-group__text" } else { "" },
+                    if ctx.props().variant == ToggleGroupItemVariant::Icon { "pf-v5-c-toggle-group__icon" } else { "" },
+                    if ctx.props().variant == ToggleGroupItemVariant::Text { "pf-v5-c-toggle-group__text" } else { "" },
                 )}
             >
                 { for ctx.props().children.iter() }

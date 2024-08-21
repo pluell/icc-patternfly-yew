@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct EmptyStatePrimary;
@@ -31,7 +29,7 @@ impl Component for EmptyStatePrimary
         html!{
             <div 
                 class={classes!(
-                    "pf-c-empty-state__primary",
+                    "pf-v5-c-empty-state__primary",
                     ctx.props().class_name.clone()
                 )}
                 // {...props}

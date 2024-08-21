@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 pub struct Brand;
 
@@ -38,7 +36,7 @@ impl Component for Brand
                 // {...props}
                 style={ctx.props().style.clone()}
                 class={classes!(
-                    "pf-c-brand",
+                    "pf-v5-c-brand",
                     ctx.props().class_name.clone()
                 )}
                 src={ctx.props().src.to_string()}

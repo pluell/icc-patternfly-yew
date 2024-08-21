@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 use crate::{Backdrop};
 
@@ -152,7 +150,7 @@ impl Component for ModalContent
             html!{
                 <Backdrop>
                     // TODO: Convert this to a FocusTrap
-                    <div class="pf-l-bullseye">
+                    <div class="pf-v5-l-bullseye">
                         <ModalBox
                             id={ctx.props().box_id.clone()}
                             style={box_style}

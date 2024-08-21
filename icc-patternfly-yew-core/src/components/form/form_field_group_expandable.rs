@@ -1,8 +1,6 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
-use super::{InternalFormFieldGroup};
+use super::InternalFormFieldGroup;
 
 
 pub struct FormFieldGroupExpandable

@@ -1,8 +1,6 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
-use crate::styles::{WrapModifers};
+use crate::styles::WrapModifers;
 
 
 #[derive(Clone, PartialEq)]
@@ -80,7 +78,7 @@ impl Component for DataList
         html!{
             <ul
                 class={classes!(
-                    "pf-c-data-list",
+                    "pf-v5-c-data-list",
                     if ctx.props().is_compact { "pf-m-compact" } else { "" },
                     ctx.props().grid_breakpoint.get_class(),
                     if let Some(wrap_modifier) = &ctx.props().wrap_modifier { wrap_modifier.get_class() } else { "" },

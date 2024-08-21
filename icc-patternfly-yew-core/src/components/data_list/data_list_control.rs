@@ -1,6 +1,4 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
 
 pub struct DataListControl;
@@ -31,7 +29,7 @@ impl Component for DataListControl
         html!{
             <div
                 class={classes!(
-                    "pf-c-data-list__item-control",
+                    "pf-v5-c-data-list__item-control",
                     ctx.props().class_name.clone()
                 )}
                 // {...props}

@@ -1,8 +1,6 @@
-use yew::{
-    prelude::*,
-};
+use yew::prelude::*;
 
-use super::{BreadcrumbItem};
+use super::BreadcrumbItem;
 
 
 pub struct Breadcrumb;
@@ -38,12 +36,12 @@ impl Component for Breadcrumb
                 // {...props}
                 aria-label={ctx.props().aria_label.clone()}
                 class={classes!(
-                    "pf-c-breadcrumb",
+                    "pf-v5-c-breadcrumb",
                     ctx.props().class_name.clone(),
                 )}
                 // {...ouiaProps}
             >
-                <ol class="pf-c-breadcrumb__list">
+                <ol class="pf-v5-c-breadcrumb__list">
                 {
                     for ctx.props().children.iter().enumerate().map(|(index, mut child)|{
                         if index > 0
