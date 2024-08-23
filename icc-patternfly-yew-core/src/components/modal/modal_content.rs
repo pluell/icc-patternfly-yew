@@ -1,6 +1,6 @@
 use yew::prelude::*;
 
-use crate::{Backdrop};
+use crate::Backdrop;
 
 use super::{
     ModalVariants, ModalBox, ModalBoxBody, ModalBoxCloseButton, ModalBoxDescription, 

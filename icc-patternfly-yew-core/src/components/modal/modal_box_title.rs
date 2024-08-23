@@ -1,6 +1,6 @@
 use yew::prelude::*;
 
-use super::{ModalTitleIconVariants};
+use super::ModalTitleIconVariants;
 
 
 pub struct ModalBoxTitle;

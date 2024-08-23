@@ -1,6 +1,6 @@
 use yew::prelude::*;
 
-use super::{ModalVariants};
+use super::ModalVariants;
 
 
 pub struct ModalBox;

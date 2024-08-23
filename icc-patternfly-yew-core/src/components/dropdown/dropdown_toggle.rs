@@ -1,9 +1,9 @@
 
 use yew::prelude::*;
 
-use crate::{ButtonType};
+use crate::ButtonType;
 
-use super::{Toggle};
+use super::Toggle;
 
 
 pub struct DropdownToggle;

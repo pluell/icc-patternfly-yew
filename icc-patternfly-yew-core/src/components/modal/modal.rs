@@ -1,12 +1,12 @@
 use yew::prelude::*;
 
 use wasm_bindgen::JsCast;
-use web_sys::{Event};
+use web_sys::Event;
 use gloo::events::{EventListener, EventListenerOptions};
 
-use web_sys::{HtmlElement};
+use web_sys::HtmlElement;
 
-use crate::{KeyCodes};
+use crate::KeyCodes;
 use super::{ModalVariants, ModalContent, ModalTitleIconVariants};
 
 

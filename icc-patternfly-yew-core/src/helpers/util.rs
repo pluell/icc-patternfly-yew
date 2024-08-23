@@ -1,6 +1,6 @@
 
 use rand::{distributions::Alphanumeric, Rng};
-use web_sys::{Element};
+use web_sys::Element;
 
 
 pub fn utils_get_unique_id(prefix: Option<String>) -> String
