@@ -13,7 +13,7 @@ pub struct ToolbarContentProperties
 {
     /** Classes applied to root element of the data toolbar content row */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     // /** Visibility at various breakpoints. */
     // visibility?: {
     //     default?: 'hidden' | 'visible';
@@ -47,11 +47,6 @@ pub struct ToolbarContentProperties
     /** Id of the parent Toolbar component */
     #[prop_or_default]
     pub toolbar_id: String,
-    /** Chip group content reference for passing to data toolbar children */
-    #[prop_or_default]
-    pub chip_group_content_ref: NodeRef,
-    #[prop_or_default]
-    pub update_number_filters: Callback<(String, i32)>,
 }
 
 impl Component for ToolbarContent
@@ -65,29 +60,12 @@ impl Component for ToolbarContent
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html
-    {
-        // Update the child properties if necessary
-        for child in ctx.props().children.iter()
-        {
-            match child
-            {
-                ToolbarContentChild::Group(mut child) => {
-                    let mut props = (&*child.props).clone();
-
-                    props.chip_group_content_ref = Some(ctx.props().chip_group_content_ref.clone());
-                    props.update_number_filters = ctx.props().update_number_filters.clone();
-
-                    child.props = std::rc::Rc::new(props);
-                },
-                _ => {}
-            }
-        }
-        
+    {        
         html!{
             <div
                 class={classes!(
                     "pf-v5-c-toolbar__content",
-                    &ctx.props().class_name,
+                    ctx.props().classes.clone(),
                 )}
             >
                 <div class="pf-v5-c-toolbar__content-section">

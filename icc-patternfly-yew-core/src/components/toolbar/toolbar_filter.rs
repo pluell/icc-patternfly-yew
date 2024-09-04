@@ -1,4 +1,5 @@
 use yew::prelude::*;
+use web_sys::Element;
 
 use crate::components::{Chip, ChipGroup};
 use super::*;
@@ -6,12 +7,15 @@ use super::*;
 
 pub struct ToolbarFilter
 {
+    context: ToolbarContext,
+    _context_listener: ContextHandle<ToolbarContext>,
     filter_item_node: NodeRef,
     num_chips: usize,
 }
 
 pub enum ToolbarFilterMsg
 {
+    Context(ToolbarContext),
     DeleteChipGroup,
     DeleteChip(String),
 }
@@ -19,6 +23,9 @@ pub enum ToolbarFilterMsg
 #[derive(Clone, PartialEq, Properties)]
 pub struct ToolbarFilterProperties
 {
+    /** Flag indicating when toolbar toggle group is expanded for non-managed toolbar toggle groups. */
+    #[prop_or_default]
+    pub is_expanded: Option<bool>,
     /** An array of strings to be displayed as chips in the expandable content */
     #[prop_or_default]
     pub chips: Vec<String>,
@@ -28,15 +35,22 @@ pub struct ToolbarFilterProperties
     /** Callback passed by consumer used to delete a chip from the chips[] */
     #[prop_or_default]
     pub delete_chip: Callback<(String, String)>,
+    /** Customizable "Show Less" text string for the chip group */
+    #[prop_or_default]
+    pub chip_group_expanded_text: Option<String>,
+    /** Customizeable template string for the chip group. Use variable "${remaining}" for the overflow chip count. */
+    #[prop_or_default]
+    pub chip_group_collapsed_text: Option<String>,
     /** Content to be rendered inside the data toolbar item associated with the chip group */
     pub children: Children,
     /** Unique category name to be used as a label for the chip group */
     pub category_name: String,
-    /** Chip group content reference for passing to data toolbar children */
+    /** Flag to show the toolbar item */
+    #[prop_or(true)]
+    pub show_toolbar_item: bool,
+    /** Reference to a chip container created with a custom expandable content group, for non-managed multiple toolbar toggle groups. */
     #[prop_or_default]
-    pub chip_group_content_ref: NodeRef,
-    #[prop_or_default]
-    pub update_number_filters: Callback<(String, i32)>,
+    pub expandable_chip_container_ref: Option<NodeRef>,
 }
 
 impl Component for ToolbarFilter
@@ -46,10 +60,17 @@ impl Component for ToolbarFilter
 
     fn create(ctx: &Context<Self>) -> Self
     {
+        let (context, context_listener) = ctx
+            .link()
+            .context(ctx.link().callback(ToolbarFilterMsg::Context))
+            .expect("No Message Context Provided");
+
         // Set the number of filters
-        ctx.props().update_number_filters.emit((ctx.props().category_name.clone(), ctx.props().chips.len() as i32));
+        context.update_number_filters.emit((ctx.props().category_name.clone(), ctx.props().chips.len() as i32));
 
         Self {
+            context,
+            _context_listener: context_listener,
             filter_item_node: NodeRef::default(),
             num_chips: ctx.props().chips.len(),
         }
@@ -62,7 +83,7 @@ impl Component for ToolbarFilter
         {
             self.num_chips = ctx.props().chips.len();
             
-            ctx.props().update_number_filters.emit((ctx.props().category_name.clone(), ctx.props().chips.len() as i32));
+            self.context.update_number_filters.emit((ctx.props().category_name.clone(), ctx.props().chips.len() as i32));
         }
 
         true
@@ -73,6 +94,10 @@ impl Component for ToolbarFilter
     {
         match msg
         {
+            ToolbarFilterMsg::Context(context) => {
+                self.context = context;
+                true
+            }
             ToolbarFilterMsg::DeleteChipGroup => {
                 ctx.props().delete_chip_group.emit(ctx.props().category_name.clone());
 
@@ -88,40 +113,50 @@ impl Component for ToolbarFilter
 
     fn view(&self, ctx: &Context<Self>) -> Html
     {
+        let chip_group = if ctx.props().chips.len() > 0
+        {
+            html!{
+                <ToolbarItem
+                    filter_item_node={&self.filter_item_node}
+                    variant={ToolbarItemVariant::ChipGroup}
+                >
+                    <ChipGroup
+                        category_name={ctx.props().category_name.clone()}
+                        is_closable={true}
+                        onclick={ctx.link().callback(|_| ToolbarFilterMsg::DeleteChipGroup)}
+                    >
+                    {
+                        for ctx.props().chips.iter().map(|chip| {
+                            let chip_msg = chip.clone();
+                            
+                            html!{
+                                <Chip
+                                    onclick={ctx.link().callback(move |_| {
+                                        ToolbarFilterMsg::DeleteChip(chip_msg.clone())
+                                    })}
+                                >
+                                    { chip.to_string() }
+                                </Chip>
+                            }
+                        })
+                    }
+                    </ChipGroup>
+                </ToolbarItem>
+            }
+        }
+        else
+        {
+            html!{}
+        };
+
         html!{
             <>
-            <ToolbarItem>
-                { ctx.props().children.clone() }
-            </ToolbarItem>
             {
-                if ctx.props().chips.len() > 0
+                if ctx.props().show_toolbar_item
                 {
                     html!{
-                        <ToolbarItem
-                            filter_item_node={&self.filter_item_node}
-                            variant={ToolbarItemVariant::ChipGroup}
-                        >
-                            <ChipGroup
-                                category_name={ctx.props().category_name.clone()}
-                                is_closable={true}
-                                onclick={ctx.link().callback(|_| ToolbarFilterMsg::DeleteChipGroup)}
-                            >
-                            {
-                                for ctx.props().chips.iter().map(|chip| {
-                                    let chip_msg = chip.clone();
-                                    
-                                    html!{
-                                        <Chip
-                                            onclick={ctx.link().callback(move |_| {
-                                                ToolbarFilterMsg::DeleteChip(chip_msg.clone())
-                                            })}
-                                        >
-                                            { chip.to_string() }
-                                        </Chip>
-                                    }
-                                })
-                            }
-                            </ChipGroup>
+                        <ToolbarItem>
+                            { ctx.props().children.clone() }
                         </ToolbarItem>
                     }
                 }
@@ -130,61 +165,25 @@ impl Component for ToolbarFilter
                     html!{}
                 }
             }
-            </>
-        }
-    }
-
-    fn rendered(&mut self, ctx: &Context<Self>, _first_render: bool)
-    {
-        if let Some(chip_group_content_node) = ctx.props().chip_group_content_ref.get()
-        {
-            // The filter toolbar group should be the first node of the chip content group
-            if let Some(group_node) = chip_group_content_node.first_child()
             {
-                if let Some(filter_item_node) = self.filter_item_node.get()
+                if let Some(chip_group_content_node) = self.context.chip_group_content_ref.cast::<Element>()
                 {
-                    let mut found_node = false;
-
-                    let group_node_children = group_node.child_nodes();
-
-                    // Get the number of children of the toolbar group node
-                    let num_groups = group_node_children.length();
-
-                    // Search the chip group items for our node
-                    for i in 0..num_groups
+                    // The filter toolbar group should be the first node of the chip content group
+                    if let Some(group_node) = chip_group_content_node.first_element_child()
                     {
-                        if let Some(chip_group_node) = group_node_children.get(i)
-                        {
-                            if filter_item_node == chip_group_node
-                            {
-                                if ctx.props().chips.len() == 0
-                                {
-                                    // Remove the filter item if there are no more filter chips to display
-                                    group_node.remove_child(&filter_item_node)
-                                        .expect("Unable to remove filter toolbar item from chip group");
-                                }
-                                else
-                                {
-                                    // Update the current chip group node with our new filter item
-                                    group_node.replace_child(&chip_group_node, &filter_item_node)
-                                        .expect("Unable to update filter toolbar item in chip group");
-                                }
-
-                                found_node = true;
-                                break; 
-                            }
-                        }
+                        create_portal(chip_group, group_node)
                     }
-
-                    // Add the filter item to the chip content chip group if the
-                    // filter item is new and there are filter chips
-                    if !found_node && ctx.props().chips.len() > 0
+                    else
                     {
-                        group_node.append_child(&filter_item_node)
-                            .expect("Unable to add filter toolbar item to chip group");
+                        html!{}
                     }
                 }
+                else
+                {
+                    html!{}
+                }
             }
+            </>
         }
     }
 }
