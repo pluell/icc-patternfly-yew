@@ -1,23 +1,23 @@
 use yew::prelude::*;
 
 
-pub struct InnerScrollContainer;
+pub struct OuterScrollContainer;
 
 #[derive(Clone, PartialEq, Properties)]
-pub struct InnerScrollContainerProps
+pub struct OuterScrollContainerProps
 {
-    /** Content rendered inside the inner scroll container */
+    /** Content rendered inside the outer scroll container */
     #[prop_or_default]
     pub children: Children,
     /** Additional classes added to the container */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
 }
 
-impl Component for InnerScrollContainer
+impl Component for OuterScrollContainer
 {
     type Message = ();
-    type Properties = InnerScrollContainerProps;
+    type Properties = OuterScrollContainerProps;
 
     fn create(_: &Context<Self>) -> Self
     {
@@ -29,8 +29,8 @@ impl Component for InnerScrollContainer
         html!{
             <div 
                 class={classes!(
-                    &ctx.props().class_name,
-                    "pf-v5-c-scroll-inner-wrapper"
+                    ctx.props().classes.clone(),
+                    "pf-v5-c-scroll-outer-wrapper"
                 )} 
                 // {...props}
             >

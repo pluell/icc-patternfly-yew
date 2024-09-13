@@ -11,11 +11,11 @@ pub struct TheadProps
     pub children: Children,
     /** Additional classes added to the <thead> element */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** Won't wrap the table head if true */
     #[prop_or_default]
     pub no_wrap: bool,
-    // /** Forwarded ref */
+    // /** @hide Forwarded ref */
     // innerRef?: React.Ref<any>;
     /** Indicates the <thead> contains a nested header */
     #[prop_or_default]
@@ -37,8 +37,9 @@ impl Component for Thead
         html!{
             <thead
                 class={classes!(
-                    &ctx.props().class_name,
-                    if ctx.props().no_wrap {"pf-m-nowrap"} else {""},
+                    "pf-v5-c-table__thead",
+                    ctx.props().classes.clone(),
+                    if ctx.props().no_wrap {"pf-m-nowrap"} else {""},   
                     if ctx.props().has_nested_header {"pf-m-nested-column-header"} else {""}
                 )}
                 // ref={innerRef}

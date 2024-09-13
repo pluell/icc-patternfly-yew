@@ -5,13 +5,13 @@ pub struct Tbody;
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct TbodyProps
-{
+{           
     /** Content rendered inside the <tbody> row group */
     #[prop_or_default]
     pub children: Children,
     /** Additional classes added to the <tbody> element  */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** Modifies the body to allow for expandable rows */
     #[prop_or_default]
     pub is_expanded: bool,
@@ -41,10 +41,11 @@ impl Component for Tbody
             <tbody
                 role="rowgroup"
                 class={classes!(
-                    &ctx.props().class_name,
-                    if ctx.props().is_expanded {"styles.modifiers.expanded"} else {""},
-                    if ctx.props().is_odd_striped {"styles.modifiers.striped"} else {""},
-                    if ctx.props().is_even_striped {"styles.modifiers.stripedEven"} else {""},
+                    "pf-v5-c-table__tbody", 
+                    ctx.props().classes.clone(),
+                    if ctx.props().is_expanded {"pf-m-expanded"} else {""},
+                    if ctx.props().is_odd_striped {"pf-m-striped"} else {""},
+                    if ctx.props().is_even_striped {"pf-m-striped-even"} else {""},
                 )}
                 // ref={innerRef}
                 // {...props}

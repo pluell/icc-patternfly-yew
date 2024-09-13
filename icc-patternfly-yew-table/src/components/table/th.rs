@@ -1,5 +1,8 @@
 use yew::prelude::*;
 
+pub use super::base::{ThExpandType, ThInfoType, ThSelectType, ThSortType};
+use super::{DecoratorReturnType, IColumn, IExtra, IExtraColumnData};
+use super::utils::sortable;
 
 pub struct Th;
 
@@ -12,15 +15,15 @@ pub struct ThProps
      */
     #[prop_or_default]
     pub data_label: Option<String>,
-    // /** Renders a checkbox select so that all row checkboxes can be selected/deselected */
-    // #[prop_or_default]
-    // select?: ThSelectType;
-    // /** Renders a chevron so that all row chevrons can be expanded/collapsed */
-    // #[prop_or_default]
-    // expand?: ThExpandType;
-    // /** Formats the header so that its column will be sortable */
-    // #[prop_or_default]
-    // sort?: ThSortType;
+    /** Renders a checkbox select so that all row checkboxes can be selected/deselected */
+    #[prop_or_default]
+    pub select: Option<ThSelectType>,
+    /** Renders a chevron so that all row chevrons can be expanded/collapsed */
+    #[prop_or_default]
+    pub expand: Option<ThExpandType>,
+    /** Formats the header so that its column will be sortable */
+    #[prop_or_default]
+    pub sort: Option<ThSortType>,
     /**
      * Tooltip to show on the header cell.
      * Note: If the header cell is truncated and has simple string content, it will already attempt to display the header text.
@@ -29,12 +32,13 @@ pub struct ThProps
      */
     #[prop_or_default]
     pub tooltip: Option<Html>,
+    // /** other props to pass to the tooltip */
+    // tooltipProps?: Omit<TooltipProps, 'content'>;
     // /** Callback on mouse enter */
-    // #[prop_or_default]
     // onMouseEnter?: (event: any) => void;
-    // /** Adds tooltip/popover info button */
-    // #[prop_or_default]
-    // pub info?: ThInfoType;
+    /** Adds tooltip/popover info button */
+    #[prop_or_default]
+    pub info: Option<ThInfoType>,
     /** Adds scope to the column to associate header cells with data cells*/
     #[prop_or_default]
     pub scope: Option<String>,
@@ -44,15 +48,31 @@ pub struct ThProps
     /** Adds a border to the right side of the cell */
     #[prop_or_default]
     pub has_right_border: bool,
+    /** Adds a border to the left side of the cell */
+    #[prop_or_default]
+    pub has_left_border: bool,
     /** Minimum width for a sticky column */
     #[prop_or_default]
     pub sticky_min_width: Option<i32>,
     /** Left offset of a sticky column. This will typically be equal to the combined value set by stickyMinWidth of any sticky columns that precede the current sticky column. */
     #[prop_or_default]
     pub sticky_left_offset: Option<i32>,
+    /** Right offset of a sticky column. This will typically be equal to the combined value set by stickyMinWidth of any sticky columns that come after the current sticky column. */
+    #[prop_or_default]
+    pub sticky_right_offset: Option<i32>,
     /** Indicates the <th> is part of a subheader of a nested header */
     #[prop_or_default]
     pub is_subheader: bool,
+    /** Visually hidden text accessible only via assistive technologies. This must be passed in if the
+     * th is intended to be visually empty, and must be conveyed as a column header text.
+     */
+    #[prop_or_default]
+    pub screen_reader_text: Option<String>,
+    /** Provides an accessible name to the th. This should only be passed in when the th contains only non-text
+     * content, such as a "select all" checkbox or "expand all" toggle.
+     */
+    #[prop_or_default]
+    pub aria_label: Option<String>,
 
     // BaseCellProps
     /** Content rendered inside the cell */
@@ -60,7 +80,7 @@ pub struct ThProps
     pub children: Children,
     /** Additional classes added to the cell  */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** Element to render */
     #[prop_or(String::from("th"))]
     pub component: String,
@@ -110,9 +130,20 @@ impl Component for Th
             None
         };
 
+        let sort_params = self.get_sort_params(ctx);
+
+        let sort_classes = if let Some(sort_params) = &sort_params {
+            sort_params.classes.clone()
+        } else {
+            None
+        };
+
         // TODO: Convert th to MergedComponent
         html!{
             <th
+                // tabIndex={sort || select || !truncated ? -1 : 0}
+                // onFocus={tooltip !== null ? onMouseEnter : onMouseEnterProp}
+                // onBlur={() => setShowTooltip(false)}
                 data-label={ctx.props().data_label.clone()}
                 // onMouseEnter={tooltip !== null ? onMouseEnter : onMouseEnterProp}
                 scope={
@@ -123,23 +154,56 @@ impl Component for Th
                     }
                 }
                 // ref={innerRef}
+                aria_label={ctx.props().aria_label.clone()}
                 class={classes!(
-                    &ctx.props().class_name,
-                    // if ctx.props().textCenter && styles.modifiers.center,
+                    "pf-v5-c-table__th",
+                    ctx.props().classes.clone(),
+                    if ctx.props().text_center {"pf-m-center"} else {""},   
                     if ctx.props().is_subheader {"pf-v5-c-table__subhead"} else {""},
-                    if ctx.props().is_sticky_column {"pf-v5-c-table__sticky-column"} else {""},
+                    if ctx.props().is_sticky_column {"pf-v5-c-table__sticky-cell"} else {""},
                     if ctx.props().has_right_border {"pf-m-border-right"} else {""},
+                    if ctx.props().has_left_border {"pf-m-border-left"} else {""},
                     // modifier && styles.modifiers[modifier as 'breakWord' | 'fitContent' | 'nowrap' | 'truncate' | 'wrap'],
                     // mergedClassName
+                    sort_classes,
                 )}
                 // {...mergedProps}
                 // {...props}
-                style={style}
+                {style}
             >
-                // TODO: Update this to use the transformed children list
-                // {transformedChildren}
-                { for ctx.props().children.iter() }
+            {
+                if let Some(sort_params) = &sort_params {
+                    sort_params.children.clone()
+                } else {
+                    Some(html!{for ctx.props().children.iter()})
+                }
+            }
             </th>
+        }
+    }
+}
+
+impl Th
+{
+    fn  get_sort_params(&self, ctx: &Context<Self>) -> Option<DecoratorReturnType>
+    {
+        if let Some(sort) = &ctx.props().sort
+        {
+            Some(sortable(&ctx.props().children, IExtra{
+                extra_column_data: IExtraColumnData {
+                    column_index: Some(sort.column_index),
+                    column: Some(IColumn{
+                        sort_by: Some(sort.sort_by.clone()),
+                        onsort: sort.onsort.clone(),
+                    }),
+                    property: None,
+                },
+                ..Default::default()
+            }))
+        }
+        else
+        {
+            None
         }
     }
 }

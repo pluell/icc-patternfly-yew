@@ -11,7 +11,7 @@ pub struct CaptionProps
     pub children: Children,
     /** Additional classes added to the caption  */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
 }
 
 impl Component for Caption
@@ -29,7 +29,8 @@ impl Component for Caption
         html!{
             <caption 
                 class={classes!(
-                    &ctx.props().class_name
+                    "pf-v5-c-table__caption",
+                    ctx.props().classes.clone()
                 )}
                 // {...props}
             >

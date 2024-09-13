@@ -57,12 +57,18 @@ pub struct TdProps
     /** Adds a border to the right side of the cell */
     #[prop_or_default]
     pub has_right_border: bool,
+    /** Adds a border to the left side of the cell */
+    #[prop_or_default]
+    pub has_left_border: bool,
     /** Minimum width for a sticky column */
     #[prop_or_default]
     pub sticky_min_width: Option<i32>,
     /** Left offset of a sticky column. This will typically be equal to the combined value set by stickyMinWidth of any sticky columns that precede the current sticky column. */
     #[prop_or_default]
     pub sticky_left_offset: Option<i32>,
+    /** Right offset of a sticky column. This will typically be equal to the combined value set by stickyMinWidth of any sticky columns that come after the current sticky column. */
+    #[prop_or_default]
+    pub sticky_right_offset: Option<i32>,
 
     // BaseCellProps
     /** Content rendered inside the cell */
@@ -70,7 +76,7 @@ pub struct TdProps
     pub children: Children,
     /** Additional classes added to the cell  */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes    ,
     /** Element to render */
     #[prop_or_default]
     pub component: String,
@@ -123,15 +129,20 @@ impl Component for Td
         // TODO: Convert td to MergedComponent
         html!{
             <td
+                // tabIndex={(select || !truncated) && modifier !== 'truncate' ? -1 : 0}
                 // {...(!treeTableTitleCell && { 'data-label': dataLabel })}
+                // onFocus={tooltip !== null ? onMouseEnter : onMouseEnterProp}
+                // onBlur={() => setShowTooltip(false)}
                 // onMouseEnter={tooltip !== null ? onMouseEnter : onMouseEnterProp}
                 class={classes!(
-                    &ctx.props().class_name,
+                    "pf-v5-c-table__td",
+                    ctx.props().classes.clone(),
                     if ctx.props().is_action_cell {"pf-v5-c-table__action"} else {""},
                     if ctx.props().text_center {"pf-m-center"} else {""},
                     if ctx.props().no_padding {"pf-m-no-padding"} else {""},
-                    if ctx.props().is_sticky_column {"pf-v5-c-table__sticky-column"} else {""},
+                    if ctx.props().is_sticky_column {"pf-v5-c-table__sticky-cell"} else {""},
                     if ctx.props().has_right_border {"pf-m-border-right"} else {""},
+                    if ctx.props().has_left_border {"pf-m-border-left"} else {""},
                     // styles.modifiers[modifier as 'breakWord' | 'fitContent' | 'nowrap' | 'truncate' | 'wrap' | undefined],
                     // draggableParams && styles.tableDraggable,
                     // mergedClassName
@@ -139,7 +150,7 @@ impl Component for Td
                 // ref={innerRef}
                 // {...mergedProps}
                 // {...props}
-                style={style}
+                {style}
             >
                 // TODO: update to use mergedChildren when needed
                 // {mergedChildren || children}

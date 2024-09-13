@@ -1,4 +1,4 @@
-use yew::prelude::*;
+    use yew::prelude::*;
 
 
 pub struct Tr;
@@ -11,7 +11,7 @@ pub struct TrProps
     pub children: Children,
     /** Additional classes added to the <tr> row  */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     // /** Forwarded ref */
     // innerRef?: React.Ref<any>;
     /** Flag indicating the Tr is hidden */
@@ -25,9 +25,9 @@ pub struct TrProps
     /** Only applicable to Tr within the Tbody: Whether the row is editable */
     #[prop_or_default]
     pub is_editable: bool,
-    /** Flag which adds hover styles for the table row */
+    /** Flag which adds hover styles for the clickable table row */
     #[prop_or_default]
-    pub is_hoverable: bool,
+    pub is_clickable: bool,
     /** Flag indicating the row is selected - adds selected styling */
     #[prop_or_default]
     pub is_row_selected: bool,
@@ -37,6 +37,9 @@ pub struct TrProps
     /** Flag indicating the row will act as a border. This is typically used for a table with a nested and sticky header. */
     #[prop_or_default]
     pub is_border_row: bool,
+    /** Flag indicating the row is controlling the expansion of another row. */
+    #[prop_or_default]
+    pub is_control_row: bool,
     // /** An event handler for the row */
     // onRowClick?: (event?: React.KeyboardEvent | React.MouseEvent) => void;
     /** Flag indicating that the row is selectable */
@@ -45,8 +48,9 @@ pub struct TrProps
     /** Flag indicating the spacing offset of the first cell should be reset */
     #[prop_or_default]
     pub reset_offset: bool,
-    // /** Value to overwrite the randomly generated data-ouia-component-id.*/
-    // ouiaId?: number | string;
+    /** Value to overwrite the randomly generated data-ouia-component-id.*/
+    #[prop_or_default]
+    pub ouia_id: Option<String>,
     /** Set the value of data-ouia-safe. Only set to true when the component is in a static state, i.e. no animations are occurring. At all other times, this value must be false. */
     #[prop_or_default]
     pub ouia_safe: bool,
@@ -72,7 +76,7 @@ impl Component for Tr
 
         // const { registerSelectableRow } = React.useContext(TableComposableContext);
 
-        let aria_label = if let Some(passed_aria_label) = &ctx.props().aria_label { //passedAriaLabel || computedAriaLabel;
+        let aria_label = if let Some(passed_aria_label) = &ctx.props().aria_label {
                 Some(passed_aria_label.to_string())
             } else if ctx.props().is_selectable && !row_is_hidden {
                 // registerSelectableRow();
@@ -88,46 +92,30 @@ impl Component for Tr
             };
 
         html!{
-            <>
-                {
-                    if ctx.props().is_selectable
-                    {
-                        html!{<output className="pf-screen-reader">{aria_label.clone().unwrap_or(String::new())}</output>}
-                    }
-                    else
-                    {
-                        html!{}
-                    }
-                }
-                <tr
-                    class={classes!(
-                        &ctx.props().class_name,
-                        if ctx.props().is_expanded.is_some() {"pf-m-expandable"} else {""},
-                        if let Some(is_expanded) = ctx.props().is_expanded {if is_expanded {"pf-m-expanded"} else {""}} else {""},
-                        if ctx.props().is_editable {"pf-m-inline-editable"} else {""},
-                        if ctx.props().is_hoverable {"pf-m-hoverable"} else {""},
-                        if ctx.props().is_row_selected {"pf-m-selected"} else {""},
-                        if ctx.props().is_striped {"pf-m-striped"} else {""},
-                        if ctx.props().is_border_row {"pf-m-border-row"} else {""},
-                        if ctx.props().reset_offset {"pf-m-first-cell-offset-reset"} else {""},
-                    )}
-                    hidden={row_is_hidden}
-                    tabIndex={
-                        if ctx.props().is_hoverable {
-                            Some("0")
-                        } else {
-                            None
-                        }
-                    }
-                    aria-label={aria_label}
-                    // ref={innerRef}
-                    // {...(onRowClick && { onClick: onRowClick, onKeyDown })}
-                    // {...ouiaProps}
-                    // {...props}
-                >
+            <tr
+                class={classes!(
+                    "pf-v5-c-table__tr",
+                    ctx.props().classes.clone(),
+                    if ctx.props().is_expanded.is_some() {"pf-m-expandable"} else {""},
+                    if let Some(is_expanded) = ctx.props().is_expanded {if is_expanded {"pf-m-expanded"} else {""}} else {""},
+                    if ctx.props().is_editable {"pf-m-inline-editable"} else {""},
+                    if ctx.props().is_clickable {"pf-m-clickable"} else {""},
+                    if ctx.props().is_row_selected {"pf-m-selected"} else {""},
+                    if ctx.props().is_striped {"pf-m-striped"} else {""},
+                    if ctx.props().is_border_row {"pf-m-border-row"} else {""},
+                    if ctx.props().is_control_row {"pf-v5-c-table__control-row"} else {""},
+                    if ctx.props().reset_offset {"pf-m-first-cell-offset-reset"} else {""},
+                )}
+                hidden={row_is_hidden}
+                tab_index={if ctx.props().is_clickable {Some("0")} else {None}}
+                aria_label={aria_label}
+                // ref={innerRef}
+                // {...(onRowClick && { onClick: onRowClick, onKeyDown })}
+                // {...ouiaProps}
+                // {...props}
+            >
                 { for ctx.props().children.iter() }
-                </tr>
-            </>
+            </tr>
         }
     }
 }
