@@ -8,7 +8,7 @@ pub struct TrProps
 {
     /** Content rendered inside the <tr> row */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the <tr> row  */
     #[prop_or_default]
     pub classes: Classes,
@@ -114,7 +114,7 @@ impl Component for Tr
                 // {...ouiaProps}
                 // {...props}
             >
-                { for ctx.props().children.iter() }
+                { ctx.props().children.clone() }
             </tr>
         }
     }

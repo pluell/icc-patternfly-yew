@@ -31,7 +31,7 @@ pub struct TableProps
     #[prop_or_default]
     pub variant: Option<TableVariant>,
     /** Render borders */
-    #[prop_or_default]
+    #[prop_or(true)]
     pub borders: bool,
     /** Specifies the grid breakpoints  */
     #[prop_or(TableGridBreakpoint::GridMd)]

@@ -3,6 +3,32 @@ use yew::prelude::*;
 
 use super::SortByDirection;
 
+
+#[derive(Clone, PartialEq)]
+pub enum TableModifier
+{
+    BreakWord,
+    FitContent,
+    NoWrap,
+    Truncate,
+    Wrap
+}
+
+impl TableModifier
+{
+    pub fn get_class(&self) -> &'static str
+    {
+        match self
+        {
+            Self::BreakWord => "pf-m-break-word",
+            Self::FitContent => "pf-m-fit-content",
+            Self::NoWrap => "pf-m-nowrap",
+            Self::Truncate => "pf-m-truncate",
+            Self::Wrap => "pf-m-wrap",
+        }
+    }
+}
+
 #[derive(Clone, PartialEq)]
 pub enum TableGridBreakpoint
 {

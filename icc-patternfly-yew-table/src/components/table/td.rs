@@ -1,5 +1,7 @@
 use yew::prelude::*;
 
+use super::{CellWidth, TableModifier};
+
 
 pub struct Td;
 
@@ -12,7 +14,7 @@ pub struct TdProps
      * This attribute replaces table header in mobile viewport. It is rendered by ::before pseudo element.
      */
     #[prop_or_default]
-    data_label: Option<String>,
+    pub data_label: Option<String>,
     // /** Renders a checkbox or radio select */
     // #[prop_or_default]
     // select?: TdSelectType;
@@ -73,7 +75,7 @@ pub struct TdProps
     // BaseCellProps
     /** Content rendered inside the cell */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the cell  */
     #[prop_or_default]
     pub classes: Classes    ,
@@ -83,10 +85,12 @@ pub struct TdProps
     /** Modifies cell to center its contents. */
     #[prop_or_default]
     pub text_center: bool,
-    // /** Style modifier to apply */
-    // modifier?: 'breakWord' | 'fitContent' | 'nowrap' | 'truncate' | 'wrap';
-    // /** Width percentage modifier */
-    // width?: 10 | 15 | 20 | 25 | 30 | 35 | 40 | 45 | 50 | 60 | 70 | 80 | 90 | 100;
+    /** Style modifier to apply */
+    #[prop_or_default]
+    pub modifier: Option<TableModifier>,
+    /** Width percentage modifier */
+    #[prop_or_default]
+    pub width: Option<CellWidth>,
     // /** Visibility breakpoint modifiers */
     // visibility?: (keyof IVisibility)[];
     // /** Forwarded ref */
@@ -130,7 +134,8 @@ impl Component for Td
         html!{
             <td
                 // tabIndex={(select || !truncated) && modifier !== 'truncate' ? -1 : 0}
-                // {...(!treeTableTitleCell && { 'data-label': dataLabel })}
+                // TODO: make sure not tree table title cell
+                data-label={ctx.props().data_label.clone()}
                 // onFocus={tooltip !== null ? onMouseEnter : onMouseEnterProp}
                 // onBlur={() => setShowTooltip(false)}
                 // onMouseEnter={tooltip !== null ? onMouseEnter : onMouseEnterProp}
@@ -143,9 +148,10 @@ impl Component for Td
                     if ctx.props().is_sticky_column {"pf-v5-c-table__sticky-cell"} else {""},
                     if ctx.props().has_right_border {"pf-m-border-right"} else {""},
                     if ctx.props().has_left_border {"pf-m-border-left"} else {""},
-                    // styles.modifiers[modifier as 'breakWord' | 'fitContent' | 'nowrap' | 'truncate' | 'wrap' | undefined],
+                    if let Some(modifier) = &ctx.props().modifier {modifier.get_class()} else {""},
                     // draggableParams && styles.tableDraggable,
                     // mergedClassName
+                    if let Some(width) = &ctx.props().width {width.get_class()} else {""},
                 )}
                 // ref={innerRef}
                 // {...mergedProps}
@@ -154,7 +160,7 @@ impl Component for Td
             >
                 // TODO: update to use mergedChildren when needed
                 // {mergedChildren || children}
-                { for ctx.props().children.iter() }
+                { ctx.props().children.clone() }
             </td>
         }
     }

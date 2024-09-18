@@ -1,7 +1,7 @@
 use yew::prelude::*;
 
 pub use super::base::{ThExpandType, ThInfoType, ThSelectType, ThSortType};
-use super::{DecoratorReturnType, IColumn, IExtra, IExtraColumnData};
+use super::{CellWidth, DecoratorReturnType, IColumn, IExtra, IExtraColumnData, TableModifier};
 use super::utils::sortable;
 
 pub struct Th;
@@ -77,7 +77,7 @@ pub struct ThProps
     // BaseCellProps
     /** Content rendered inside the cell */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the cell  */
     #[prop_or_default]
     pub classes: Classes,
@@ -87,10 +87,12 @@ pub struct ThProps
     /** Modifies cell to center its contents. */
     #[prop_or_default]
     pub text_center: bool,
-    // /** Style modifier to apply */
-    // modifier?: 'breakWord' | 'fitContent' | 'nowrap' | 'truncate' | 'wrap';
-    // /** Width percentage modifier */
-    // width?: 10 | 15 | 20 | 25 | 30 | 35 | 40 | 45 | 50 | 60 | 70 | 80 | 90 | 100;
+    /** Style modifier to apply */
+    #[prop_or_default]
+    pub modifier: Option<TableModifier>,
+    /** Width percentage modifier */
+    #[prop_or_default]
+    pub width: Option<CellWidth>,
     // /** Visibility breakpoint modifiers */
     // visibility?: (keyof IVisibility)[];
     // /** Forwarded ref */
@@ -147,7 +149,7 @@ impl Component for Th
                 data-label={ctx.props().data_label.clone()}
                 // onMouseEnter={tooltip !== null ? onMouseEnter : onMouseEnterProp}
                 scope={
-                    if ctx.props().component == "th" && ctx.props().children.len() > 0 {
+                    if ctx.props().component == "th" {
                         ctx.props().scope.clone()
                     } else {
                         None
@@ -163,8 +165,9 @@ impl Component for Th
                     if ctx.props().is_sticky_column {"pf-v5-c-table__sticky-cell"} else {""},
                     if ctx.props().has_right_border {"pf-m-border-right"} else {""},
                     if ctx.props().has_left_border {"pf-m-border-left"} else {""},
-                    // modifier && styles.modifiers[modifier as 'breakWord' | 'fitContent' | 'nowrap' | 'truncate' | 'wrap'],
+                    if let Some(modifier) = &ctx.props().modifier {modifier.get_class()} else {""},
                     // mergedClassName
+                    if let Some(width) = &ctx.props().width {width.get_class()} else {""},
                     sort_classes,
                 )}
                 // {...mergedProps}
@@ -175,7 +178,7 @@ impl Component for Th
                 if let Some(sort_params) = &sort_params {
                     sort_params.children.clone()
                 } else {
-                    Some(html!{for ctx.props().children.iter()})
+                    Some(ctx.props().children.clone())
                 }
             }
             </th>

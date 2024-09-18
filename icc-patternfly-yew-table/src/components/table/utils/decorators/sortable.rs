@@ -4,7 +4,7 @@ use yew::prelude::*;
 use crate::{DecoratorReturnType, IExtra, IExtraColumnData, ISortBy, OnSort, OnSortParams, SortByDirection, SortColumn};
 
 
-pub fn sortable(children: &Children, extra_data: IExtra) -> DecoratorReturnType
+pub fn sortable(children: &Html, extra_data: IExtra) -> DecoratorReturnType
 {
     let mut is_sorted_by = false;
     let mut onsort = None;
@@ -29,7 +29,7 @@ pub fn sortable(children: &Children, extra_data: IExtra) -> DecoratorReturnType
             {onsort}
             {sort_by}
         >
-            {for children.iter()}
+            {children.clone()}
         </SortableHeader>
     });
 
@@ -44,7 +44,7 @@ pub fn sortable(children: &Children, extra_data: IExtra) -> DecoratorReturnType
 #[derive(Clone, PartialEq, Properties)]
 pub struct SortableHeaderProps
 {
-    children: Children,
+    children: Html,
     is_sorted_by: bool,
     extra_column_data: IExtraColumnData,
     onsort: Option<OnSort>,
@@ -106,7 +106,7 @@ fn SortableHeader(props: &SortableHeaderProps) -> Html
             // tooltipProps={tooltipProps}
             // tooltipHasDefaultBehavior={tooltipHasDefaultBehavior}
         >
-            {for props.children.iter()}
+            {props.children.clone()}
         </SortColumn>
     }
 }
