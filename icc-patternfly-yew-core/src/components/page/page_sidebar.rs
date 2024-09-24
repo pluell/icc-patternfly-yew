@@ -1,5 +1,6 @@
 use yew::prelude::*;
 
+use super::page_context::PageContext;
 pub use super::PageTheme;
 
 
@@ -9,7 +10,16 @@ pub struct PageSidebarContext
     is_sidebar_open: bool,
 }
 
-pub struct PageSidebar;
+pub struct PageSidebar
+{
+    context: PageContext,
+    _context_listener: ContextHandle<PageContext>,
+}
+
+pub enum PageSidebarMsg
+{
+    Context(PageContext),
+}
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct PageSidebarProps
@@ -39,18 +49,40 @@ pub struct PageSidebarProps
 
 impl Component for PageSidebar
 {
-    type Message = ();
+    type Message = PageSidebarMsg;
     type Properties = PageSidebarProps;
 
-    fn create(_: &Context<Self>) -> Self
+    fn create(ctx: &Context<Self>) -> Self
     {
-        Self
+        let (context, _context_listener) = ctx
+            .link()
+            .context(ctx.link().callback(PageSidebarMsg::Context))
+            .expect("No Message Context Provided");
+
+        Self {
+            context,
+            _context_listener,
+        }
+    }
+
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool
+    {
+        match msg
+        {
+            Self::Message::Context(context) => {
+                self.context = context;
+                true
+            }
+        }
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html
     {
-        // TODO: Implement managed is open
-        let sidebar_open = ctx.props().is_sidebar_open;
+        let sidebar_open =  if self.context.is_managed_sidebar {
+            self.context.is_sidebar_open
+        } else {
+            ctx.props().is_sidebar_open
+        };
 
         html!{
             <div

@@ -168,7 +168,6 @@ impl Component for PageSection
                     html!{
                         <div class="pf-v5-c-page__main-body">{ctx.props().children.clone()}</div>
                     }
-
                 } else {
                     ctx.props().children.clone()
                 }
