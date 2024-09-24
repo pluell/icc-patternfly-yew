@@ -1,7 +1,4 @@
-use yew::{
-    prelude::*,
-    virtual_dom::VTag,
-};
+use yew::prelude::*;
 
 
 pub struct BreadcrumbItemRenderArgs
@@ -115,25 +112,16 @@ impl Component for BreadcrumbItem
                 }
                 else if let Some(to) = &ctx.props().to
                 {
-                    let mut component = VTag::new(ctx.props().component.clone());
-            
-                    component.add_attribute("href", to.to_string());
-
-                    if let Some(target) = &ctx.props().target
-                    {
-                        component.add_attribute("target", target.to_string());
+                    html!{
+                        <@{ctx.props().component.clone()}
+                            href={to.clone()}
+                            target={ctx.props().target.clone()}
+                            class={classes}
+                            aria-current={aria_current.clone()}
+                        >
+                            {ctx.props().children.clone()}
+                        </@>
                     }
-
-                    component.add_attribute("class", classes.to_string());
-                    
-                    if let Some(aria_current) = aria_current
-                    {
-                        component.add_attribute("aria-current", aria_current.to_string());
-                    }
-                            
-                    component.add_child(ctx.props().children.clone());
-            
-                    component.into()
                 }
                 else
                 {
