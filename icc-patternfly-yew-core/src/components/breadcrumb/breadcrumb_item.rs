@@ -18,7 +18,7 @@ pub struct BreadcrumbItemProps
 {
     /** Content rendered inside the breadcrumb item. */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the breadcrumb item. */
     #[prop_or_default]
     pub class_name: String,
@@ -94,7 +94,7 @@ impl Component for BreadcrumbItem
                             aria-current={aria_current}
                             type="button"
                         >
-                            {for ctx.props().children.iter()}
+                            {ctx.props().children.clone()}
                         </button>
                     }
                 }
@@ -102,7 +102,7 @@ impl Component for BreadcrumbItem
                 {
                     html!{
                         <span class="pf-v5-c-breadcrumb__dropdown">
-                            {for ctx.props().children.iter()}
+                            {ctx.props().children.clone()}
                         </span>
                     }
                 }
@@ -131,15 +131,13 @@ impl Component for BreadcrumbItem
                         component.add_attribute("aria-current", aria_current.to_string());
                     }
                             
-                    component.add_children(ctx.props().children.iter());
+                    component.add_child(ctx.props().children.clone());
             
                     component.into()
                 }
                 else
                 {
-                    html!{
-                        for ctx.props().children.iter()
-                    }
+                    ctx.props().children.clone()
                 }
             }
             </li>
