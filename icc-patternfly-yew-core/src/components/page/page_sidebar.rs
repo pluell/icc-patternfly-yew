@@ -7,7 +7,7 @@ pub use super::PageTheme;
 #[derive(Clone, PartialEq)]
 pub struct PageSidebarContext
 {
-    is_sidebar_open: bool,
+    pub is_sidebar_open: bool,
 }
 
 pub struct PageSidebar
