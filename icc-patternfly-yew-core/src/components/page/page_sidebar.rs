@@ -1,7 +1,7 @@
 use yew::prelude::*;
 
+use crate::Theme;
 use super::page_context::PageContext;
-pub use super::PageTheme;
 
 
 #[derive(Clone, PartialEq)]
@@ -40,8 +40,8 @@ pub struct PageSidebarProps
     #[prop_or_default]
     pub is_sidebar_open: bool,
     /** Indicates the color scheme of the sidebar */
-    #[prop_or(PageTheme::Dark)]
-    pub theme: PageTheme,
+    #[prop_or(Theme::Dark)]
+    pub theme: Theme,
     /** Sidebar id */
     #[prop_or_default]
     pub id: Option<String>,

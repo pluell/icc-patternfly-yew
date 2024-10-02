@@ -1,7 +1,5 @@
 use yew::prelude::*;
 
-pub use super::PageTheme;
-
 
 pub struct PageBreadcrumb;
 
