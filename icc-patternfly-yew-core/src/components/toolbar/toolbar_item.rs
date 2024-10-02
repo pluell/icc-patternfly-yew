@@ -1,5 +1,7 @@
 use yew::prelude::*;
 
+use crate::Divider;
+
 
 #[derive(Clone, PartialEq)]
 pub enum ToolbarItemVariant
@@ -67,8 +69,7 @@ impl Component for ToolbarItem
     {
         if ctx.props().variant == ToolbarItemVariant::Separator
         {
-            // TODO: Implement Divider component
-            html!{}
+            html!{<Divider is_vertical=true />}
         }
         else
         {
