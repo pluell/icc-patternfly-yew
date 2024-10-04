@@ -10,7 +10,7 @@ pub struct ModalBoxCloseButtonProperties
 {
     /** Additional classes added to the close button */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** A callback for when the close button is clicked */
     #[prop_or_default]
     pub onclose: Callback<()>,
@@ -48,7 +48,7 @@ impl Component for ModalBoxCloseButton
     {
         html!{
             <Button 
-                class_name={ctx.props().class_name.clone()} 
+                classes={ctx.props().classes.clone()} 
                 variant={ButtonVariant::Plain}
                 onclick={ctx.link().callback(|_| ModalBoxCloseButtonMsg::OnButtonClick)}
                 aria_label="Close"

@@ -24,10 +24,10 @@ pub struct ButtonProperties
 {
     /** Content rendered inside the button */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the button */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     // /** Sets the base component to render. defaults to button */
     // component?: React.ElementType<any> | React.ComponentType<any>;
     /** Adds active styling to button. */
@@ -47,7 +47,7 @@ pub struct ButtonProperties
     pub is_loading: Option<bool>,
     /** Aria-valuetext for the loading spinner */
     #[prop_or_default]
-    pub spinner_aria_value_text: String,
+    pub spinner_aria_value_text: AttrValue,
     // /** Events to prevent when the button is in an aria-disabled state */
     // inoperableEvents?: string[];
     /** Adds inline styling to a link button */
@@ -63,7 +63,7 @@ pub struct ButtonProperties
     pub icon_position: ButtonIconPosition,
     /** Adds accessible text to the button. */
     #[prop_or_default]
-    pub aria_label: Option<String>,
+    pub aria_label: Option<AttrValue>,
     /** Icon for the button. Usable by all variants except for plain. */
     #[prop_or_default]
     pub icon: Option<Html>,
@@ -84,17 +84,17 @@ pub struct ButtonProperties
     pub inner_ref: Option<NodeRef>,
 
     #[prop_or_default]
-    pub id: Option<String>,
+    pub id: Option<AttrValue>,
 
     pub onclick: Callback<MouseEvent>,
 
     // Extra aria properties
     #[prop_or_default]
-    pub aria_controls: Option<String>,
+    pub aria_controls: Option<AttrValue>,
     #[prop_or_default]
-    pub aria_expanded: Option<String>,
+    pub aria_expanded: Option<AttrValue>,
     #[prop_or_default]
-    pub aria_labelledby: Option<String>,
+    pub aria_labelledby: Option<AttrValue>,
 }
 
 impl Component for Button
@@ -143,7 +143,7 @@ impl Component for Button
                     cls_loading,
                     if ctx.props().is_small {"pf-m-small"} else {""},
                     if ctx.props().is_large {"pf-m-display-lg"} else {""},
-                    ctx.props().class_name.clone(),
+                    ctx.props().classes.clone(),
                 )}
                 onclick={ctx.props().onclick.clone()}
                 disabled={ctx.props().is_disabled}

@@ -20,19 +20,19 @@ pub struct SpinnerProperties
 {
     /** Additional classes added to the Spinner. */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** Size variant of progress. */
     #[prop_or(SpinnerSize::Xl)]
     pub size: SpinnerSize,
     /** Aria value text */
     #[prop_or_default]
-    pub aria_valuetext: String,
+    pub aria_valuetext: AttrValue,
     /** Whether to use an SVG (new) rather than a span (old) */
     #[prop_or_default]
     pub is_svg: bool,
     /** Diameter of spinner set as CSS variable */
     #[prop_or_default]
-    pub diameter: String,
+    pub diameter: AttrValue,
 }
 
 impl Component for Spinner
@@ -53,10 +53,11 @@ impl Component for Spinner
         component.add_attribute("role", "progressbar".to_string());
 
         component.add_attribute("class", 
-            format!("pf-v5-c-spinner {} {}",
+            classes!("pf-v5-c-spinner",
                 SPINNER_SIZE_CLASSES[ctx.props().size.clone() as usize],
-                &ctx.props().class_name
-        ));
+                ctx.props().classes.clone()
+            ).to_string()
+        );
 
         if ctx.props().aria_valuetext.len() > 0
         {

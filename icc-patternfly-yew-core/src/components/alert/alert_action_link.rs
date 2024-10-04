@@ -13,7 +13,7 @@ pub struct AlertActionLinkProps
     pub children: Children,
     /** Additional classes added to the AlertActionLink  */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
 
     /** Button props */
     pub onclick: Callback<MouseEvent>,
@@ -41,7 +41,7 @@ impl Component for AlertActionLink
                 variant={ButtonVariant::Link}
                 onclick={ctx.props().onclick.clone()}
                 is_inline={true}
-                class_name={ctx.props().class_name.clone()}
+                classes={ctx.props().classes.clone()}
                 // {...props}
             >
             {
