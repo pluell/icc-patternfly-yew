@@ -2,6 +2,8 @@ use std::fmt;
 
 use yew::prelude::*;
 
+use crate::{Drawer, DrawerContent, DrawerContentBody, DrawerPanelContent};
+
 use super::page_context::PageContext;
 use super::{PageGroup, PageGroupProps, PageBreadcrumbProps};
 
@@ -60,9 +62,9 @@ pub struct PageProps
     /** Flag indicating if breadcrumb width should be limited */
     #[prop_or_default]
     pub is_breadcrumb_width_limited: bool,
-    // /** Callback when notification drawer panel is finished expanding. */
-    // #[prop_or_default]
-    // onNotificationDrawerExpand?: (event: KeyboardEvent | React.MouseEvent | React.TransitionEvent) => void;
+    /** Callback when notification drawer panel is finished expanding. */
+    #[prop_or_default]
+    pub on_notification_drawer_expand: Callback<()>,
     /** Skip to content component for the page */
     #[prop_or_default]
     pub skip_to_content: Option<Html>,
@@ -183,16 +185,18 @@ impl Component for Page
                     ctx.props().sidebar.clone()
                 }
                 {
-                    if let Some(_notification_drawer) = &ctx.props().notification_drawer {
+                    if let Some(notification_drawer) = &ctx.props().notification_drawer {
                         html!{
-                            //TODO: Implement Drawer
-                            // <div class="pf-v5-c-page__drawer">
-                            //     <Drawer isExpanded={isNotificationDrawerExpanded} onExpand={(event) => onNotificationDrawerExpand(event)}>
-                            //         <DrawerContent panelContent={panelContent}>
-                            //         <DrawerContentBody>{main}</DrawerContentBody>
-                            //         </DrawerContent>
-                            //     </Drawer>
-                            // </div>
+                            <div class="pf-v5-c-page__drawer">
+                                <Drawer 
+                                    is_expanded={ctx.props().is_notification_drawer_expanded} 
+                                    onexpand={ctx.props().on_notification_drawer_expand.clone()}
+                                >
+                                    <DrawerContent panel_content={self.view_panel_content(ctx, notification_drawer)}>
+                                        <DrawerContentBody>{self.view_main(ctx)}</DrawerContentBody>
+                                    </DrawerContent>
+                                </Drawer>
+                            </div>
                         }
                     } else {
                         self.view_main(ctx)
@@ -276,13 +280,6 @@ impl Page
                     }
                 }
                 {
-                    if ctx.props().is_breadcrumb_grouped {
-                        self.view_breadcrumb(ctx)
-                    } else {
-                        html!{}
-                    }
-                }
-                {
                     ctx.props().additional_grouped_content.clone()
                 }
                 </PageGroup>
@@ -341,6 +338,19 @@ impl Page
             }
         } else {
             html!{}
+        } 
+    }
+
+    fn view_panel_content(&self, ctx: &Context<Self>, notification_drawer: &Html) -> Html
+    {
+        html!{
+            <DrawerPanelContent 
+                default_size={ctx.props().drawer_default_size.clone()} 
+                min_size={ctx.props().drawer_min_size.clone()} 
+                max_size={ctx.props().drawer_max_size.clone()}
+            >
+                {notification_drawer.clone()}
+            </DrawerPanelContent>
         }
     }
 }
