@@ -27,7 +27,11 @@ impl fmt::Display for PageMainComponent
     }
 }
 
-pub struct Page;
+pub struct Page
+{
+    desktop_is_sidebar_open: bool,
+    // mobile_is_sidebar_open: bool, //TODO: implement mobile management
+}
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct PageProps
@@ -89,7 +93,7 @@ pub struct PageProps
     /**
      * If true, the managed sidebar is initially open for desktop view
      */
-    #[prop_or_default]
+    #[prop_or(true)]
     pub default_managed_sidebar_is_open: bool,
     // /**
     //  * Can add callback to be notified when resize occurs, for example to set the sidebar isSidebarOpen prop to false for a width < 768px
@@ -142,22 +146,46 @@ pub struct PageProps
     pub breadcrumb_props: Option<PageBreadcrumbProps>,
 }
 
+pub enum PageMessage
+{
+    OnSidebarToggleDesktop,
+}
+
 impl Component for Page
 {
-    type Message = ();
+    type Message = PageMessage;
     type Properties = PageProps;
 
-    fn create(_: &Context<Self>) -> Self
+    fn create(ctx: &Context<Self>) -> Self
     {
-        Self
+        let desktop_is_sidebar_open = if !ctx.props().is_managed_sidebar {
+            true
+        } else {
+            ctx.props().default_managed_sidebar_is_open
+        };
+
+        Self {
+            desktop_is_sidebar_open,
+        }
+    }
+
+    fn update(&mut self, _ctx: &Context<Self>, msg : Self::Message) -> bool
+    {
+        match msg
+        {
+            Self::Message::OnSidebarToggleDesktop => {
+                self.desktop_is_sidebar_open = !self.desktop_is_sidebar_open;
+                true
+            }
+        }
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html
     {
         let context = PageContext {
             is_managed_sidebar: ctx.props().is_managed_sidebar,
-            on_sidebar_toggle: None, //TODO
-            is_sidebar_open: false, //TODO
+            on_sidebar_toggle: Some(ctx.link().callback(|_| Self::Message::OnSidebarToggleDesktop)),
+            is_sidebar_open: self.desktop_is_sidebar_open,
             width: 0, //TODO
             height: 0, //TODO
         };
