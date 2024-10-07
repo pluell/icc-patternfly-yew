@@ -29,7 +29,8 @@ pub struct PageToggleButtonProps
     #[prop_or_default]
     pub on_sidebar_toggle: Option<Callback<()>>,
     /** Button id */
-    pub id: Option<String>,
+    #[prop_or(AttrValue::from("nav-toggle"))]
+    pub id: AttrValue,
 }
 
 impl Component for PageToggleButton
