@@ -23,7 +23,7 @@ pub struct PageToggleButtonProps
     #[prop_or_default]
     pub children: Html,
     /** True if the sidebar is shown  */
-    #[prop_or_default]
+    #[prop_or(true)]
     pub is_sidebar_open: bool,
     /** Callback function to handle the sidebar toggle button, managed by the Page component if the Page isManagedSidebar prop is set to true */
     #[prop_or_default]
