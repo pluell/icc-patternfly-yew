@@ -37,7 +37,7 @@ pub struct PageSidebarProps
     #[prop_or_default]
     pub is_managed_sidebar: bool,
     /** Programmatically manage if the sidebar is shown, if isManagedSidebar is set to true in the Page component, this prop is managed */
-    #[prop_or_default]
+    #[prop_or(true)]
     pub is_sidebar_open: bool,
     /** Indicates the color scheme of the sidebar */
     #[prop_or(Theme::Dark)]
