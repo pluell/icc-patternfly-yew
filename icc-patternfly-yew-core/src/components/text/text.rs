@@ -1,7 +1,4 @@
-use yew::{
-    prelude::*,
-    virtual_dom::VTag,
-};
+use yew::prelude::*;
 
 
 #[derive(Clone, PartialEq)]
