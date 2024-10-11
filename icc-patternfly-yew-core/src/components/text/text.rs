@@ -20,23 +20,23 @@ pub enum TextVariants
     Pre,
 }
 
-impl Into<VTag> for TextVariants
+impl std::fmt::Display for TextVariants
 {
-    fn into(self) -> VTag
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result
     {
         match self
         {
-            Self::H1 => VTag::new("h1"),
-            Self::H2 => VTag::new("h2"),
-            Self::H3 => VTag::new("h3"),
-            Self::H4 => VTag::new("h4"),
-            Self::H5 => VTag::new("h5"),
-            Self::H6 => VTag::new("h6"),
-            Self::P => VTag::new("p"),
-            Self::A => VTag::new("a"),
-            Self::Small => VTag::new("small"),
-            Self::Blockquote => VTag::new("blockquote"),
-            Self::Pre => VTag::new("pre"),
+            Self::H1 => write!(f, "h1"),
+            Self::H2 => write!(f, "h2"),
+            Self::H3 => write!(f, "h3"),
+            Self::H4 => write!(f, "h4"),
+            Self::H5 => write!(f, "h5"),
+            Self::H6 => write!(f, "h6"),
+            Self::P => write!(f, "p"),
+            Self::A => write!(f, "a"),
+            Self::Small => write!(f, "small"),
+            Self::Blockquote => write!(f, "blockquote"),
+            Self::Pre => write!(f, "pre"),
         }
     }
 }
@@ -54,7 +54,7 @@ pub struct TextProperties
     pub children: Html,
     /** Additional classes added to the Text */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
 }
 
 impl Component for Text
@@ -69,17 +69,13 @@ impl Component for Text
 
     fn view(&self, ctx: &Context<Self>) -> Html
     {
-        let mut component: VTag = ctx.props().component.clone().into();
-
-        if ctx.props().class_name.len() > 0
-        {
-            component.add_attribute("class", ctx.props().class_name.clone());
+        html!{
+            <@{ctx.props().component.to_string()}
+                classes={ctx.props().classes.clone()}
+                data-pf-content="true"
+            >
+                {ctx.props().children.clone()}
+            </@>
         }
-
-        component.add_attribute("data-pf-content", true.to_string());
-
-        component.add_child(ctx.props().children.clone());
-
-        component.into()
     }
 }
