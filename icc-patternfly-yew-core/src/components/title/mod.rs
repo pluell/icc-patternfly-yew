@@ -59,6 +59,22 @@ impl Into<VTag> for TitleHeadingLevels
     }
 }
 
+impl std::fmt::Display for TitleHeadingLevels
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result
+    {
+        match self
+        {
+            Self::H1 => write!(f, "h1"),
+            Self::H2 => write!(f, "h2"),
+            Self::H3 => write!(f, "h3"),
+            Self::H4 => write!(f, "h4"),
+            Self::H5 => write!(f, "h5"),
+            Self::H6 => write!(f, "h6"),
+        }
+    }
+}
+
 impl TitleHeadingLevels
 {
     fn get_default_size(&self) -> TitleSizes
