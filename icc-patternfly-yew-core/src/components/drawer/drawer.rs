@@ -58,7 +58,7 @@ pub struct DrawerProps
     pub classes: Classes,
     /** Content rendered in the drawer panel */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Indicates if the drawer is expanded */
     #[prop_or_default]
     pub is_expanded: bool,
