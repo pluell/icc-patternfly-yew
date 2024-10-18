@@ -68,6 +68,8 @@ pub struct RadioProps
     pub default_checked: Option<bool>,
     #[prop_or_default]
     pub aria_labelledby: Option<AttrValue>,
+    #[prop_or_default]
+    pub onclick: Callback<()>,
 }
 
 pub enum RadioMsg
@@ -188,6 +190,8 @@ impl Radio
 
     fn view_input(&self, ctx: &Context<Self>) -> Html
     {
+        let onclick = ctx.props().onclick.clone();
+
         html!{
             <input
                 // {...props}
@@ -199,6 +203,7 @@ impl Radio
                 )}
                 type="radio"
                 onchange={ctx.link().callback(RadioMsg::OnChange)}
+                onclick={Callback::from(move |_| onclick.emit(()))}
                 aria-invalid={(!ctx.props().is_valid).to_string()}
                 disabled={ctx.props().is_disabled}
                 checked={ctx.props().is_checked.unwrap_or(ctx.props().default_checked.unwrap_or(false))}
