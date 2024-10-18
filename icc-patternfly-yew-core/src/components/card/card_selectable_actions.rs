@@ -1,23 +1,23 @@
 use yew::prelude::*;
 
 
-pub struct CardHeaderMain;
+pub struct CardSelectableActions;
 
 #[derive(Clone, PartialEq, Properties)]
-pub struct CardHeaderMainProperties
+pub struct CardSelectableActionsProps
 {
-    /** Content rendered inside the Card Head Main */
+    /** Content rendered inside the card action */
     #[prop_or_default]
     pub children: Html,
-    /** Additional classes added to the Card Head Main */
+    /** Additional classes added to the action */
     #[prop_or_default]
     pub classes: Classes,
 }
 
-impl Component for CardHeaderMain
+impl Component for CardSelectableActions
 {
     type Message = ();
-    type Properties = CardHeaderMainProperties;
+    type Properties = CardSelectableActionsProps;
 
     fn create(_: &Context<Self>) -> Self
     {
@@ -29,14 +29,11 @@ impl Component for CardHeaderMain
         html!{
             <div
                 class={classes!(
-                    "pf-v5-c-card__header-main",
+                    "pf-v5-c-card__selectable-actions",
                     ctx.props().classes.clone()
                 )}
-                // {...props}
             >
-            {
-                ctx.props().children.clone()
-            }
+                {ctx.props().children.clone()}
           </div>
         }
     }

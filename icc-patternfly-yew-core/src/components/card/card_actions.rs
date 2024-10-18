@@ -8,10 +8,13 @@ pub struct CardActionsProperties
 {
     /** Content rendered inside the Card Action */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the Action */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
+    /** Flag indicating that the actions have no offset */
+    #[prop_or_default]
+    pub has_no_offset: bool,
 }
 
 impl Component for CardActions
@@ -27,15 +30,15 @@ impl Component for CardActions
     fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
-            <div 
-            
+            <div
                 class={classes!(
                     "pf-v5-c-card__actions",
-                    ctx.props().class_name.clone()
+                    if ctx.props().has_no_offset {"pf-m-no-offset"} else {""},
+                    ctx.props().classes.clone()
                 )}
             >
             {
-                for ctx.props().children.iter()
+                ctx.props().children.clone()
             }
           </div>
         }

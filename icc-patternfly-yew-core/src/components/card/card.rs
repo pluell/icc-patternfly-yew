@@ -1,10 +1,6 @@
-use yew::{
-    prelude::*,
-    html::ChildrenRenderer,
-    virtual_dom::VTag,
-};
+use yew::prelude::*;
 
-use super::CardChildVariant;
+use super::CardContext;
 
 
 pub struct Card;
@@ -14,28 +10,38 @@ pub struct CardProperties
 {
     /** Content rendered inside the Card */
     #[prop_or_default]
-    pub children: ChildrenRenderer<CardChildVariant>,
+    pub children: Html, //ChildrenRenderer<CardChildVariant>,
     /** ID of the Card. Also passed back in the CardHeader onExpand callback. */
     #[prop_or_default]
-    pub id: String,
+    pub id: AttrValue,
     /** Additional classes added to the Card */
     #[prop_or_default]
-    pub class_name: String,
-    /** Sets the base component to render. defaults to article */
-    #[prop_or(String::from("article"))]
+    pub classes: Classes,
+    /** Sets the base component to render. defaults to div */
+    #[prop_or(String::from("div"))]
     pub component: String,
-    /** Modifies the card to include hover styles on :hover */
-    #[prop_or_default]
-    pub is_hoverable: bool,
     /** Modifies the card to include compact styling. Should not be used with isLarge. */
     #[prop_or_default]
     pub is_compact: bool,
-    /** Modifies the card to include selectable styling */
+    /** Flag indicating that the card is selectable. */
     #[prop_or_default]
     pub is_selectable: bool,
-    /** Modifies the card to include selected styling */
+    /** Flag indicating that the card is clickable and contains some action that triggers on click. */
+    #[prop_or_default]
+    pub is_clickable: bool,
+    /** Flag indicating whether a card that is either selectable only or both clickable and selectable is
+     * currently selected and has selected styling.
+     */
     #[prop_or_default]
     pub is_selected: bool,
+    /** Flag indicating whether a card that is either only clickable or that is both clickable and selectable
+     * is currently clicked and has clicked styling.
+     */
+    #[prop_or_default]
+    pub is_clicked: bool,
+    /** Flag indicating that a clickable or selectable card is disabled. */
+    #[prop_or_default]
+    pub is_disabled: bool,
     /** Modifies the card to include flat styling */
     #[prop_or_default]
     pub is_flat: bool,
@@ -45,9 +51,21 @@ pub struct CardProperties
     /** Modifies the card to be large. Should not be used with isCompact. */
     #[prop_or_default]
     pub is_large: bool,
+    /** Cause component to consume the available height of its container */
+    #[prop_or_default]
+    pub is_full_height: bool,
+    /** Modifies the card to include plain styling; this removes border and background */
+    #[prop_or_default]
+    pub is_plain: bool,
     /** Flag indicating if a card is expanded. Modifies the card to be expandable. */
     #[prop_or_default]
     pub is_expanded: bool,
+    /** Value to overwrite the randomly generated data-ouia-component-id.*/
+    #[prop_or_default]
+    pub ouia_id: Option<AttrValue>,
+    /** Set the value of data-ouia-safe. Only set to true when the component is in a static state, i.e. no animations are occurring. At all other times, this value must be false. */
+    #[prop_or(true)]
+    pub ouia_safe: bool,
 }
 
 impl Component for Card
@@ -71,64 +89,77 @@ impl Component for Card
             ctx.props().is_large
         };
 
-        // Create the component base tag
-        let mut component = VTag::new(ctx.props().component.clone());
+        html!{
+            <ContextProvider<CardContext> context={CardContext{
+                    card_id: ctx.props().id.clone(),
+                    // register_title_id: Callback<String>,
+                    is_expanded: ctx.props().is_expanded,
+                    is_clickable: ctx.props().is_clickable,
+                    is_selectable: ctx.props().is_selectable,
+                    is_selected: ctx.props().is_selected,
+                    is_clicked: ctx.props().is_clicked,
+                    is_disabled: ctx.props().is_disabled,
+                }}
+            >
+                <@{ctx.props().component.to_string()}
+                    id={ctx.props().id.clone()}
+                    class={classes!(
+                        "pf-v5-c-card",
+                        if ctx.props().is_compact {"pf-m-compact"} else {""},
+                        if ctx.props().is_expanded {"pf-m-expanded"} else {""},
+                        if ctx.props().is_flat {"pf-m-flat"} else {""},
+                        if ctx.props().is_rounded {"pf-m-rounded"} else {""},
+                        if is_large {"pf-m-display-lg"} else {""},
+                        if ctx.props().is_full_height {"pf-m-full-height"} else {""},
+                        if ctx.props().is_plain {"pf-m-plain"} else {""},
+                        self.get_selectable_modifiers(ctx), // getSelectableModifiers(),
+                        if ctx.props().is_disabled {"pf-m-disabled"} else {""},
+                        ctx.props().classes.clone()
+                    )}
+                    // {...props}
+                    // {...ouiaProps}
+                    ouia-id={ctx.props().ouia_id.clone()}
+                    ouid-safe={ctx.props().ouia_safe.to_string()}
+                >
+                    {ctx.props().children.clone()}
+                </@>
+            </ContextProvider<CardContext>>
+        }
+    }
+}
 
-        if ctx.props().id.len() > 0 { component.add_attribute("id", ctx.props().id.clone()); }
-
-        // Build list of classes
-        let mut classes = String::from("pf-v5-c-card");
-
-        if ctx.props().is_hoverable { classes += " pf-m-hoverable" }
-        if ctx.props().is_compact { classes += " pf-m-compact" }
-        if ctx.props().is_selectable { classes += " pf-m-selectable" }
-        if ctx.props().is_selected { classes += " pf-m-selected" }
-        if ctx.props().is_expanded { classes += " pf-m-expanded" }
-        if ctx.props().is_flat { classes += " pf-m-flat" }
-        if ctx.props().is_rounded { classes += " pf-m-rounded" }
-        if is_large { classes += " pf-m-display-lg" }
+impl Card
+{
+    fn get_selectable_modifiers(&self, ctx: &Context<Self>) -> Classes
+    {
+        // if (isSelectable && isClickable) 
+        if ctx.props().is_selectable && ctx.props().is_clickable
+        {
+            return classes!(
+              "pf-m-selectable",
+              "pf-m-clickable",
+              if ctx.props().is_selected || ctx.props().is_clicked {"pf-m-current"} else {""}
+            );
+        }
         
-        // Add extra classes specified on the parent
-        if ctx.props().class_name.len() > 0
+        if ctx.props().is_selectable
         {
-            classes += " ";
-            classes += &ctx.props().class_name;
+            // return css(styles.modifiers.selectable, isSelected && styles.modifiers.selected);
+            return classes!(
+                "pf-m-selectable",
+                if ctx.props().is_selected {"pf-m-current"} else {""}
+              );
+        }
+        
+        if ctx.props().is_clickable
+        {
+            // return css(styles.modifiers.clickable, isClicked && styles.modifiers.current);
+            return classes!(
+                "pf-m-clickable",
+                if ctx.props().is_clicked {"pf-m-current"} else {""}
+              );
         }
 
-        component.add_attribute("class", classes);
-
-        // Set the tab index if the card is selectable
-        if ctx.props().is_selectable { component.add_attribute("tabIndex", "0"); }
-
-        //     {...props}
-        //     {...ouiaProps}
-
-        // Add children to the base tag and check if child properties
-        // need to be updated from card context
-        for child in ctx.props().children.iter()
-        {
-            match child
-            {
-                CardChildVariant::Header(mut child) => {
-                    let mut props = (&*child.props).clone();
-                    
-                    props.card_id = ctx.props().id.clone();
-
-                    child.props = std::rc::Rc::new(props);
-                },
-                CardChildVariant::ExpandableContent(mut child) => {
-                    let mut props = (&*child.props).clone();
-
-                    props.is_expanded = ctx.props().is_expanded;
-
-                    child.props = std::rc::Rc::new(props);
-                },
-                _ => {}
-            }
-        }
-
-        component.add_children(ctx.props().children.iter().map(|child| child.into()));
-
-        component.into()
+        classes!()
     }
 }

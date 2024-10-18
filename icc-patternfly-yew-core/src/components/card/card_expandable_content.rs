@@ -1,51 +1,72 @@
 use yew::prelude::*;
 
+use super::CardContext;
 
-pub struct CardExpandableContent;
+pub struct CardExpandableContent
+{
+    context: CardContext,
+    _context_listener: ContextHandle<CardContext>,
+}
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct CardExpandableContentProperties
 {
     /** Content rendered inside the Card Body */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the Card Body */
     #[prop_or_default]
-    pub class_name: String,
-    /** Flag indicating if a card is expanded. Modifies the card to be expandable. */
-    #[prop_or_default]
-    pub is_expanded: bool,
+    pub classes: Classes,
+}
+
+pub enum CardExpandableContentMsg
+{
+    Context(CardContext),
 }
 
 impl Component for CardExpandableContent
 {
-    type Message = ();
+    type Message = CardExpandableContentMsg;
     type Properties = CardExpandableContentProperties;
 
-    fn create(_: &Context<Self>) -> Self
+    fn create(ctx: &Context<Self>) -> Self
     {
-        Self
+        let (context, _context_listener) = ctx
+            .link()
+            .context(ctx.link().callback(Self::Message::Context))
+            .expect("No Message Context Provided");
+
+        Self {
+            context,
+            _context_listener,
+        }
+    }
+
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool
+    {
+        match msg
+        {
+            Self::Message::Context(context) => {
+                self.context = context;
+                true
+            }
+        }
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html
     {
-        if ctx.props().is_expanded
-        {
-            html!{
+        html!{
+            if self.context.is_expanded {
                 <div
                     class={classes!(
                         "pf-v5-c-card__expandable-content", 
-                        ctx.props().class_name.clone()
+                        ctx.props().classes.clone()
                     )}
                     // {...props}
                 >
-                    { for ctx.props().children.iter() }
+                    {ctx.props().children.clone()}
                 </div>
             }
-        }
-        else
-        {
-            html!{}
         }
     }
 }

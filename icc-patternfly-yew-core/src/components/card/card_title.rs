@@ -1,55 +1,81 @@
-use yew::{
-    prelude::*,
-    virtual_dom::VTag,
-};
+use yew::prelude::*;
+
+use super::CardContext;
 
 
-pub struct CardTitle;
+pub struct CardTitle
+{
+    context: CardContext,
+    _context_listener: ContextHandle<CardContext>,
+}
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct CardTitleProperties
 {
     /** Content rendered inside the CardTitle */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the CardTitle */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: String,
     /** Sets the base component to render. defaults to div */
     #[prop_or(String::from("div"))]
     pub component: String,
 }
 
+pub enum CardTitleMsg
+{
+    Context(CardContext),
+}
+
 impl Component for CardTitle
 {
-    type Message = ();
+    type Message = CardTitleMsg;
     type Properties = CardTitleProperties;
 
-    fn create(_: &Context<Self>) -> Self
+    fn create(ctx: &Context<Self>) -> Self
     {
-        Self
+        let (context, _context_listener) = ctx
+            .link()
+            .context(ctx.link().callback(Self::Message::Context))
+            .expect("No Message Context Provided");
+
+        Self {
+            context,
+            _context_listener,
+        }
+    }
+
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool
+    {
+        match msg
+        {
+            Self::Message::Context(context) => {
+                self.context = context;
+                true
+            }
+        }
     }
 
     fn view(&self, ctx: &Context<Self>) -> Html
     {
-        let mut component = VTag::new(ctx.props().component.clone());
+        let title_id = if self.context.card_id.len() > 0 {
+            Some(format!("{}-title", self.context.card_id))
+        } else {
+            None
+        };
 
-        // Build list of classes
-        let mut classes = String::from("pf-v5-c-card__title");
-        
-        // Add extra classes specified on the parent
-        if ctx.props().class_name.len() > 0
-        {
-            classes += " ";
-            classes += &ctx.props().class_name;
+        html!{
+            <@{ctx.props().component.to_string()}
+                class={classes!(
+                    "pf-v5-c-card__title", 
+                    ctx.props().classes.clone()
+                )}
+                id={title_id}
+                // {...props}
+            >
+                {ctx.props().children.clone()}
+            </@>
         }
-
-        component.add_attribute("class", classes);
-
-        //     {...props}
-
-        component.add_children(ctx.props().children.iter());
-
-        component.into()
     }
 }
