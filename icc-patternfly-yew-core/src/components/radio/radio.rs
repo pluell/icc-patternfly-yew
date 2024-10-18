@@ -66,6 +66,8 @@ pub struct RadioProps
     // Props
     #[prop_or_default]
     pub default_checked: Option<bool>,
+    #[prop_or_default]
+    pub aria_labelledby: Option<AttrValue>,
 }
 
 pub enum RadioMsg
@@ -201,6 +203,7 @@ impl Radio
                 disabled={ctx.props().is_disabled}
                 checked={ctx.props().is_checked.unwrap_or(ctx.props().default_checked.unwrap_or(false))}
                 aria-label={if ctx.props().label.is_none() {ctx.props().aria_label.clone()} else {None}}
+                aria-labelledby={ctx.props().aria_labelledby.clone()}
                 // {...getOUIAProps(Radio.displayName, ouiaId !== undefined ? ouiaId : this.state.ouiaStateId, ouiaSafe)}
                 ouia-id={ctx.props().ouia_id.clone()}
                 data-ouia-safe={ctx.props().ouia_safe.to_string()}
