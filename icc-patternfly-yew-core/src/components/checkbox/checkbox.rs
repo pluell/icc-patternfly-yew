@@ -77,6 +77,8 @@ pub struct CheckboxProps
     pub default_checked: Option<bool>,
     #[prop_or_default]
     pub aria_labelledby: Option<AttrValue>,
+    #[prop_or_default]
+    pub onclick: Callback<()>,
 }
 
 pub enum CheckboxMsg
@@ -225,6 +227,8 @@ impl Checkbox
 
     fn view_input(&self, ctx: &Context<Self>) -> Html
     {
+        let onclick = ctx.props().onclick.clone();
+
         html!{
             <input
                 // {...props}
@@ -236,6 +240,7 @@ impl Checkbox
                 )}
                 type="checkbox"
                 onchange={ctx.link().callback(CheckboxMsg::OnChange)}
+                onclick={Callback::from(move |_| onclick.emit(()))}
                 aria-invalid={(!ctx.props().is_valid).to_string()}
                 aria-label={ctx.props().aria_label.clone()}
                 aria-labelledby={ctx.props().aria_labelledby.clone()}
