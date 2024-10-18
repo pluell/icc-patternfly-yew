@@ -75,6 +75,8 @@ pub struct CheckboxProps
     pub name: Option<AttrValue>,
     #[prop_or_default]
     pub default_checked: Option<bool>,
+    #[prop_or_default]
+    pub aria_labelledby: Option<AttrValue>,
 }
 
 pub enum CheckboxMsg
@@ -236,6 +238,7 @@ impl Checkbox
                 onchange={ctx.link().callback(CheckboxMsg::OnChange)}
                 aria-invalid={(!ctx.props().is_valid).to_string()}
                 aria-label={ctx.props().aria_label.clone()}
+                aria-labelledby={ctx.props().aria_labelledby.clone()}
                 disabled={ctx.props().is_disabled}
                 required={ctx.props().is_required}
                 ref={self.input_ref.clone()}
