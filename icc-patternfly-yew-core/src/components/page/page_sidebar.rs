@@ -56,7 +56,7 @@ impl Component for PageSidebar
     {
         let (context, _context_listener) = ctx
             .link()
-            .context(ctx.link().callback(PageSidebarMsg::Context))
+            .context(ctx.link().callback(Self::Message::Context))
             .expect("No Message Context Provided");
 
         Self {
