@@ -8,6 +8,15 @@ use yew::{
 
 use super::TextInputType;
 use crate::ValidatedOptions;
+use crate::components::{FormControlIcon, FromControlIconStatus};
+
+
+#[derive(Clone, PartialEq)]
+pub enum TextInputReadOnlyVariant
+{
+    Default,
+    Plain,
+}
 
 
 pub struct TextInput;
@@ -16,16 +25,18 @@ pub struct TextInput;
 pub struct TextInputProperties
 {
     #[prop_or_default]
-    pub id: String,
+    pub id: AttrValue,
     /** Additional classes added to the TextInput. */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** Flag to show if the input is disabled. */
     #[prop_or_default]
     pub is_disabled: bool,
-    /** Flag to show if the input is read only. */
+    // /** Prop to apply expanded styling to the text input and link it to the element it is controlling. This should be used when the input controls a menu and that menu is expandable. */
+    // expandedProps?: TextInputExpandedObj;
+    /** Sets the input as readonly and determines the readonly styling. */
     #[prop_or_default]
-    pub is_read_only: bool,
+    pub read_only_variant: Option<TextInputReadOnlyVariant>,
     /** Flag to show if the input is required. */
     #[prop_or_default]
     pub is_required: bool,
@@ -43,16 +54,22 @@ pub struct TextInputProperties
     pub input_type: TextInputType,
     // /** Value of the input. */
     #[prop_or_default]
-    pub value: String,  // | number;
+    pub value: AttrValue,  // | number;
+    /** Placeholder of the text input when there is no value */
+    #[prop_or_default]
+    pub placeholder: Option<AttrValue>,
     /** Aria-label. The input requires an associated id or aria-label. */
     #[prop_or_default]
-    pub aria_label: String,
+    pub aria_label: AttrValue,
     // /** A reference object to attach to the input box. */
     // #[prop_or_default]
     // innerRef?: React.RefObject<any>;
     /** Trim text on left */
     #[prop_or_default]
     pub is_left_truncated: bool,
+    /** Trim text at start */
+    #[prop_or_default]
+    pub is_start_truncated: bool,
     // /** Callback function when input is focused */
     // #[prop_or_default]
     // onFocus?: (event?: any) => void;
@@ -62,12 +79,15 @@ pub struct TextInputProperties
     // /** icon variant */
     // #[prop_or_default]
     // iconVariant?: 'calendar' | 'clock' | 'search';
-    // /** Custom icon url to set as the input's background-image */
-    // #[prop_or_default]
-    // customIconUrl?: string;
-    // /** Dimensions for the custom icon set as the input's background-size */
-    // #[prop_or_default]
-    // customIconDimensions?: string;
+    /** Custom icon to render. If the validated prop is also passed, this will render an icon in addition to a validated icon. */
+    #[prop_or_default]
+    pub custom_icon: Option<Html>,
+    /** Value to overwrite the randomly generated data-ouia-component-id.*/
+    #[prop_or_default]
+    pub ouia_id: Option<AttrValue>,
+    /** Set the value of data-ouia-safe. Only set to true when the component is in a static state, i.e. no animations are occurring. At all other times, this value must be false. */
+    #[prop_or_default]
+    pub ouia_safe: bool,
 }
 
 pub enum TextInputMsg
@@ -100,6 +120,8 @@ impl Component for TextInput
 
     fn view(&self, ctx: &Context<Self>) -> Html
     {
+        let has_status_icon = ctx.props().validated != ValidatedOptions::Default;
+
         let oninput = ctx.link().batch_callback(|e: InputEvent| {
             let input = e.target_dyn_into::<HtmlInputElement>();
 
@@ -107,29 +129,67 @@ impl Component for TextInput
         });
 
         html!{
-            <input
-                id={ctx.props().id.clone()}
-                // {...props}
-                // onFocus={this.onFocus}
-                // onBlur={this.onBlur}
+            <span
                 class={classes!(
                     "pf-v5-c-form-control",
-                    if ctx.props().validated == ValidatedOptions::Success { "pf-m-success" } else { "" },
-                    if ctx.props().validated == ValidatedOptions::Warning { "pf-m-warning" } else { "" },
-                    // ((iconVariant && iconVariant !== 'search') || customIconUrl) && styles.modifiers.icon,
-                    // iconVariant && styles.modifiers[iconVariant],
-                    ctx.props().class_name.clone(),
+                    if ctx.props().read_only_variant.is_some() {"pf-m-readonly"} else {""},
+                    if ctx.props().read_only_variant == Some(TextInputReadOnlyVariant::Plain) {"styles.modifiers.plain"} else {""},
+                    if ctx.props().is_disabled {"pf-m-disabled"} else {""},
+                    // (isExpanded || expandedProps?.isExpanded) && styles.modifiers.expanded, // TODO: implement isExpanded
+                    if ctx.props().custom_icon.is_some() {"pf-m-icon"} else {""},
+                    if has_status_icon {format!("pf-m-{}", ctx.props().validated.to_string())} else {String::new()},
+                    ctx.props().classes.clone()
                 )}
-                {oninput}
-                type={ctx.props().input_type.to_string()}
-                value={ctx.props().value.clone()}
-                aria-invalid={(ctx.props().validated == ValidatedOptions::Error).to_string()}
-                required={ctx.props().is_required}
-                disabled={ctx.props().is_disabled}
-                read_only={ctx.props().is_read_only.to_string()}
-                // ref={innerRef || this.inputRef}
-                // {...((customIconUrl || customIconDimensions) && { style: customIconStyle })}
-            />
+            >
+                <input
+                    // {...props}
+                    id={ctx.props().id.clone()}
+                    // onFocus={this.onFocus}
+                    // onBlur={this.onBlur}
+                    {oninput} // onChange={this.handleChange}
+                    type={ctx.props().input_type.to_string()}
+                    value={ctx.props().value.clone()}
+                    aria-invalid={(ctx.props().validated == ValidatedOptions::Error).to_string()}
+                    // {...ariaExpandedProps}
+                    required={ctx.props().is_required}
+                    disabled={ctx.props().is_disabled}
+                    read_only={ctx.props().read_only_variant.is_some().to_string()}
+                    // ref={innerRef || this.inputRef}
+                    placeholder={ctx.props().placeholder.clone()}
+                    // {...getOUIAProps(TextInput.displayName, ouiaId !== undefined ? ouiaId : this.state.ouiaStateId, ouiaSafe)}
+                />
+                {
+                    if has_status_icon || ctx.props().custom_icon.is_some() {
+                        html!{
+                            <span class="pf-v5-c-form-control__utilities">
+                            {
+                                if let Some(custom_icon) = &ctx.props().custom_icon {
+                                    html!{
+                                        <FormControlIcon custom_icon={custom_icon.clone()} />
+                                    }
+                                } else {
+                                    html!{}
+                                }
+                            }
+                            {
+                                html!{
+                                    if has_status_icon {
+                                        <FormControlIcon status={match ctx.props().validated {
+                                            ValidatedOptions::Success => Some(FromControlIconStatus::Success),
+                                            ValidatedOptions::Warning => Some(FromControlIconStatus::Warning),
+                                            ValidatedOptions::Error => Some(FromControlIconStatus::Error),
+                                            ValidatedOptions::Default => None,
+                                        }} />
+                                    }
+                                }
+                            }
+                            </span>
+                        }
+                    } else {
+                        html!{}
+                    }
+                }
+            </span>
         }
     }
 }

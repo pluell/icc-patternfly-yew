@@ -5,7 +5,7 @@ use crate::{
     InputGroup, 
     Spinner, SpinnerSize,
     TextArea, TextAreResizeOrientation,
-    TextInput,
+    TextInput, TextInputReadOnlyVariant,
     ValidatedOptions
 };
 
@@ -147,7 +147,7 @@ impl Component for FileUploadField
                 <div class="pf-v5-c-file-upload__file-select">
                     <InputGroup>
                         <TextInput
-                            is_read_only={true} // Always read-only regardless of isReadOnly prop (which is just for the TextArea)
+                            read_only_variant={TextInputReadOnlyVariant::Default} // Always read-only regardless of isReadOnly prop (which is just for the TextArea)
                             is_disabled={ctx.props().is_disabled}
                             id={format!("{}-filename", ctx.props().id)}
                             // name={`${id}-filename`}

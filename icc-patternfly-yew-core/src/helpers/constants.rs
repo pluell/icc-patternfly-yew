@@ -25,3 +25,16 @@ pub enum ValidatedOptions
     Error,
     Default,
 }
+
+impl std::fmt::Display for ValidatedOptions {
+    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result
+    {
+        match self
+        {
+            ValidatedOptions::Success => write!(f, "success"),
+            ValidatedOptions::Warning => write!(f, "warning"),
+            ValidatedOptions::Error => write!(f, "error"),
+            ValidatedOptions::Default => write!(f, "default"),
+        }
+    }
+}
