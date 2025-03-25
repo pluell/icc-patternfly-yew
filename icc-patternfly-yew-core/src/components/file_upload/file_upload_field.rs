@@ -2,7 +2,7 @@ use yew::prelude::*;
 
 use crate::{
     Button, ButtonVariant, 
-    InputGroup, 
+    InputGroup, InputGroupItem,
     Spinner, SpinnerSize,
     TextArea, TextAreResizeOrientation,
     TextInput, TextInputReadOnlyVariant,
@@ -146,31 +146,37 @@ impl Component for FileUploadField
             >
                 <div class="pf-v5-c-file-upload__file-select">
                     <InputGroup>
-                        <TextInput
-                            read_only_variant={TextInputReadOnlyVariant::Default} // Always read-only regardless of isReadOnly prop (which is just for the TextArea)
-                            is_disabled={ctx.props().is_disabled}
-                            id={format!("{}-filename", ctx.props().id)}
-                            // name={`${id}-filename`}
-                            // aria-label={filenameAriaLabel}
-                            // placeholder={filenamePlaceholder}
-                            // aria-describedby={`${id}-browse-button`}
-                            value={ctx.props().filename.clone()}
-                        />
-                        <Button
-                            id={format!("{}-browse-button", ctx.props().id)}
-                            variant={ButtonVariant::Control}
-                            onclick={ctx.link().callback(|_| FileUploadFieldMsg::OnBrowseButtonClick)}
-                            is_disabled={ctx.props().is_disabled}
-                        >
-                            {ctx.props().browse_button_text.clone()}
-                        </Button>
-                        <Button
-                            variant={ButtonVariant::Control}
-                            is_disabled={ctx.props().is_disabled || ctx.props().is_clear_button_disabled}
-                            onclick={ctx.link().callback(|_| FileUploadFieldMsg::OnClearButtonClick)}
-                        >
-                            {ctx.props().clear_button_text.clone()}
-                        </Button>
+                        <InputGroupItem is_fill=true>
+                            <TextInput
+                                read_only_variant={TextInputReadOnlyVariant::Default} // Always read-only regardless of isReadOnly prop (which is just for the TextArea)
+                                is_disabled={ctx.props().is_disabled}
+                                id={format!("{}-filename", ctx.props().id)}
+                                // name={`${id}-filename`}
+                                // aria-label={filenameAriaLabel}
+                                // placeholder={filenamePlaceholder}
+                                // aria-describedby={`${id}-browse-button`}
+                                value={ctx.props().filename.clone()}
+                            />
+                        </InputGroupItem>
+                        <InputGroupItem>
+                            <Button
+                                id={format!("{}-browse-button", ctx.props().id)}
+                                variant={ButtonVariant::Control}
+                                onclick={ctx.link().callback(|_| FileUploadFieldMsg::OnBrowseButtonClick)}
+                                is_disabled={ctx.props().is_disabled}
+                            >
+                                {ctx.props().browse_button_text.clone()}
+                            </Button>
+                        </InputGroupItem>
+                        <InputGroupItem>
+                            <Button
+                                variant={ButtonVariant::Control}
+                                is_disabled={ctx.props().is_disabled || ctx.props().is_clear_button_disabled}
+                                onclick={ctx.link().callback(|_| FileUploadFieldMsg::OnClearButtonClick)}
+                            >
+                                {ctx.props().clear_button_text.clone()}
+                            </Button>
+                        </InputGroupItem>
                     </InputGroup>
                 </div>
                 <div class="pf-v5-c-file-upload__file-details">
