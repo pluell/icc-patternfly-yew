@@ -133,7 +133,7 @@ impl Component for TextInput
                 class={classes!(
                     "pf-v5-c-form-control",
                     if ctx.props().read_only_variant.is_some() {"pf-m-readonly"} else {""},
-                    if ctx.props().read_only_variant == Some(TextInputReadOnlyVariant::Plain) {"styles.modifiers.plain"} else {""},
+                    if ctx.props().read_only_variant == Some(TextInputReadOnlyVariant::Plain) {"pf-m-plain"} else {""},
                     if ctx.props().is_disabled {"pf-m-disabled"} else {""},
                     // (isExpanded || expandedProps?.isExpanded) && styles.modifiers.expanded, // TODO: implement isExpanded
                     if ctx.props().custom_icon.is_some() {"pf-m-icon"} else {""},
@@ -153,7 +153,7 @@ impl Component for TextInput
                     // {...ariaExpandedProps}
                     required={ctx.props().is_required}
                     disabled={ctx.props().is_disabled}
-                    read_only={ctx.props().read_only_variant.is_some().to_string()}
+                    readonly={ctx.props().read_only_variant.is_some()}
                     // ref={innerRef || this.inputRef}
                     placeholder={ctx.props().placeholder.clone()}
                     // {...getOUIAProps(TextInput.displayName, ouiaId !== undefined ? ouiaId : this.state.ouiaStateId, ouiaSafe)}
