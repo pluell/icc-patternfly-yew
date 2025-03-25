@@ -11,7 +11,7 @@ pub struct ModalBoxHeaderProperties
     pub children: Children,
     /** Additional classes added to the button */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** Optional help section for the Modal Header */
     #[prop_or_default]
     pub help: Option<Html>,
@@ -34,7 +34,7 @@ impl Component for ModalBoxHeader
                 class={classes!(
                     "pf-v5-c-modal-box__header", 
                     if ctx.props().help.is_some() { "pf-m-help" } else { "" },
-                    ctx.props().class_name.clone(),
+                    ctx.props().classes.clone(),
                 )}
                 // {...props}
             >

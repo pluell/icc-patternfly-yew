@@ -33,7 +33,7 @@ pub struct ModalContentProperties
     pub children: Children,
     /** Additional classes added to the button */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** Variant of the modal */
     #[prop_or(ModalVariants::Default)]
     pub variant: ModalVariants,
@@ -42,7 +42,7 @@ pub struct ModalContentProperties
     pub position_top: bool,
     /** Offset from alternate position. Can be any valid CSS length/percentage */
     #[prop_or_default]
-    pub position_offset: String,
+    pub position_offset: AttrValue,
     /** Flag to show the modal */
     #[prop_or_default]
     pub is_open: bool,
@@ -57,7 +57,7 @@ pub struct ModalContentProperties
     pub description: Option<Html>,
     /** Simple text content of the Modal Header, also used for aria-label on the body */
     #[prop_or_default]
-    pub title: String,
+    pub title: Option<Html>,
     /** Optional alert icon (or other) to show before the title of the Modal Header
      * When the predefined alert types are used the default styling
      * will be automatically applied */
@@ -65,22 +65,22 @@ pub struct ModalContentProperties
     pub title_icon_variant: Option<ModalTitleIconVariants>,
     /** Optional title label text for screen readers */
     #[prop_or_default]
-    pub title_label: String,
+    pub title_label: Option<AttrValue>,
     /** Id of Modal Box label */
     #[prop_or_default]
-    pub aria_labelledby: Option<String>,
+    pub aria_labelledby: Option<AttrValue>,
     /** Accessible descriptor of modal */
     #[prop_or_default]
-    pub aria_label: String,
+    pub aria_label: Option<AttrValue>,
     /** Id of Modal Box description */
     #[prop_or_default]
-    pub aria_describedby: String,
+    pub aria_describedby: Option<AttrValue>,
     /** Flag to show the close button in the header area of the modal */
     #[prop_or(true)]
     pub show_close: bool,
     /** Default width of the content. */
     #[prop_or_default]
-    pub width: String,
+    pub width: AttrValue,
     /** Custom footer */
     #[prop_or_default]
     pub footer: Option<Html>,
@@ -92,13 +92,13 @@ pub struct ModalContentProperties
     pub onclose: Callback<()>,
     /** Id of the ModalBox container */
     #[prop_or_default]
-    pub box_id: String,
+    pub box_id: AttrValue,
     /** Id of the ModalBox title */
     #[prop_or_default]
-    pub label_id: String,
+    pub label_id: AttrValue,
     /** Id of the ModalBoxBody */
     #[prop_or_default]
-    pub descriptor_id: String,
+    pub descriptor_id: AttrValue,
     /** Flag to disable focus trap */
     #[prop_or_default]
     pub disable_focus_trap: bool,
@@ -154,7 +154,7 @@ impl Component for ModalContent
                         <ModalBox
                             id={ctx.props().box_id.clone()}
                             style={box_style}
-                            class_name={format!("{} {}", ctx.props().class_name, modal_title_icon_class)}
+                            classes={classes!(ctx.props().classes.clone(), modal_title_icon_class)}
                             variant={ctx.props().variant.clone()}
                             position_top={ctx.props().position_top}
                             position_offset={ctx.props().position_offset.clone()}
@@ -200,12 +200,12 @@ impl ModalContent
         }
         else
         {
-            if ctx.props().title.len() > 0
+            if let Some(title) = &ctx.props().title
             {
                 html!{
                     <ModalBoxHeader help={ctx.props().help.clone()}>
                         <ModalBoxTitle 
-                            title={ctx.props().title.clone()}
+                            title={title.clone()}
                             title_icon_variant={ctx.props().title_icon_variant.clone()}
                             title_label={ctx.props().title_label.clone()}
                             id={ctx.props().label_id.clone()}

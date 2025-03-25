@@ -11,7 +11,7 @@ pub struct ModalBoxFooterProperties
     pub children: Children,
     /** Additional classes added to the Footer */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
 }
 
 impl Component for ModalBoxFooter
@@ -31,7 +31,7 @@ impl Component for ModalBoxFooter
                 //{...props} 
                 class={classes!(
                     "pf-v5-c-modal-box__footer",
-                    ctx.props().class_name.clone(),
+                    ctx.props().classes.clone(),
                 )}
             >
                 { for ctx.props().children.iter() }

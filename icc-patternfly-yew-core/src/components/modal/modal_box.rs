@@ -13,7 +13,7 @@ pub struct ModalBoxProperties
     pub children: Children,
     /** Additional classes added to the ModalBox */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** Variant of the modal */
     #[prop_or(ModalVariants::Default)]
     pub variant: ModalVariants,
@@ -22,22 +22,22 @@ pub struct ModalBoxProperties
     pub position_top: bool,
     /** Offset from alternate position. Can be any valid CSS length/percentage */
     #[prop_or_default]
-    pub position_offset: String,
+    pub position_offset: AttrValue,
     /** Id to use for Modal Box label */
     #[prop_or_default]
-    pub aria_labelledby: Option<String>,
+    pub aria_labelledby: Option<AttrValue>,
     /** Accessible descriptor of modal */
     #[prop_or_default]
-    pub aria_label: String,
+    pub aria_label: Option<AttrValue>,
     /** Id to use for Modal Box description */
     #[prop_or_default]
-    pub aria_describedby: String,
+    pub aria_describedby: Option<AttrValue>,
     /** Id of the ModalBox container */
     #[prop_or_default]
-    pub id: String,
+    pub id: AttrValue,
     /** Style of the ModalBox container */
     #[prop_or_default]
-    pub style: Option<String>,
+    pub style: Option<AttrValue>,
 }
 
 impl Component for ModalBox
@@ -53,7 +53,7 @@ impl Component for ModalBox
     fn view(&self, ctx: &Context<Self>) -> Html
     {
         let mut style = if let Some(style) = &ctx.props().style {
-            style.clone()
+            style.to_string()
         } else {
             String::new()
         };
@@ -74,7 +74,7 @@ impl Component for ModalBox
                 aria-modal="true"
                 class={classes!(
                     "pf-v5-c-modal-box",
-                    ctx.props().class_name.clone(),
+                    ctx.props().classes.clone(),
                     if ctx.props().position_top { "pf-m-align-top" } else { "" },
                     if ctx.props().variant == ModalVariants::Large { "pf-m-lg" } else { "" },
                     if ctx.props().variant == ModalVariants::Small { "pf-m-sm" } else { "" },

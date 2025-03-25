@@ -10,7 +10,7 @@ pub struct ModalBoxTitleProperties
 {
     /** Content rendered inside the modal box header title. */
     #[prop_or_default]
-    pub title: String,  //React.ReactNode,
+    pub title: Html,
     /** Optional alert icon (or other) to show before the title of the Modal Header
      * When the predefined alert types are used the default styling
      * will be automatically applied */
@@ -18,13 +18,13 @@ pub struct ModalBoxTitleProperties
     pub title_icon_variant: Option<ModalTitleIconVariants>,
     /** Optional title label text for screen readers */
     #[prop_or_default]
-    pub title_label: String,
+    pub title_label: Option<AttrValue>,
     /** Additional classes added to the modal box header title. */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** id of the modal box header title. */
     #[prop_or_default]
-    pub id: String,
+    pub id: AttrValue,
 }
 
 impl Component for ModalBoxTitle
@@ -39,14 +39,14 @@ impl Component for ModalBoxTitle
 
     fn view(&self, ctx: &Context<Self>) -> Html
     {
-        let label = if ctx.props().title_label.len() > 0
+        let label = if let Some(title_label) = &ctx.props().title_label
         {
-            ctx.props().title_label.clone() 
+            Some(title_label.clone())
         }
         else
         { 
             // (isVariantIcon(titleIconVariant) ? `${capitalize(titleIconVariant)} alert:` : titleLabel);
-            String::new()
+            None
         };
 
         html!{
@@ -56,7 +56,7 @@ impl Component for ModalBoxTitle
                 class={classes!(
                     "pf-v5-c-modal-box__title", 
                     if ctx.props().title_icon_variant.is_some() { "pf-m-icon" } else { "" },
-                    ctx.props().class_name.clone()
+                    ctx.props().classes.clone()
                 )}
                 // {...props}
             >
@@ -97,18 +97,15 @@ impl Component for ModalBoxTitle
                     }
                 }
                 {
-                    if label.len() > 0
-                    {
+                    if let Some(label) = label {
                         html!{
-                            <span class="pf-u-screen-reader">{&ctx.props().title_label}</span>
+                            <span class="pf-u-screen-reader">{label}</span>
                         }
-                    }
-                    else
-                    {
+                    } else {
                         html!{}
                     }
                 }
-                <span class="pf-v5-c-modal-box__title">{&ctx.props().title}</span>
+                <span class="pf-v5-c-modal-box__title-text">{ctx.props().title.clone()}</span>
             </h1>
         }
     }

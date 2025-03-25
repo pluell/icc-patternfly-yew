@@ -11,10 +11,10 @@ pub struct ModalBoxDescriptionProperties
     pub children: Children,
     /** Additional classes added to the description */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** ID of the description */
     #[prop_or_default]
-    pub id: String,
+    pub id: AttrValue,
 }
 
 impl Component for ModalBoxDescription
@@ -35,7 +35,7 @@ impl Component for ModalBoxDescription
                 id={ctx.props().id.clone()}
                 class={classes!(
                     "pf-v5-c-modal-box__description",
-                    ctx.props().class_name.clone()
+                    ctx.props().classes.clone()
                 )}
             >
                 { for ctx.props().children.iter() }

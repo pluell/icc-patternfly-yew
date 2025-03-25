@@ -11,7 +11,7 @@ pub struct ModalBoxBodyProperties
     pub children: Children,
     /** Additional classes added to the ModalBoxBody */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
 }
 
 impl Component for ModalBoxBody
@@ -31,7 +31,7 @@ impl Component for ModalBoxBody
                 //{...props} 
                 class={classes!(
                     "pf-v5-c-modal-box__body",
-                    ctx.props().class_name.clone(),
+                    ctx.props().classes.clone(),
                 )}
             >
                 { for ctx.props().children.iter() }

@@ -25,7 +25,7 @@ pub struct ModalProperties
     pub children: Children,
     /** Additional classes added to the Modal */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** Flag to show the modal */
     #[prop_or_default]
     pub is_open: bool,
@@ -37,7 +37,7 @@ pub struct ModalProperties
     pub help: Option<Html>,
     /** Simple text content of the Modal Header, also used for aria-label on the body */
     #[prop_or_default]
-    pub title: String,
+    pub title: Html,
     /** Optional alert icon (or other) to show before the title of the Modal Header
      * When the predefined alert types are used the default styling
      * will be automatically applied */
@@ -45,16 +45,16 @@ pub struct ModalProperties
     pub title_icon_variant: Option<ModalTitleIconVariants>,
     /** Optional title label text for screen readers */
     #[prop_or_default]
-    pub title_label: String,
+    pub title_label: AttrValue,
     /** Id to use for Modal Box label */
     #[prop_or_default]
-    pub aria_labelledby: Option<String>,
+    pub aria_labelledby: Option<AttrValue>,
     /** Accessible descriptor of modal */
     #[prop_or_default]
-    pub aria_label: String,
+    pub aria_label: AttrValue,
     /** Id to use for Modal Box descriptor */
     #[prop_or_default]
-    pub aria_describedby: String,
+    pub aria_describedby: AttrValue,
     /** Flag to show the close button in the header area of the modal */
     #[prop_or(true)]
     pub show_close: bool,
@@ -87,13 +87,13 @@ pub struct ModalProperties
     pub position_top: bool,
     /** Offset from alternate position. Can be any valid CSS length/percentage */
     #[prop_or_default]
-    pub position_offset: String,
+    pub position_offset: AttrValue,
     /** Flag indicating if modal content should be placed in a modal box body wrapper */
     #[prop_or_default]
     pub has_no_body_wrapper: bool,
     /** An ID to use for the ModalBox container */
     #[prop_or_default]
-    pub id: String,
+    pub id: AttrValue,
     /** Modal handles pressing of the Escape key and closes the modal. If you want to handle this yourself you can use this callback function */
     #[prop_or_default]
     pub onescapepress: Option<Callback<KeyboardEvent>>,

@@ -14,6 +14,12 @@ pub struct ModalBoxCloseButtonProperties
     /** A callback for when the close button is clicked */
     #[prop_or_default]
     pub onclose: Callback<()>,
+    /** Accessible descriptor of the close button. */
+    #[prop_or(AttrValue::from("Close"))]
+    pub aria_label: AttrValue,
+    /** Value to set the data-ouia-component-id.*/
+    #[prop_or_default]
+    pub ouia_id: Option<AttrValue>,
 }
 
 pub enum ModalBoxCloseButtonMsg
@@ -47,15 +53,23 @@ impl Component for ModalBoxCloseButton
     fn view(&self, ctx: &Context<Self>) -> Html
     {
         html!{
-            <Button 
-                classes={ctx.props().classes.clone()} 
-                variant={ButtonVariant::Plain}
-                onclick={ctx.link().callback(|_| ModalBoxCloseButtonMsg::OnButtonClick)}
-                aria_label="Close"
-                // {...props}
-            >
-                <i class="fas fa-times" aria-hidden="true"></i>
-            </Button>
+            <div class={classes!("pf-v5-c-modal-box__close", ctx.props().classes.clone())}>
+                <Button 
+                    variant={ButtonVariant::Plain}
+                    onclick={ctx.link().callback(|_| ModalBoxCloseButtonMsg::OnButtonClick)}
+                    aria_label={ctx.props().aria_label.clone()}
+                    // ouiaId={
+                    //     if let Some(ouia_id) = &ctx.props().ouia_id {
+                    //         Some(format!("{}-ModalBoxCloseButton"))
+                    //     } else {
+                    //         None
+                    //     }
+                    // }
+                    // {...props}
+                >
+                    {icc_patternfly_yew_icons::times_icon!()}
+                </Button>
+            </div>
         }
     }
 }
