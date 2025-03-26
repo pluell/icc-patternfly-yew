@@ -171,7 +171,7 @@ impl Alert
                     if ctx.props().truncate_title > 0 { "pf-m-truncate" } else { "" },
                 )}
             >
-                <span class="pf-screen-reader">{&variant_label}</span>
+                <span class="pf-v5-screen-reader">{&variant_label}</span>
                 {&ctx.props().title}
             </h4>
         }
