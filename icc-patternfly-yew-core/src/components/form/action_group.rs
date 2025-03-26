@@ -29,7 +29,7 @@ impl Component for ActionGroup
                 // {...props} 
                 class={classes!("pf-v5-c-form__group", "pf-m-action", ctx.props().class_name.to_string())}
             >
-                <div class={classes!("styles.pf-v5-c-form__group-control")}>
+                <div class={classes!("pf-v5-c-form__group-control")}>
                     <div class={classes!("pf-v5-c-form__actions")}>
                         { ctx.props().children.clone() }
                     </div>
