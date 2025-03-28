@@ -6,6 +6,7 @@ pub struct Tab;
 pub struct TabProperties
 {
     /** content rendered inside the Tab content area. */
+    #[prop_or_default]
     pub children: Children,
     /** additional classes added to the Tab */
     #[prop_or_default]
