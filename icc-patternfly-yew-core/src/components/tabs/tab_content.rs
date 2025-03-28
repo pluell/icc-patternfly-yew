@@ -35,6 +35,10 @@ pub struct TabContentProperties
     /** title of controlling Tab if used outside Tabs component */
     #[prop_or_default]
     pub aria_label: String,
+
+    // props
+    #[prop_or_default]
+    pub hidden: bool,
 }
 
 impl Component for TabContent
@@ -52,7 +56,7 @@ impl Component for TabContent
         let has_children = ctx.props().children.len() > 0;
 
         let is_hidden = if has_children {
-                false
+                ctx.props().hidden
             }
             else if let Some(child) = &ctx.props().child
             {
