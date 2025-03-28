@@ -35,7 +35,7 @@ pub struct DividerProps
 {
     /** Additional classes added to the divider */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** The component type to use */
     #[prop_or(DividerVariant::Hr)]
     pub component: DividerVariant,
@@ -74,7 +74,7 @@ impl Component for Divider
             "pf-v5-c-divider",
             if ctx.props().is_vertical {"pf-m-vertical"} else {""},
             ctx.props().inset.iter().map(|inset_mod| inset_mod.get_class()).collect::<Vec<String>>(),
-            ctx.props().class_name.clone()
+            ctx.props().classes.clone()
         );
 
         component.add_attribute("class", classes.to_string());
