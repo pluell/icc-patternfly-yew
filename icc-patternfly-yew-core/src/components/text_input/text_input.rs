@@ -19,7 +19,9 @@ pub enum TextInputReadOnlyVariant
 }
 
 
-pub struct TextInput;
+pub struct TextInput {
+    input_ref: NodeRef,
+}
 
 #[derive(Clone, PartialEq, Properties)]
 pub struct TextInputProperties
@@ -62,8 +64,8 @@ pub struct TextInputProperties
     #[prop_or_default]
     pub aria_label: AttrValue,
     // /** A reference object to attach to the input box. */
-    // #[prop_or_default]
-    // innerRef?: React.RefObject<any>;
+    #[prop_or_default]
+    pub inner_ref: Option<NodeRef>,
     /** Trim text on left */
     #[prop_or_default]
     pub is_left_truncated: bool,
@@ -102,7 +104,9 @@ impl Component for TextInput
 
     fn create(_: &Context<Self>) -> Self
     {
-        Self
+        Self {
+            input_ref: NodeRef::default()
+        }
     }
 
     /// Called everytime when messages are received
@@ -154,7 +158,7 @@ impl Component for TextInput
                     required={ctx.props().is_required}
                     disabled={ctx.props().is_disabled}
                     readonly={ctx.props().read_only_variant.is_some()}
-                    // ref={innerRef || this.inputRef}
+                    ref={ctx.props().inner_ref.as_ref().unwrap_or(&self.input_ref).clone()}// {innerRef || this.inputRef}
                     placeholder={ctx.props().placeholder.clone()}
                     // {...getOUIAProps(TextInput.displayName, ouiaId !== undefined ? ouiaId : this.state.ouiaStateId, ouiaSafe)}
                 />
