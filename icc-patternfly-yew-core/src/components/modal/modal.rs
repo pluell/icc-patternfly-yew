@@ -4,7 +4,7 @@ use wasm_bindgen::JsCast;
 use web_sys::Event;
 use gloo::events::{EventListener, EventListenerOptions};
 
-use web_sys::HtmlElement;
+use web_sys::{Element, HtmlElement};
 
 use crate::KeyCodes;
 use super::{ModalVariants, ModalContent, ModalTitleIconVariants};
@@ -13,7 +13,6 @@ use super::{ModalVariants, ModalContent, ModalTitleIconVariants};
 pub struct Modal
 {
     html_body: HtmlElement,
-    container_node: NodeRef,
     key_listener_handle: Option<EventListener>,
 }
 
@@ -121,7 +120,6 @@ impl Component for Modal
 
         Self {
             html_body,
-            container_node: NodeRef::default(),
             key_listener_handle: None,
         }
     }
@@ -151,8 +149,15 @@ impl Component for Modal
 
     fn view(&self, ctx: &Context<Self>) -> Html
     {
-        html!{
-            <div ref={self.container_node.clone()}>
+        // Get target element to attach the modal dialog to
+        let target = if let Some(append_to) = &ctx.props().append_to {
+            append_to.clone()
+        } else {
+            self.html_body.clone()
+        };
+
+        create_portal(
+            html!{
                 <ModalContent
                     // {...props}
                     children={ctx.props().children.clone()}
@@ -180,8 +185,9 @@ impl Component for Modal
                     position_top={ctx.props().position_top}
                     position_offset={ctx.props().position_offset.clone()}
                 />
-            </div>
-        }
+            },
+            Element::from(target)
+        )
     }
 
     fn rendered(&mut self, ctx: &Context<Self>, _first_render: bool)
@@ -243,9 +249,5 @@ impl Component for Modal
 
             self.key_listener_handle = Some(key_listener_handle);
         }
-
-        // Move the Modal component to the target container
-        target.append_child(&self.container_node.get().unwrap())
-            .expect("Unable to attach modal dialog to target element");
     }
 }
