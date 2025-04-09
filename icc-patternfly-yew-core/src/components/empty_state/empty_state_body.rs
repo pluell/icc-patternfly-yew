@@ -11,7 +11,7 @@ pub struct EmptyStateBodyProps
     pub children: Children,
     /** Additional classes added to the EmptyState */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
 }
 
 impl Component for EmptyStateBody
@@ -30,7 +30,7 @@ impl Component for EmptyStateBody
             <div 
                 class={classes!(
                     "pf-v5-c-empty-state__body",
-                    ctx.props().class_name.clone()
+                    ctx.props().classes.clone()
                 )}
                 // {...props}
             >

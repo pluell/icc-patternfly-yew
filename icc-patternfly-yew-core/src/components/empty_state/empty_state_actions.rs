@@ -1,23 +1,23 @@
 use yew::prelude::*;
 
 
-pub struct EmptyStateSecondaryAction;
+pub struct EmptyStateActions;
 
 #[derive(Clone, PartialEq, Properties)]
-pub struct EmptyStateSecondaryActionProps
+pub struct EmptyStateActionsProps
 {
-    /** Content rendered inside the EmptyState */
+    /** Content rendered inside the empty state actions */
     #[prop_or_default]
     pub children: Children,
-    /** Additional classes added to the EmptyState */
+    /** Additional classes added to the empty state actions */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
 }
 
-impl Component for EmptyStateSecondaryAction
+impl Component for EmptyStateActions
 {
     type Message = ();
-    type Properties = EmptyStateSecondaryActionProps;
+    type Properties = EmptyStateActionsProps;
 
     fn create(_: &Context<Self>) -> Self
     {
@@ -29,8 +29,8 @@ impl Component for EmptyStateSecondaryAction
         html!{
             <div 
                 class={classes!(
-                    "pf-v5-c-empty-state__secondary",
-                    ctx.props().class_name.clone()
+                    "pf-v5-c-empty-state__actions",
+                    ctx.props().classes.clone()
                 )}
                 // {...props}
             >

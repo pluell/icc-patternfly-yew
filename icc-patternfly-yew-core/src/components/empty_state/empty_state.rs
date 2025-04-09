@@ -18,7 +18,7 @@ pub struct EmptyStateProps
 {
     /** Additional classes added to the EmptyState */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** Content rendered inside the EmptyState */
     #[prop_or_default]
     pub children: Children,
@@ -56,7 +56,7 @@ impl Component for EmptyState
                     "pf-v5-c-empty-state",
                     variant_cls,
                     if ctx.props().is_full_height { "pf-m-full-height" } else { "" },
-                    ctx.props().class_name.clone()
+                    ctx.props().classes.clone()
                 )}
                 // {...props}
             >

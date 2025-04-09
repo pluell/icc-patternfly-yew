@@ -1,23 +1,23 @@
 use yew::prelude::*;
 
 
-pub struct EmptyStatePrimary;
+pub struct EmptyStateFooter;
 
 #[derive(Clone, PartialEq, Properties)]
-pub struct EmptyStatePrimaryProps
+pub struct EmptyStateFooterProps
 {
-    /** Additional classes added to the EmptyStatePrimary */
-    #[prop_or_default]
-    pub class_name: String,
-    /** Content rendered inside the EmptyStatePrimary */
+    /** Content rendered inside the empty state footer */
     #[prop_or_default]
     pub children: Children,
+    /** Additional classes added to the empty state footer */
+    #[prop_or_default]
+    pub classes: Classes,
 }
 
-impl Component for EmptyStatePrimary
+impl Component for EmptyStateFooter
 {
     type Message = ();
-    type Properties = EmptyStatePrimaryProps;
+    type Properties = EmptyStateFooterProps;
 
     fn create(_: &Context<Self>) -> Self
     {
@@ -29,8 +29,8 @@ impl Component for EmptyStatePrimary
         html!{
             <div 
                 class={classes!(
-                    "pf-v5-c-empty-state__primary",
-                    ctx.props().class_name.clone()
+                    "pf-v5-c-empty-state__footer",
+                    ctx.props().classes.clone()
                 )}
                 // {...props}
             >
