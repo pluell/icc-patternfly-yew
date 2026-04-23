@@ -21,7 +21,7 @@ pub struct SortColumn
 pub struct SortColumnProps
 {
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     #[prop_or_default]
     pub classes: Classes,
     #[prop_or_default]
@@ -109,7 +109,7 @@ impl Component for SortColumn
                         tooltip_has_default_behavior={ctx.props().tooltip_has_default_behavior}
                         focused={self.focused}
                     >
-                        { for ctx.props().children.iter() }
+                        { ctx.props().children.clone() }
                     </TableText>
                     <span class="pf-v5-c-table__sort-indicator">
                         {sort_by_icon}

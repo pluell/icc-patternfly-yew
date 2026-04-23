@@ -8,7 +8,7 @@ pub struct AboutModalBoxContentProps
 {
     /** content rendered inside the AboutModalBoxContent  */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** additional classes added to the AboutModalBoxContent  */
     #[prop_or_default]
     pub class_name: String,
@@ -43,13 +43,13 @@ impl Component for AboutModalBoxContent
                     if ctx.props().no_about_modal_box_content_container
                     {
                         html!{
-                            for ctx.props().children.iter()
+                            ctx.props().children.clone()
                         }
                     }
                     else
                     {
                         html!{
-                            <div class={classes!("pf-v5-c-content")}>{for ctx.props().children.iter()}</div>
+                            <div class={classes!("pf-v5-c-content")}>{ctx.props().children.clone()}</div>
                         }
                     }
                 }

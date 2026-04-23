@@ -21,7 +21,7 @@ pub struct ModalProperties
 {
     /** Content rendered inside the Modal. */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the Modal */
     #[prop_or_default]
     pub classes: Classes,

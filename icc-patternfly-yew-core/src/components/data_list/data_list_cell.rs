@@ -10,7 +10,7 @@ pub struct DataListCellProps
 {
     /** Content rendered inside the DataList cell */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the DataList cell */
     #[prop_or_default]
     pub class_name: String,
@@ -64,7 +64,7 @@ impl Component for DataListCell
                 )}
                 // {...props}
             >
-                { for ctx.props().children.iter() }
+                { ctx.props().children.clone() }
             </div>
         }
     }

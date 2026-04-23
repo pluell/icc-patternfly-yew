@@ -63,7 +63,7 @@ pub struct ToolbarProperties
     // };
     /** Text to display in the total number of applied filters ToolbarFilter */
     #[prop_or_default]
-    pub number_of_filters_text: Option<fn(i32) -> String>, // (numberOfFilters: number) => string;
+    pub number_of_filters_text: Option<Callback<i32, String>>, // (numberOfFilters: number) => string;
     // /** Value to overwrite the randomly generated data-ouia-component-id.*/
     // ouiaId?: number | string;
     // /** Set the value of data-ouia-safe. Only set to true when the component is in a static state, i.e. no animations are occurring. At all other times, this value must be false. */
@@ -132,7 +132,7 @@ impl Component for Toolbar
                     update_number_filters,
                     number_of_filters,
                 }}>
-                    {for ctx.props().children.iter()}
+                    { for ctx.props().children.iter() }
                     <ToolbarChipGroupContent 
                         {is_expanded}
                         chip_group_content_ref={self.chip_group_content_ref.clone()}

@@ -10,7 +10,7 @@ pub struct DataListItemRowProps
 {
     /** Content rendered inside the DataListItemRow  */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the DataListItemRow */
     #[prop_or_default]
     pub class_name: String,
@@ -51,7 +51,7 @@ impl Component for DataListItemRow
                 //     rowid
                 //     })
                 // )}
-                { for ctx.props().children.iter() }
+                { ctx.props().children.clone() }
             </div>
         }
     }

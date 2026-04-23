@@ -39,7 +39,7 @@ pub struct FormSection;
 pub struct FormSectionProperties
 {
     /** Content rendered inside the section */
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the FormSection. */
     #[prop_or_default]
     pub class_name: String,

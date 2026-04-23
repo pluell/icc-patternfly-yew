@@ -10,7 +10,7 @@ pub struct ModalBoxProperties
 {
     /** Content rendered inside the ModalBox. */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the ModalBox */
     #[prop_or_default]
     pub classes: Classes,
@@ -82,7 +82,7 @@ impl Component for ModalBox
                 )}
                 style={style}
             >
-                { for ctx.props().children.iter() }
+                { ctx.props().children.clone() }
             </div>
         }
     }

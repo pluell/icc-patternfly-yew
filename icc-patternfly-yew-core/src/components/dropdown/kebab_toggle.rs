@@ -16,7 +16,7 @@ pub struct KebabToggleProperties
     pub id: String,
     /** Anything which can be rendered as dropdown toggle */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Classess applied to root element of dropdown toggle */
     #[prop_or_default]
     pub class_name: String,

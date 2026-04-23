@@ -10,7 +10,7 @@ pub struct DropdownProperties
 {
     /** Anything which can be rendered in a dropdown */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Classes applied to root element of dropdown */
     #[prop_or_default]
     pub class_name: String,

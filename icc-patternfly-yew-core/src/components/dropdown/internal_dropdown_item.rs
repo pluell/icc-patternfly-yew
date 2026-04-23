@@ -13,7 +13,7 @@ pub struct InternalDropdownItemProperties
 {
     /** Anything which can be rendered as dropdown item */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Whether to set className on component when React.isValidElement(component) */
     #[prop_or(true)]
     pub style_children: bool,

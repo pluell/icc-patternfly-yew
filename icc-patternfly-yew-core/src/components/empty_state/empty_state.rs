@@ -21,7 +21,7 @@ pub struct EmptyStateProps
     pub classes: Classes,
     /** Content rendered inside the EmptyState */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Modifies EmptyState max-width */
     #[prop_or(EmptyStateVariant::Full)]
     pub variant: EmptyStateVariant,
@@ -62,7 +62,7 @@ impl Component for EmptyState
             >
                 <div class="pf-v5-c-empty-state__content">
                 {
-                    for ctx.props().children.iter()
+                    ctx.props().children.clone()
                 }
                 </div>
             </div>

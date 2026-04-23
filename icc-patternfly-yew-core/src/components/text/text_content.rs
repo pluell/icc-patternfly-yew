@@ -8,7 +8,7 @@ pub struct TextContentProperties
 {
     /** Content rendered within the TextContent */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the TextContent */
     #[prop_or_default]
     pub class_name: String,
@@ -34,7 +34,7 @@ impl Component for TextContent
                     ctx.props().class_name.clone(),
                 )}
             >
-                { for ctx.props().children.iter() }
+                { ctx.props().children.clone() }
             </div>
         }
     }

@@ -17,7 +17,7 @@ pub struct InputGroupTextProperties {
     pub classes: Classes,
     /** Content rendered inside the input group text. */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Component that wraps the input group text. */
     #[prop_or(String::from("span"))]
     pub component: String,
@@ -57,7 +57,7 @@ impl InputGroupText
         
         //     {...props}
 
-        component.add_children(ctx.props().children.iter());
+        component.add_child(ctx.props().children.clone());
 
         component.into()
     }

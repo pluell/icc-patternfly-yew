@@ -15,7 +15,7 @@ pub struct InputGroupItemProperties {
     pub classes: Classes,
     /** Content rendered inside the input group item. */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Enables box styling to the input group item */
     #[prop_or_default]
     pub is_box: bool,
@@ -51,7 +51,7 @@ impl Component for InputGroupItem {
                 )}
                 // {...props}
             >
-                {for ctx.props().children.iter()}
+                {ctx.props().children.clone()}
             </div>
         }
     }

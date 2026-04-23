@@ -39,7 +39,7 @@ pub struct BreadcrumbItemProps
     pub component: String,
     /** A render function to render the component inside the breadcrumb item. */
     #[prop_or_default]
-    pub render: Option<fn(BreadcrumbItemRenderArgs) -> Html>,
+    pub render: Option<Callback<BreadcrumbItemRenderArgs, Html>>,
 }
 
 impl Component for BreadcrumbItem
@@ -105,7 +105,7 @@ impl Component for BreadcrumbItem
                 }
                 else if let Some(render) = &ctx.props().render
                 {
-                    render(BreadcrumbItemRenderArgs{
+                    render.emit(BreadcrumbItemRenderArgs{
                         class_name: classes.to_string(),
                         aria_current,
                     })

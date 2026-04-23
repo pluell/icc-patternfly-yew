@@ -11,7 +11,7 @@ pub struct DataListItemProps
     pub is_expanded: bool,
     /** Content rendered inside the DataList item */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the DataList item should be either <DataListItemRow> or <DataListContent> */
     #[prop_or_default]
     pub class_name: String,
@@ -59,7 +59,7 @@ impl Component for DataListItem
             //         rowid: ariaLabelledBy
             //       })
             //   )}
-                { for ctx.props().children.iter() }
+                { ctx.props().children.clone() }
             </li>
         }
     }

@@ -20,7 +20,7 @@ pub struct TableProps
     pub aria_label: Option<String>,
     /** Content rendered inside the Table */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the Table  */
     #[prop_or_default]
     pub classes: Classes,
@@ -159,7 +159,7 @@ impl Component for Table
                             html!{}
                         }
                     }
-                    {for ctx.props().children.iter()}
+                    {ctx.props().children.clone()}
                 </table>
             </ContextProvider<TableContext>>
         }

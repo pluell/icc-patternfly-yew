@@ -11,7 +11,7 @@ pub struct ProgressBarProps
 {
     /** What should be rendered inside progress bar. */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes for Progress bar. */
     #[prop_or_default]
     pub class_name: String,
@@ -56,7 +56,7 @@ impl Component for ProgressBar
             <div class="pf-v5-c-progress__indicator" style={format!("width: {}%", ctx.props().value)}>
                 <span class="pf-v5-c-progress__measure">
                 {
-                    for ctx.props().children.iter()
+                    ctx.props().children.clone()
                 }
                 </span>
             </div>

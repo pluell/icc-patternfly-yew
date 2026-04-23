@@ -261,7 +261,7 @@ impl<V: ToString + PartialEq + Clone + 'static> Select<V>
         }
         else
         {
-            html! {
+            html! {{
                 for ctx.props().children.iter()
                     .map(|mut select_opt| {
                         let mut props = (&*select_opt.props).clone();
@@ -274,7 +274,7 @@ impl<V: ToString + PartialEq + Clone + 'static> Select<V>
 
                         select_opt
                     })
-            }
+            }}
         }
     }
 

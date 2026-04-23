@@ -21,7 +21,7 @@ pub struct FormGroup;
 pub struct FormGroupProperties
 {
      /** Anything that can be rendered as FormGroup content. */
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the FormGroup. */
     #[prop_or_default]
     pub class_name: String,

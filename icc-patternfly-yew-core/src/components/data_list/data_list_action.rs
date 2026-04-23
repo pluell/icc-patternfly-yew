@@ -9,7 +9,7 @@ pub struct DataListAction;
 pub struct DataListActionProps
 {
     /** Content rendered as DataList Action  (e.g <Button> or <Dropdown>) */
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the DataList Action */
     #[prop_or_default]
     pub class_name: String,
@@ -53,14 +53,14 @@ impl Component for DataListAction
                 {
                     html!{
                         <div class={"pf-v5-c-data-list__action"}>
-                            { for ctx.props().children.iter() }
+                            { ctx.props().children.clone() }
                         </div>
                     }
                 }
                 else
                 {
                     html!{
-                        for ctx.props().children.iter()
+                        ctx.props().children.clone()
                     }
                 }
             }

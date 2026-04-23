@@ -9,7 +9,7 @@ pub struct SelectMenu;
 pub struct SelectMenuProperties
 {
     pub variant: SelectVariant,
-    pub children: Children,
+    pub children: Html,
     pub menu_ref: NodeRef,
 }
 

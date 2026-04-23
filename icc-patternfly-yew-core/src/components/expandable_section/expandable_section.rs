@@ -9,7 +9,7 @@ pub struct ExpandableSection
 pub struct ExpandableSectionProperties
 {
     /** Content rendered inside the Expandable Component */
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the Expandable Component */
     #[prop_or_default]
     pub class_name: String,

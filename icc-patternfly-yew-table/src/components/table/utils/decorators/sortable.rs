@@ -51,7 +51,7 @@ pub struct SortableHeaderProps
     sort_by: Option<ISortBy>,
 }
 
-#[function_component]
+#[component]
 fn SortableHeader(props: &SortableHeaderProps) -> Html
 {
     let sort_clicked = {

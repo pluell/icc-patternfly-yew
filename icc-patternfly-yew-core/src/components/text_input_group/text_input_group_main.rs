@@ -16,7 +16,7 @@ pub struct TextInputGroupMainProperties
 {
     /** Content rendered inside the text input group main div */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes applied to the text input group main container */
     #[prop_or_default]
     pub classes: Classes,
@@ -147,7 +147,7 @@ impl Component for TextInputGroupMain
                     ctx.props().classes.clone(),
                 )}
             >
-                {for ctx.props().children.iter()}
+                {ctx.props().children.clone()}
                 <span class="pf-v5-c-text-input-group__text">
                     {
                         if let Some(hint) = &ctx.props().hint

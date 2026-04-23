@@ -23,7 +23,7 @@ pub struct AboutModalProps
 {
     /** Content rendered inside the about modal  */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the about modal  */
     #[prop_or_default]
     pub class_name: String,

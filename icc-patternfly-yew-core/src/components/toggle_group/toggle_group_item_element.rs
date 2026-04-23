@@ -15,7 +15,7 @@ pub struct ToggleGroupItemElementProps
 {
     /** Content rendered inside the toggle group item */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Adds toggle group item variant styles */
     pub variant: ToggleGroupItemVariant,
 }
@@ -39,7 +39,7 @@ impl Component for ToggleGroupItemElement
                     if ctx.props().variant == ToggleGroupItemVariant::Text { "pf-v5-c-toggle-group__text" } else { "" },
                 )}
             >
-                { for ctx.props().children.iter() }
+                { ctx.props().children.clone() }
             </span>
         }
     }

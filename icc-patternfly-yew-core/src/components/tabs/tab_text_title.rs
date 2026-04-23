@@ -7,7 +7,7 @@ pub struct TabTextTitle;
 pub struct TabTextTitleProperties
 {
     /** Text to be rendered inside the tab button title. */
-    pub children: Children,
+    pub children: Html,
     /** additional classes added to the tab title text */
     #[prop_or_default]
     pub class_name: String,

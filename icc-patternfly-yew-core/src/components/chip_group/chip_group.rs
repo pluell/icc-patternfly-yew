@@ -25,17 +25,17 @@ pub struct ChipGroupProperties
     #[prop_or_default]
     pub default_is_open: bool,
     /** Customizable "Show Less" text string */
-    #[prop_or(Some(String::from("Show Less")))]
-    pub expanded_text: Option<String>,
+    #[prop_or(Some(AttrValue::from("Show Less")))]
+    pub expanded_text: Option<AttrValue>,
     /** Customizeable template string. Use variable "${remaining}" for the overflow chip count. */
     #[prop_or_default]
-    pub collapsed_text: Option<String>,
+    pub collapsed_text: Option<AttrValue>,
     /** Category name text for the chip group category.  If this prop is supplied the chip group with have a label and category styling applied */
     #[prop_or_default]
-    pub category_name: String,
+    pub category_name: AttrValue,
     /** Aria label for chip group that does not have a category name */
     #[prop_or_default]
-    pub aria_label: Option<String>,
+    pub aria_label: Option<AttrValue>,
     /** Set number of chips to show before overflow */
     #[prop_or(3)]
     pub num_chips: i32,
@@ -44,7 +44,7 @@ pub struct ChipGroupProperties
     pub is_closable: bool,
     /** Aria label for close button */
     #[prop_or_default]
-    pub close_btn_aria_label: Option<String>,
+    pub close_btn_aria_label: Option<AttrValue>,
     /** Function that is called when clicking on the chip group close button */
     #[prop_or_default]
     pub onclick: Callback<MouseEvent>,
@@ -144,10 +144,10 @@ impl Component for ChipGroup
                                     >
                                     {
                                         if self.is_open {
-                                            ctx.props().expanded_text.clone().unwrap_or(String::new())
+                                            ctx.props().expanded_text.clone().unwrap_or(AttrValue::from(""))
                                         } else {
                                             let remaining = ctx.props().children.len() as i32 - ctx.props().num_chips;
-                                            ctx.props().collapsed_text.clone().unwrap_or(format!("{} more", remaining))
+                                            ctx.props().collapsed_text.clone().unwrap_or(format!("{} more", remaining).into())
                                         }
                                     }
                                     </Chip>

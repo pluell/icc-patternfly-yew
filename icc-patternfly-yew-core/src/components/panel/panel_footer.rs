@@ -9,7 +9,7 @@ pub struct PanelFooterProperties
 {
     /** Content rendered inside the panel footer */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Class to add to outer div */
     #[prop_or_default]
     pub classes: Classes,
@@ -41,7 +41,7 @@ impl Component for PanelFooter
                 )}
                 // {...props}
             >
-                {for ctx.props().children.iter()}
+                {ctx.props().children.clone()}
             </div>
         }
     }

@@ -6,7 +6,7 @@ pub struct FormAlert;
 pub struct FormAlertProperties
 {
     /** An inline PatternFly Alert. */
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the FormAlert. */
     #[prop_or_default]
     pub class_name: String,

@@ -82,7 +82,7 @@ pub struct FileUploadFieldProperties
     pub allow_editing_uploaded_text: bool,
     /** Additional children to render after (or instead of) the file preview. */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
 
     // Props available in FileUploadField but not FileUpload:
 
@@ -222,7 +222,7 @@ impl Component for FileUploadField
                 }
                 </div>
                 {
-                    for ctx.props().children.iter()
+                    ctx.props().children.clone()
                 }
             </div>
         }

@@ -8,7 +8,7 @@ pub struct MastheadContentProps
 {
     /** Content rendered inside of the masthead content block. */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the masthead content. */
     #[prop_or_default]
     pub class_name: String,
@@ -34,7 +34,7 @@ impl Component for MastheadContent
                 )}
                 // {...props}
             >
-                {for ctx.props().children.iter()}
+                {ctx.props().children.clone()}
             </div>
         }
     }

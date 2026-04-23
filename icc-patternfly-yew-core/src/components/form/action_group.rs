@@ -6,7 +6,7 @@ pub struct ActionGroup;
 pub struct ActionGroupProps
 {
     /** Anything that can be rendered as ActionGroup content. */
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the ActionGroup. */
     #[prop_or_default]
     pub class_name: String,

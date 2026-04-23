@@ -11,7 +11,7 @@ pub struct MastheadBrandProps
 {
     /** Content rendered inside of the masthead brand. */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the masthead brand. */
     #[prop_or_default]
     pub class_name: String,
@@ -50,7 +50,7 @@ impl Component for MastheadBrand
 
         //     {...props}
 
-        component.add_children(ctx.props().children.iter());
+        component.add_child(ctx.props().children.clone());
 
         component.into()
     }

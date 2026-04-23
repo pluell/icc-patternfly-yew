@@ -33,7 +33,7 @@ pub struct TextListProperties
 {
     /** Content rendered within the TextList */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the TextList */
     #[prop_or_default]
     pub class_name: String,
@@ -63,7 +63,7 @@ impl Component for TextList
 
         component.add_attribute("data-pf-content", true.to_string());
 
-        component.add_children(ctx.props().children.iter());
+        component.add_child(ctx.props().children.clone());
 
         component.into()
     }

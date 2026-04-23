@@ -14,7 +14,7 @@ pub struct DataListItemCellsProps
 {
     /** Additional classes added to the DataList item Content Wrapper.  Children should be one ore more <DataListCell> nodes */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** Array of <DataListCell> nodes that are rendered one after the other. */
     #[prop_or_default]
     pub data_list_cells: Vec<VChild<DataListCell>>,
@@ -39,11 +39,11 @@ impl Component for DataListItemCells
             <div 
                 class={classes!(
                     "pf-v5-c-data-list__item-content",
-                    ctx.props().class_name.clone(),
+                    ctx.props().classes.clone(),
                 )}
                 // {...props}
             >
-                { ctx.props().data_list_cells.clone() }
+                { for ctx.props().data_list_cells.iter().map(|cell| cell.clone())}
             </div>
         }
     }

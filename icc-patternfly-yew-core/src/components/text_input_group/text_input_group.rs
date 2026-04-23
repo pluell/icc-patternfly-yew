@@ -11,7 +11,7 @@ pub struct TextInputGroupProperties
 {
     /** Content rendered inside the text input group */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes applied to the text input group container */
     #[prop_or_default]
     pub classes: Classes,
@@ -55,7 +55,7 @@ impl Component for TextInputGroup
                     )}
                     // {...props}
                 >
-                    {for ctx.props().children.iter()}
+                    {ctx.props().children.clone()}
                 </div>
             </ContextProvider<TextInputGroupContext>>
         }

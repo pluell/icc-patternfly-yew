@@ -6,7 +6,7 @@ pub struct HelperText;
 pub struct HelperTextProperties
 {
     /** Content rendered inside the helper text container. */
-    pub children: Children,
+    pub children: Html,
     /** Additional classes applied to the helper text container. */
     #[prop_or_default]
     pub classes: Classes,

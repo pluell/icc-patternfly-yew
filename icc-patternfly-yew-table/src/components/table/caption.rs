@@ -8,7 +8,7 @@ pub struct CaptionProps
 {
     /** Content rendered inside the caption */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the caption  */
     #[prop_or_default]
     pub classes: Classes,
@@ -34,7 +34,7 @@ impl Component for Caption
                 )}
                 // {...props}
             >
-            { for ctx.props().children.iter() }
+            { ctx.props().children.clone() }
             </caption>
         }
     }

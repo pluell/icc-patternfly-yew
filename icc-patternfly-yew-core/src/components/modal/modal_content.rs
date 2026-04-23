@@ -30,7 +30,7 @@ pub struct ModalContentProperties
 {
     /** Content rendered inside the Modal. */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the button */
     #[prop_or_default]
     pub classes: Classes,
@@ -238,7 +238,7 @@ impl ModalContent
     {
         if ctx.props().has_no_body_wrapper
         {
-            html!{ for ctx.props().children.iter() }
+            html!{ ctx.props().children.clone() }
         }
         else
         {
@@ -247,7 +247,7 @@ impl ModalContent
                     //{...props} 
                     // {...(!description && !ariaDescribedby && { id: descriptorId })}
                 >
-                    { for ctx.props().children.iter() }
+                    { ctx.props().children.clone() }
                 </ModalBoxBody>
             }
         }

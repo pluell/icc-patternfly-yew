@@ -6,7 +6,7 @@ pub struct Form;
 pub struct FormProperties
 {
     /** Anything that can be rendered as Form content. */
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the Form. */
     #[prop_or_default]
     pub class_name: String,

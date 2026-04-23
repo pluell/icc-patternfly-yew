@@ -8,7 +8,7 @@ pub struct OuterScrollContainerProps
 {
     /** Content rendered inside the outer scroll container */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the container */
     #[prop_or_default]
     pub classes: Classes,
@@ -34,7 +34,7 @@ impl Component for OuterScrollContainer
                 )} 
                 // {...props}
             >
-            { for ctx.props().children.iter() }
+            { ctx.props().children.clone() }
             </div>
         }
     }

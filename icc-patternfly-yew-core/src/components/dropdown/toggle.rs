@@ -25,7 +25,7 @@ pub struct ToggleProperties
     pub toggle_type: ButtonType,
     /** Anything which can be rendered as dropdown toggle */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Classes applied to root element of dropdown toggle */
     #[prop_or_default]
     pub class_name: String,

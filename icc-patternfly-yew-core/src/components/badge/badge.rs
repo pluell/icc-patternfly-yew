@@ -15,7 +15,7 @@ pub struct BadgeProperties
     pub is_read: bool,
     /** content rendered inside the Badge */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** additional classes added to the Badge */
     #[prop_or_default]
     pub classes: Option<Classes>,
@@ -48,7 +48,7 @@ impl Component for Badge
                     ctx.props().classes.clone(),
                 )}
             >
-                {for ctx.props().children.iter()}
+                {ctx.props().children.clone()}
                 {
                     if let Some(screen_reader_text) = &ctx.props().screen_reader_text
                     {

@@ -11,7 +11,7 @@ pub struct BreadcrumbHeadingProps
 {
     /** Content rendered inside the breadcrumb title. */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the breadcrumb item. */
     #[prop_or_default]
     pub class_name: String,
@@ -77,7 +77,7 @@ impl Component for BreadcrumbHeading
                                 aria-current={true.to_string()}
                                 type="button"
                             >
-                                {for ctx.props().children.iter()}
+                                {ctx.props().children.clone()}
                             </button>
                         }
                     }
@@ -95,14 +95,14 @@ impl Component for BreadcrumbHeading
                         component.add_attribute("class", "pf-v5-c-breadcrumb__link pf-m-current");
                         component.add_attribute("aria-current", "page");
                                 
-                        component.add_children(ctx.props().children.iter());
+                        component.add_child(ctx.props().children.clone());
                 
                         component.into()
                     }
                     else
                     {
                         html!{
-                            for ctx.props().children.iter()
+                            ctx.props().children.clone()
                         }
                     }
                 }

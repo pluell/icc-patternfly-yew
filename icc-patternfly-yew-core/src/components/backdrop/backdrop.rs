@@ -8,7 +8,7 @@ pub struct BackdropProperties
 {
     /** content rendered inside the backdrop */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** additional classes added to the button */
     #[prop_or_default]
     pub class_name: String,
@@ -33,7 +33,7 @@ impl Component for Backdrop
                     ctx.props().class_name.clone()
                 )}
             >
-            { for ctx.props().children.iter() }
+            { ctx.props().children.clone() }
             </div>
         }
     }

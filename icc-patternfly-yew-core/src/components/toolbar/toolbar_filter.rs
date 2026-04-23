@@ -42,7 +42,7 @@ pub struct ToolbarFilterProperties
     #[prop_or_default]
     pub chip_group_collapsed_text: Option<String>,
     /** Content to be rendered inside the data toolbar item associated with the chip group */
-    pub children: Children,
+    pub children: Html,
     /** Unique category name to be used as a label for the chip group */
     pub category_name: String,
     /** Flag to show the toolbar item */
@@ -135,7 +135,7 @@ impl Component for ToolbarFilter
                                         ToolbarFilterMsg::DeleteChip(chip_msg.clone())
                                     })}
                                 >
-                                    { chip.to_string() }
+                                    { chip }
                                 </Chip>
                             }
                         })

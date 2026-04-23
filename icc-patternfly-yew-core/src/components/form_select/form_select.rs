@@ -128,7 +128,7 @@ impl Component for FormSelect
                             props.is_selected = props.value == ctx.props().value;
 
                             option
-                        }) 
+                        })
                     }
                 </select>
                 <span class="pf-v5-c-form-control__utilities">

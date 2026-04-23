@@ -8,7 +8,7 @@ pub struct EmptyStateBodyProps
 {
     /** Content rendered inside the EmptyState */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the EmptyState */
     #[prop_or_default]
     pub classes: Classes,
@@ -35,7 +35,7 @@ impl Component for EmptyStateBody
                 // {...props}
             >
             {
-                for ctx.props().children.iter()
+                ctx.props().children.clone()
             }
             </div>
         }

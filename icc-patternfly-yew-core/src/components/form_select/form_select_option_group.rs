@@ -7,7 +7,7 @@ pub struct FormSelectOptionGroup;
 pub struct FormSelectOptionGroupProps {
     /** content rendered inside the Select Option Group */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** additional classes added to the Select Option */
     #[prop_or_default]
     pub classes: Classes,

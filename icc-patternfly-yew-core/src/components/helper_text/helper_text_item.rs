@@ -31,7 +31,7 @@ pub struct HelperTextItem;
 pub struct HelperTextItemProperties
 {
     /** Content rendered inside the helper text item. */
-    pub children: Children,
+    pub children: Html,
     /** Additional classes applied to the helper text item. */
     #[prop_or_default]
     pub classes: Classes,

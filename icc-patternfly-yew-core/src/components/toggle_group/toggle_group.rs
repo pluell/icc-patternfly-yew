@@ -48,7 +48,7 @@ impl Component for ToggleGroup
                 aria-label={ctx.props().aria_label.clone()}
                 // {...props}
             >
-            { 
+            {
                 for ctx.props().children.iter().map(|mut group_item| {
                     let props = std::rc::Rc::make_mut(&mut group_item.props);
 
@@ -58,7 +58,7 @@ impl Component for ToggleGroup
                     }
 
                     group_item
-                }) 
+                })
             }
             </div>
         }

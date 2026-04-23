@@ -8,7 +8,7 @@ pub struct ModalBoxHeaderProperties
 {
     /** Content rendered inside the Header */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the button */
     #[prop_or_default]
     pub classes: Classes,
@@ -44,7 +44,7 @@ impl Component for ModalBoxHeader
                     html!{
                         <>
                             <div class="pf-v5-c-modal-box__header-main">
-                                { for ctx.props().children.iter() }
+                                { ctx.props().children.clone() }
                             </div>
                             <div class="pf-v5-c-modal-box__header-help">
                                 { help.clone() }
@@ -55,7 +55,7 @@ impl Component for ModalBoxHeader
                 else
                 {
                     html!{
-                        for ctx.props().children.iter()
+                        ctx.props().children.clone()
                     }
                 }
             }

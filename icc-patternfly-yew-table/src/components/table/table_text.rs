@@ -16,7 +16,7 @@ pub struct TableTextProps
 {
     /** Content rendered within the table text */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the table text */
     #[prop_or_default]
     pub classes: Classes,
@@ -70,7 +70,7 @@ impl Component for TableText
                 )}
                 // {...props}
             >
-                { for ctx.props().children.iter() }
+                { ctx.props().children.clone() }
             </@>
         }
     }

@@ -8,7 +8,7 @@ pub struct EmptyStateFooterProps
 {
     /** Content rendered inside the empty state footer */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the empty state footer */
     #[prop_or_default]
     pub classes: Classes,
@@ -35,7 +35,7 @@ impl Component for EmptyStateFooter
                 // {...props}
             >
             {
-                for ctx.props().children.iter()
+                ctx.props().children.clone()
             }
             </div>
         }

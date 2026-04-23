@@ -14,7 +14,7 @@ pub struct ChipProperties
     #[prop_or_default]
     pub badge: Option<Html>,
     /** Content rendered inside the chip text */
-    pub children: Children,
+    pub children: Html,
     /** Aria Label for close button */
     #[prop_or_default]
     pub close_btn_aria_label: Option<String>,

@@ -9,7 +9,7 @@ pub struct TextInputGroupUtilitiesProperties
 {
     /** Content rendered inside the text input group utilities div */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes applied to the text input group utilities container */
     #[prop_or_default]
     pub classes: Classes,
@@ -42,7 +42,7 @@ impl Component for TextInputGroupUtilities
                 )}
                 // {...props}
             >
-                {for ctx.props().children.iter()}
+                {ctx.props().children.clone()}
             </div>
         }
     }

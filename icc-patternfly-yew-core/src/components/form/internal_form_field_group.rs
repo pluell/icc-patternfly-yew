@@ -10,7 +10,7 @@ pub struct InternalFormFieldGroupProps
 {
     /** Anything that can be rendered as form field group content. */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the form field group. */
     #[prop_or_default]
     pub class_name: String,
@@ -96,7 +96,7 @@ impl Component for InternalFormFieldGroup
                     {
                         html!{
                             <div class="pf-v5-c-form__field-group-body">
-                                {for ctx.props().children.iter()}
+                                {ctx.props().children.clone()}
                             </div>
                         }
                     }

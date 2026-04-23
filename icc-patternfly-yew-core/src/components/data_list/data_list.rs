@@ -39,7 +39,7 @@ pub struct DataListProps
 {
     /** Content rendered inside the DataList list */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the DataList list */
     #[prop_or_default]
     pub class_name: String,
@@ -90,7 +90,7 @@ impl Component for DataList
                 // {...dragProps}
                 // ref={this.ref}
             >
-                { for ctx.props().children.iter() }
+                { ctx.props().children.clone() }
             </ul>
         }
     }

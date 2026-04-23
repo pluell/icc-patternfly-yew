@@ -8,7 +8,7 @@ pub struct ModalBoxFooterProperties
 {
     /** Content rendered inside the Footer */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the Footer */
     #[prop_or_default]
     pub classes: Classes,
@@ -34,7 +34,7 @@ impl Component for ModalBoxFooter
                     ctx.props().classes.clone(),
                 )}
             >
-                { for ctx.props().children.iter() }
+                { ctx.props().children.clone() }
             </footer>
         }
     }

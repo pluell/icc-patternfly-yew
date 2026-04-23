@@ -30,7 +30,7 @@
       devShells = forAllSystems ({ pkgs }: {
         default = pkgs.mkShell {
           packages = (with pkgs; [
-            (rust-bin.stable."1.73.0".default.override {
+            (rust-bin.stable.latest.default.override {
               targets = [ "wasm32-unknown-unknown" ];
             })
             # Use nightly for rustfmt

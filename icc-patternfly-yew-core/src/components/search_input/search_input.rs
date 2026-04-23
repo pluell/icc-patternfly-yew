@@ -227,7 +227,7 @@ impl SearchInput {
                                 if let Some(results_count) = &ctx.props().results_count
                                 {
                                     html!{
-                                        <Badge is_read={true}>{results_count.to_string()}</Badge>
+                                        <Badge is_read={true}>{results_count}</Badge>
                                     }
                                 }
                                 else {

@@ -8,7 +8,7 @@ pub struct AboutModalBoxProps
 {
     /** content rendered inside the AboutModelBox.  */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** additional classes added to the AboutModalBox  */
     #[prop_or_default]
     pub class_name: String,
@@ -40,7 +40,7 @@ impl Component for AboutModalBox
                 aria-labelledby={ctx.props().aria_labelledby.clone()}
                 aria-describedby={ctx.props().aria_describedby.clone()}
             >
-                {for ctx.props().children.iter()}
+                {ctx.props().children.clone()}
             </div>
         }
     }

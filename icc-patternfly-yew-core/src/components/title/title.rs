@@ -16,7 +16,7 @@ pub struct TitleProperties
     pub size: Option<TitleSizes>,
     /** Content rendered inside the Title */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the Title */
     #[prop_or_default]
     pub class_name: String,
@@ -72,7 +72,7 @@ impl Component for Title
             component.add_attribute("id", id.clone());
         }
 
-        component.add_children(ctx.props().children.iter());
+        component.add_child(ctx.props().children.clone());
 
         component.into()
     }

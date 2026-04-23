@@ -5,3 +5,8 @@ members = [
     "icc-patternfly-yew-icons",
     "icc-patternfly-yew-table",
 ]
+
+[workspace.dependencies]
+log = "0.4"
+yew ="0.22"
+yewtil = "0.4"

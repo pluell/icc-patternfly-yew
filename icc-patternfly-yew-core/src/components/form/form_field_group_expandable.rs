@@ -13,7 +13,7 @@ pub struct FormFieldGroupExpandableProps
 {
     /** Anything that can be rendered as form field group content. */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the form field group. */
     #[prop_or_default]
     pub class_name: String,
@@ -72,7 +72,7 @@ impl Component for FormFieldGroupExpandable
                 ontoggle={ctx.link().callback(|_| FormFieldGroupExpandableMsg::OnToggle)}
                 // {...props}
             >
-                {for ctx.props().children.iter()}
+                {ctx.props().children.clone()}
             </InternalFormFieldGroup>
         }
     }

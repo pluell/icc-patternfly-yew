@@ -7,7 +7,7 @@ pub struct TabButton;
 pub struct TabButtonProperties
 {
     /** content rendered inside the Tab content area. */
-    pub children: Children,
+    pub children: Html,
     /** additional classes added to the Tab */
     #[prop_or_default]
     pub class_name: String,

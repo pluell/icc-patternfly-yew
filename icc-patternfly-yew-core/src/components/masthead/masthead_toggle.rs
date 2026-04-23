@@ -8,7 +8,7 @@ pub struct MastheadToggleProps
 {
     /** Content rendered inside of the masthead toggle. */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the masthead toggle. */
     #[prop_or_default]
     pub class_name: String,
@@ -34,7 +34,7 @@ impl Component for MastheadToggle
                 )}
                 // {...props}
             >
-                {for ctx.props().children.iter()}
+                {ctx.props().children.clone()}
             </div>
         }
     }

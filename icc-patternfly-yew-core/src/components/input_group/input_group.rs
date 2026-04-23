@@ -9,7 +9,7 @@ pub struct InputGroupProperties {
     pub classes: Classes,
     /** Content rendered inside the input group. */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
 }
 
 impl Component for InputGroup {
@@ -30,7 +30,7 @@ impl Component for InputGroup {
                 // {...props}
             >
             {
-                for ctx.props().children.iter()
+                ctx.props().children.clone()
             }
             </div>
         }

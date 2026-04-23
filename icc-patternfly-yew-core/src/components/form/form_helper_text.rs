@@ -6,7 +6,7 @@ pub struct FormHelperText;
 pub struct FormHelperTextProperties
 {
     /** Content rendered inside the Helper Text Item */
-    pub children: Children,
+    pub children: Html,
     /** Adds error styling to the Helper Text  * */
     #[prop_or_default]
     pub is_error: bool,

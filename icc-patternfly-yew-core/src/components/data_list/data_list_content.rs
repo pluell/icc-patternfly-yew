@@ -8,7 +8,7 @@ pub struct DataListContentProps
 {
     /** Content rendered inside the DataList item */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the DataList cell */
     #[prop_or_default]
     pub class_name: String,
@@ -57,7 +57,7 @@ impl Component for DataListContent
                         if ctx.props().has_no_padding { "pf-m-no-padding" } else { "" }
                     )}
                 >
-                    { for ctx.props().children.iter() }
+                    { ctx.props().children.clone() }
                 </div>
             </section>
         }

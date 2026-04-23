@@ -48,7 +48,7 @@ pub struct ToolbarItemProperties
     pub is_all_expanded: bool,
     /** Content to be rendered inside the data toolbar item */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
 
     // Extra properties
     #[prop_or_default]

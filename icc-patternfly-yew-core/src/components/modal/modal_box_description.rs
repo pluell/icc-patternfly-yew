@@ -8,7 +8,7 @@ pub struct ModalBoxDescriptionProperties
 {
     /** Content rendered inside the description */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the description */
     #[prop_or_default]
     pub classes: Classes,
@@ -38,7 +38,7 @@ impl Component for ModalBoxDescription
                     ctx.props().classes.clone()
                 )}
             >
-                { for ctx.props().children.iter() }
+                { ctx.props().children.clone() }
             </div>
         }
     }

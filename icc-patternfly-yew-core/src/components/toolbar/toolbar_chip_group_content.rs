@@ -37,7 +37,7 @@ pub struct ToolbarChipGroupContentProperties
     pub number_of_filters: i32,
     /** Text to display in the total number of applied filters ToolbarFilter */
     #[prop_or_default]
-    pub number_of_filters_text: Option<fn(i32) -> String>,
+    pub number_of_filters_text: Option<Callback<i32, String>>,
     /** The breakpoint at which the listed filters in chip groups are collapsed down to a summary */
     #[prop_or(Some(ToolbarBreakpoint::Lg))]
     pub collapse_listed_filters_breakpoint: Option<ToolbarBreakpoint>,
@@ -96,7 +96,7 @@ impl Component for ToolbarChipGroupContent
 
         let is_hidden = ctx.props().number_of_filters == 0 || ctx.props().is_expanded;
 
-        let number_of_filters_text = ctx.props().number_of_filters_text.unwrap_or(|number_of_filters| format!("{} filters applied", number_of_filters));
+        let number_of_filters_text = ctx.props().number_of_filters_text.clone().unwrap_or(Callback::from(|number_of_filters| format!("{} filters applied", number_of_filters)));
 
         html!{
             <div class={classes!(
@@ -117,7 +117,7 @@ impl Component for ToolbarChipGroupContent
                     {
                         html!{
                             <ToolbarGroup>
-                                <ToolbarItem>{number_of_filters_text(ctx.props().number_of_filters)}</ToolbarItem>
+                                <ToolbarItem>{number_of_filters_text.emit(ctx.props().number_of_filters)}</ToolbarItem>
                             </ToolbarGroup>
                         }
                     }

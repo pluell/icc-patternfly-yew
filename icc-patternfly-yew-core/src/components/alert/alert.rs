@@ -26,10 +26,10 @@ pub struct AlertProps
     pub action_links: Option<Vec<VChild<AlertActionLink>>>,
     /** Content rendered inside the Alert */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** Additional classes added to the Alert  */
     #[prop_or_default]
-    pub class_name: String,
+    pub classes: Classes,
     /** Adds accessible text to the Alert */
     #[prop_or_default]
     pub aria_label: String,
@@ -74,7 +74,7 @@ impl Component for Alert
                     "pf-v5-c-alert",
                     if ctx.props().is_inline { "pf-m-inline" } else { "" },
                     ctx.props().variant.class(),
-                    &ctx.props().class_name
+                    ctx.props().classes.clone(),
                 )}
                 aria-label={ctx.props().aria_label.clone()}
                 // {...ouiaProps}
@@ -125,7 +125,7 @@ impl Component for Alert
                     html!{
                         <div class="pf-v5-c-alert__description">
                         {
-                            for ctx.props().children.iter()
+                            ctx.props().children.clone()
                         }
                         </div>
                     }
@@ -137,7 +137,7 @@ impl Component for Alert
                         html!{
                             <div class="pf-v5-c-alert__action-group">
                             {
-                                action_links.clone()
+                                for action_links.iter().map(|node| node.clone())
                             }
                             </div>
                         }

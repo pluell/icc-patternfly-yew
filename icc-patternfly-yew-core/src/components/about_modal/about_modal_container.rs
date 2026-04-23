@@ -12,7 +12,7 @@ pub struct AboutModalContainerProps
 {
     /** content rendered inside the About Modal Box Content.  */
     #[prop_or_default]
-    pub children: Children,
+    pub children: Html,
     /** additional classes added to the About Modal Box  */
     #[prop_or_default]
     pub class_name: String,
@@ -91,7 +91,7 @@ impl Component for AboutModalContainer
                                 no_about_modal_box_content_container={false}
                                 // {...props}
                             >
-                                {for ctx.props().children.iter()}
+                                {ctx.props().children.clone()}
                             </AboutModalBoxContent>
                             <AboutModalBoxHero background_image_src={ctx.props().background_image_src.clone()} />
                         </AboutModalBox>
