@@ -8,5 +8,5 @@ members = [
 
 [workspace.dependencies]
 log = "0.4"
-yew ="0.22"
+yew ="0.23"
 yewtil = "0.4"
