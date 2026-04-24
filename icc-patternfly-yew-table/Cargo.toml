@@ -2,7 +2,7 @@
 name = "icc-patternfly-yew-table"
 version = "0.1.0"
 authors = ["Patrick Luell <pluell@iccdesigns.com>"]
-edition = "2018"
+edition = "2024"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
