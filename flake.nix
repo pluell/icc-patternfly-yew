@@ -38,6 +38,9 @@
             #   targets = [ "wasm32-unknown-unknown" ];
             # })
             openssl
+
+            trunk
+            nodejs_20
           ]) ++ pkgs.lib.optionals pkgs.stdenv.isDarwin (with pkgs; [ libiconv ]);
 
         };

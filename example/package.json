@@ -1,0 +1,10 @@
+{
+  "name": "icc-patternfly-yew-demo",
+  "version": "0.1.0",
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@patternfly/patternfly": "^5.4.2"
+  }
+}

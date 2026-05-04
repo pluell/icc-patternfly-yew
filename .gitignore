@@ -1,2 +1,4 @@
 /target
 .direnv/
+example/dist
+example/node_modules

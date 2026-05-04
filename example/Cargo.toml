@@ -1,0 +1,21 @@
+[package]
+name = "icc-patternfly-yew-demo"
+version = "0.1.0"
+authors = ["Patrick Luell <pluell@iccdesigns.com>"]
+edition = "2024"
+
+[dependencies]
+console_error_panic_hook = "0.1"
+console_log = "1"
+log = "0.4"
+strum = "0.28"
+strum_macros = "0.28"
+wasm-bindgen = "0.2"
+web-sys = { version = "0.3", features = ["Window", "Document", "HtmlElement", "Location", "Node", "Text", "WorkerLocation"] }
+yew.workspace = true
+yew.features = ["csr"]
+yew-router = "0.20"
+
+icc-patternfly-yew-core = { path = "../icc-patternfly-yew-core" }
+icc-patternfly-yew-icons = { path = "../icc-patternfly-yew-icons" }
+icc-patternfly-yew-table = { path = "../icc-patternfly-yew-table" }
